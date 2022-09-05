@@ -6,7 +6,20 @@ public:
 
 	Vector2Int() {}
 	Vector2Int(int x, int y) { this->x = x, this->y = y; }
+
+	// 代入演算子オーバーロード
+	Vector2Int& operator+=(const Vector2Int& v);
+	Vector2Int& operator-=(const Vector2Int& v);
+	Vector2Int& operator*=(float s);
+	Vector2Int& operator/=(float s);
 };
+
+// 2項演算子オーバーロード
+const Vector2Int operator+(const Vector2Int& v1, const Vector2Int& v2);
+const Vector2Int operator-(const Vector2Int& v1, const Vector2Int& v2);
+const Vector2Int operator*(const Vector2Int& v, float s);
+const Vector2Int operator*(float s, const Vector2Int& v);
+const Vector2Int operator/(const Vector2Int& v, float s);
 
 class Vector2
 {
