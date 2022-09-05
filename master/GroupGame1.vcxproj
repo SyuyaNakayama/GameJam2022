@@ -137,6 +137,11 @@
     <ClCompile Include="Vector2.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Dxlib\DxCompileConfig.h" />
+    <ClInclude Include="Dxlib\DxDataType.h" />
+    <ClInclude Include="Dxlib\DxDataTypeWin.h" />
+    <ClInclude Include="Dxlib\DxFunctionWin.h" />
+    <ClInclude Include="Dxlib\DxLib.h" />
     <ClInclude Include="function.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Vector2.h" />

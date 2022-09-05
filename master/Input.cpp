@@ -1,5 +1,5 @@
 #include "Input.h"
-#include "DxLib.h"
+#include "Dxlib/DxLib.h"
 void Input::UpdateKeyState()
 {
 	for (size_t i = 0; i < 256; i++) { oldkey[i] = key[i]; };
