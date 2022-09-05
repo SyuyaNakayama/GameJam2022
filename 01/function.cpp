@@ -1,4 +1,4 @@
-#include "Dxlib/DxLib.h"
+#include "DxLib.h"
 #include "function.h"
 void NumberLoop(int& num, int max, int min)
 {

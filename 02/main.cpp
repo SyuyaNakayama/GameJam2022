@@ -1,4 +1,4 @@
-#include "Dxlib/DxLib.h"
+#include "DxLib.h"
 #include "Vector2.h"
 #include "Input.h"
 #include "function.h"
