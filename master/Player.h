@@ -12,6 +12,7 @@ private:
 public:
 	Player(Vector2 pos_, int rad_);
 	Vector2 GetPos() { return pos; }
+	float GetAngle() { return angle; }
 	void Move(Vector2Int moveLimitLeftUp, Vector2Int moveRightDown);
 	void Draw();
 };

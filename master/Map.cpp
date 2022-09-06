@@ -41,7 +41,7 @@ void Map::Change(Vector2Int num, BlockName blockName)
 	map[num.y][num.x] = blockName;
 }
 
-void Map::Draw(Vector2Int playerPos)
+void Map::Draw(Vector2Int playerPos, float playerAngle)
 {
 	for (size_t y = 0; y < map.size(); y++) {
 		for (size_t x = 0; x < map[y].size(); x++)
@@ -51,6 +51,24 @@ void Map::Draw(Vector2Int playerPos)
 			if (playerPos.x == x && playerPos.y == y)
 			{
 				DrawBoxWithVectorInt(boxPos, { mapChipRad ,mapChipRad }, color.Red, 0);
+				float num = (playerAngle + DX_PI_F / 8);
+				if (num > DX_TWO_PI_F) { num -= DX_TWO_PI_F; }
+				num /= DX_PI_F / 4;
+
+				int mapChipDia = mapChipRad * 2;
+				vector<Vector2Int> offset =
+				{
+					{0, -mapChipDia},
+					{mapChipDia, -mapChipDia},
+					{mapChipDia, 0},
+					{mapChipDia, mapChipDia},
+					{0, mapChipDia},
+					{-mapChipDia, mapChipDia},
+					{-mapChipDia, 0},
+					{-mapChipDia, -mapChipDia},
+				};
+
+				DrawBoxWithVectorInt(boxPos + offset[num], { mapChipRad ,mapChipRad }, color.Blue, 0);
 			}
 		}
 	}

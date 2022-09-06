@@ -21,6 +21,10 @@ void DrawDebugNumber(int num, int y)
 {
 	DrawFormatString(0, y, GetColor(255, 255, 255), "%d", num);
 }
+void DrawDebugNumber(float num, int y)
+{
+	DrawFormatString(0, y, GetColor(255, 255, 255), "%f", num);
+}
 
 void DrawBoxWithVectorInt(Vector2Int pos, Vector2Int rad, int color, bool fillFlag)
 {

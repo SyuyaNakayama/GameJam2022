@@ -15,6 +15,8 @@ void Player::Move(Vector2Int moveLimitLeftUp,Vector2Int moveRightDown)
 	pos += Vector2(-sinf(angle), cosf(angle)) * ((input.isInput(KEY_INPUT_DOWN) - input.isInput(KEY_INPUT_UP)) * MOVE_SPD);
 	Clamp(pos.x, moveRightDown.x, moveLimitLeftUp.x);
 	Clamp(pos.y, moveRightDown.y, moveLimitLeftUp.y);
+	if (angle < 0) { angle = DX_TWO_PI_F; }
+	if (angle > DX_TWO_PI_F) { angle = 0; }
 }
 
 void Player::Draw()

@@ -45,7 +45,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	Map map = Vector2Int(9, 9);
 	map.Change({ 0,2 }, BlockName::Block);
 
-	SetFontSize(128);
 	while (!(ProcessMessage() == -1 || CheckHitKey(KEY_INPUT_ESCAPE)))
 	{
 #pragma region çXêVèàóù
@@ -56,7 +55,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 				map.GetMapPos().y + 2 * map.GetRadius() * (map.GetMapSize().y - 1) });
 #pragma endregion
 #pragma region ï`âÊèàóù
-		map.Draw(map.GetPlayerMapChip(player));
+		map.Draw(map.GetPlayerMapChip(player),player.GetAngle());
 		player.Draw();
 
 		ScreenFlip();

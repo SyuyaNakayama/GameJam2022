@@ -37,7 +37,7 @@ public:
 	Vector2Int GetPlayerMapChip(Player);
 	void MapInit(); // ƒ}ƒbƒv‚ğNone‚Å‰Šú‰»
 	void Change(Vector2Int num, BlockName blockName);
-	void Draw(Vector2Int playerPos);
+	void Draw(Vector2Int playerPos, float playerAngle);
 private:
 	const vector<int>CHIP_COLOR = { color.White,color.Blue,color.Yellow,color.Red };
 };
