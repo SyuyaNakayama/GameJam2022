@@ -2,6 +2,8 @@
 #include <vector>
 #include "Vector2.h"
 #include "DxLib.h"
+#include "Player.h"
+
 using namespace std;
 
 enum BlockName { None, Block, CoinBlock, TreasureBox };
@@ -20,21 +22,22 @@ class Map
 {
 private:
 	vector<vector<int>>map;
-	Vector2Int	mapPos = { 500,200 };
+	Vector2Int	pos = { 500,200 };
 	int	mapChipRad = 32;
 	Color color;
 public:
 	Map(Vector2Int num);
 	Map() {};
-	void SetMapPos(Vector2Int pos) { mapPos = pos; }
+	void SetMapPos(Vector2Int pos_) { pos = pos_; }
 	void SetRadius(int radius) { mapChipRad = radius; }
 	void SetMapSize(Vector2Int num);
-	Vector2Int GetMapPos() { return mapPos; }
+	Vector2Int GetMapPos() { return pos; }
 	int GetRadius() { return mapChipRad; }
 	Vector2Int GetMapSize();
+	Vector2Int GetPlayerMapChip(Player);
 	void MapInit(); // É}ÉbÉvÇNoneÇ≈èâä˙âª
 	void Change(Vector2Int num, BlockName blockName);
-	void Draw();
+	void Draw(Vector2Int playerPos);
 private:
 	const vector<int>CHIP_COLOR = { color.White,color.Blue,color.Yellow,color.Red };
 };
