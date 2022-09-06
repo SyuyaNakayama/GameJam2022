@@ -11,6 +11,11 @@ void Clamp(int& num, int max, int min)
 	if (num > max) { num = max; }
 	if (num < min) { num = min; }
 }
+void Clamp(float& num, float max, float min)
+{
+	if (num > max) { num = max; }
+	if (num < min) { num = min; }
+}
 
 void DrawDebugNumber(int num, int y)
 {

@@ -3,6 +3,7 @@
 #include "Input.h"
 #include "function.h"
 #include "Map.h"
+#include "Player.h"
 #include <vector>
 #include <stdlib.h>
 #include <time.h>
@@ -19,7 +20,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	SetOutApplicationLogValidFlag(false);
 	ChangeWindowMode(TRUE);
 	SetWindowSizeChangeEnableFlag(FALSE, FALSE);
-	SetMainWindowText("GameJam2022");
+	SetMainWindowText("GameJam2022_”V‚ÌlAÌŒ@ê‚É‚ÄB`ƒAƒŒƒbƒq‚Ì’n‰º“z—ê`");
 	SetGraphMode(WIN_SIZE.x, WIN_SIZE.y, 32);
 	SetWindowSizeExtendRate(1.0);
 	SetDrawScreen(DX_SCREEN_BACK);
@@ -35,16 +36,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		{9,9}
 	};
 
-	const int
-		OFFSET = 200,
-		BOX_RAD = 32,
-		STAGE_NUM = MAP_SIZE.size(),
-		PLAYER_SPD = 5;
+	const int STAGE_NUM = MAP_SIZE.size();
 
 	Color color;
 	// ---•Ï”‚ÌéŒ¾‚Æ‰Šú‰»---
-	Input input;
-	Vector2Int playerPos = { 700,600 };
+	Player player = { {700,600},32 };
 
 	Map map = Vector2Int(9, 9);
 	map.Change({ 0,2 }, BlockName::Block);
@@ -53,16 +49,14 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	{
 #pragma region XVˆ—
 		ClearDrawScreen();
-		input.UpdateKeyState();
 
-		playerPos.x += (input.isInput(KEY_INPUT_RIGHT) - input.isInput(KEY_INPUT_LEFT)) * PLAYER_SPD;
-		playerPos.y += (input.isInput(KEY_INPUT_DOWN) - input.isInput(KEY_INPUT_UP)) * PLAYER_SPD;
-		Clamp(playerPos.x, map.GetMapPos().x + 2 * map.GetRadius() * (map.GetMapSize().x - 1), map.GetMapPos().x);
-		Clamp(playerPos.y, map.GetMapPos().y + 2 * map.GetRadius() * (map.GetMapSize().y - 1), map.GetMapPos().y);
+		player.Move(map.GetMapPos(),{
+				map.GetMapPos().x + 2 * map.GetRadius() * (map.GetMapSize().x - 1),
+				map.GetMapPos().y + 2 * map.GetRadius() * (map.GetMapSize().y - 1) });
 #pragma endregion
 #pragma region •`‰æˆ—
 		map.Draw();
-		DrawCircle(playerPos.x, playerPos.y, 32, color.Green);
+		player.Draw();
 
 		ScreenFlip();
 #pragma endregion
