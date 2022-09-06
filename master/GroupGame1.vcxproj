@@ -21,12 +21,14 @@
   <ItemGroup>
     <ClInclude Include="function.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="Vector2.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="function.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="Vector2.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
