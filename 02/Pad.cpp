@@ -53,3 +53,20 @@ bool Pad::IsTrigger(const int button)
 	return pad->Buttons[button] == 128 &&
 		oldpad->Buttons[button] == 0;
 }
+
+void Pad::Viblation(const int power, const int time)
+{
+	int p = power, t = time;
+
+	if (0 >= power) p = 0;
+	if (1000 <= power) p = 1000;
+
+	if (-1 >= time) t = -1;
+
+	StartJoypadVibration(DX_INPUT_PAD1, p, t);
+}
+
+void Pad::StopViblation()
+{
+	StopJoypadVibration(DX_INPUT_PAD1);
+}

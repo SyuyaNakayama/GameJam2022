@@ -1,6 +1,7 @@
 #include "DxLib.h"
 #include "Vector2.h"
 #include "Input.h"
+#include "Pad.h"
 #include "function.h"
 
 // ウィンドウのサイズ
@@ -29,12 +30,18 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	// ---変数の宣言と初期化---
 	Input input;
 	Vector2Int pleyerPos = { 0,8 };
+	Pad pad;
+	int p = 0;
 
 	while (!(ProcessMessage() == -1 || CheckHitKey(KEY_INPUT_ESCAPE)))
 	{
 #pragma region 更新処理
 		ClearDrawScreen();
 		input.UpdateKeyState();
+		pad.Update();
+
+		p += pad.Horizontal() * 10;
+		if (pad.IsTrigger(Pad::A)) pad.Viblation(p, 1000);
 
 		pleyerPos.x += (input.isTrigger(KEY_INPUT_RIGHT)) - input.isTrigger(KEY_INPUT_LEFT);
 		pleyerPos.y += (input.isTrigger(KEY_INPUT_DOWN)) - input.isTrigger(KEY_INPUT_UP);
@@ -51,6 +58,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 				DrawBoxWithVectorInt(boxPos, { BOX_RAD ,BOX_RAD }, WHITE, fillFlag);
 			}
 		}
+
+		DrawFormatString(0, 0, GetColor(255, 255, 0), "power = %d", p);
 
 		ScreenFlip();
 #pragma endregion

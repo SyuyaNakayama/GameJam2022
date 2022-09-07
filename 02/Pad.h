@@ -25,11 +25,16 @@ public:
 	// ƒ{ƒ^ƒ“‘€ì
 	enum Button
 	{
-		A = 0,
-		B = 1,
-		X = 2,
-		Y = 3,
+		A,
+		B,
+		X,
+		Y,
 	};
 	bool IsTrigger(const int button);
+
+	// U“®
+	// power (MAX 1000), time (1s = 1000, ‡ = -1) 
+	void Viblation(const int power, const int time);
+	void StopViblation();
 };
 
