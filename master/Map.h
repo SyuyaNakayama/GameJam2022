@@ -39,5 +39,5 @@ public:
 	void Change(Vector2Int num, BlockName blockName);
 	void Draw(Vector2Int playerPos, float playerAngle);
 private:
-	const vector<int>CHIP_COLOR = { color.White,color.Blue,color.Yellow,color.Red };
+	const vector<int>CHIP_COLOR = { color.Black,color.White,color.Green,color.Red };
 };

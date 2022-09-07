@@ -43,13 +43,20 @@ void Map::Change(Vector2Int num, BlockName blockName)
 
 void Map::Draw(Vector2Int playerPos, float playerAngle)
 {
+	Vector2Int boxPos{};
 	for (size_t y = 0; y < map.size(); y++) {
 		for (size_t x = 0; x < map[y].size(); x++)
 		{
-			Vector2Int boxPos = pos + Vector2Int(2 * mapChipRad * x, 2 * mapChipRad * y);
+			boxPos = pos + Vector2Int(2 * mapChipRad * x, 2 * mapChipRad * y);
 			DrawBoxWithVectorInt(boxPos, { mapChipRad ,mapChipRad }, CHIP_COLOR[map[y][x]]);
+		}
+	}
+	for (size_t y = 0; y < map.size(); y++) {
+		for (size_t x = 0; x < map[y].size(); x++)
+		{
 			if (playerPos.x == x && playerPos.y == y)
 			{
+				boxPos = pos + Vector2Int(2 * mapChipRad * x, 2 * mapChipRad * y);
 				DrawBoxWithVectorInt(boxPos, { mapChipRad ,mapChipRad }, color.Red, 0);
 				float num = (playerAngle + DX_PI_F / 8);
 				if (num > DX_TWO_PI_F) { num -= DX_TWO_PI_F; }
@@ -68,7 +75,10 @@ void Map::Draw(Vector2Int playerPos, float playerAngle)
 					{-mapChipDia, -mapChipDia},
 				};
 
-				DrawBoxWithVectorInt(boxPos + offset[num], { mapChipRad ,mapChipRad }, color.Blue, 0);
+				for (size_t i = 0; i < 8; i++)
+				{
+					DrawBoxWithVectorInt(boxPos + offset[i], { mapChipRad ,mapChipRad }, color.Blue, 0);
+				}
 			}
 		}
 	}

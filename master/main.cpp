@@ -28,6 +28,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	srand(time(0));
 #pragma endregion
 	// ---’è”‚ÌéŒ¾‚Æ‰Šú‰»---
+	enum Scene { Title, Tutorial, Play, GameOver };
+	Scene scene = Scene::Title;
+
 	const vector<Vector2Int>MAP_SIZE =
 	{
 		{9,9},
@@ -45,18 +48,48 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	Map map = Vector2Int(9, 9);
 	map.Change({ 0,2 }, BlockName::Block);
 
+	SetFontSize(96);
+
 	while (!(ProcessMessage() == -1 || CheckHitKey(KEY_INPUT_ESCAPE)))
 	{
 #pragma region XVˆ—
 		ClearDrawScreen();
 
-		player.Move(map.GetMapPos(),{
-				map.GetMapPos().x + 2 * map.GetRadius() * (map.GetMapSize().x - 1),
-				map.GetMapPos().y + 2 * map.GetRadius() * (map.GetMapSize().y - 1) });
+		switch (scene)
+		{
+		case Title:
+			break;
+		case Tutorial:
+			break;
+		case Play:
+			player.Move(map.GetMapPos(), {
+					map.GetMapPos().x + 2 * map.GetRadius() * (map.GetMapSize().x - 1),
+					map.GetMapPos().y + 2 * map.GetRadius() * (map.GetMapSize().y - 1) });
+			break;
+		case GameOver:
+			break;
+		default:
+			break;
+		}
+
 #pragma endregion
 #pragma region •`‰æˆ—
-		map.Draw(map.GetPlayerMapChip(player),player.GetAngle());
-		player.Draw();
+		switch (scene)
+		{
+		case Title:
+			DrawString(50, 150, "”V‚ÌlAÌŒ@ê‚É‚ÄB\n\n@`ƒAƒŒƒbƒq‚Ì’n‰º“z—ê`", color.White);
+			break;
+		case Tutorial:
+			break;
+		case Play:
+			map.Draw(map.GetPlayerMapChip(player), player.GetAngle());
+			player.Draw();
+			break;
+		case GameOver:
+			break;
+		default:
+			break;
+		}
 
 		ScreenFlip();
 #pragma endregion
