@@ -3,24 +3,30 @@
 #include "DxLib.h"
 #include <math.h>
 
-Player::Player(Vector2 pos_, int rad_)
+Player::Player(Vector2Int pos_, int rad_)
 {
 	pos = pos_;	rad = rad_;
 }
 
-void Player::Move(Vector2Int moveLimitLeftUp,Vector2Int moveRightDown)
+void Player::Move(Map& map)
 {
-	input.UpdateKeyState();
-	angle += (input.isInput(KEY_INPUT_RIGHT) - input.isInput(KEY_INPUT_LEFT)) * ROT_SPD;
-	pos += Vector2(-sinf(angle), cosf(angle)) * ((input.isInput(KEY_INPUT_DOWN) - input.isInput(KEY_INPUT_UP)) * MOVE_SPD);
-	Clamp(pos.x, moveRightDown.x, moveLimitLeftUp.x);
-	Clamp(pos.y, moveRightDown.y, moveLimitLeftUp.y);
-	if (angle < 0) { angle = DX_TWO_PI_F; }
-	if (angle > DX_TWO_PI_F) { angle = 0; }
+	input.Update();
+	pad.Update();
+
+	Vector2Int prePos = pos;
+
+	pos.x += input.isTrigger(KEY_INPUT_RIGHT) - input.isTrigger(KEY_INPUT_LEFT);
+	pos.y += input.isTrigger(KEY_INPUT_DOWN) - input.isTrigger(KEY_INPUT_UP);
+	pos.x += pad.Right() - pad.Left();
+	pos.y += pad.Down() - pad.Up();
+
+	Clamp(pos.x, map.GetMapSize().x - 1);
+	Clamp(pos.y, map.GetMapSize().y - 1);
+
+	if (map.GetMapState(pos) != None) { pos = prePos; }
 }
 
-void Player::Draw()
+void Player::Draw(Map& map)
 {
-	DrawCircle(pos.x, pos.y, 32, GetColor(0,255,0));
-	DrawLine(pos.x, pos.y, pos.x + sinf(angle) * 30, pos.y - cosf(angle) * 30, GetColor(255, 0, 0));
+	DrawCircle(map.GetChipPos(pos).x, map.GetChipPos(pos).y, 32, GetColor(0, 255, 0));
 }

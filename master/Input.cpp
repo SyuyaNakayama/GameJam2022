@@ -1,6 +1,6 @@
 #include "Input.h"
 #include "DxLib.h"
-void Input::UpdateKeyState()
+void Input::Update()
 {
 	for (size_t i = 0; i < 256; i++) { oldkey[i] = key[i]; };
 	GetHitKeyStateAll(key);

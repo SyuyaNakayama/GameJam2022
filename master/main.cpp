@@ -29,7 +29,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 #pragma endregion
 	// ---’è”‚ÌéŒ¾‚Æ‰Šú‰»---
 	enum Scene { Title, Tutorial, Play, GameOver };
-	Scene scene = Scene::Title;
+	Scene scene = Scene::Play;
 
 	const vector<Vector2Int>MAP_SIZE =
 	{
@@ -43,10 +43,16 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 	Color color;
 	// ---•Ï”‚ÌéŒ¾‚Æ‰Šú‰»---
-	Player player = { {700,600},32 };
+	Player player = { {3,3},32 };
 
 	Map map = Vector2Int(9, 9);
-	map.Change({ 0,2 }, BlockName::Block);
+	for (int i = 0; i < 9; i++)
+	{
+		map.Change({ 0,i }, BlockName::Block);
+		map.Change({ 8,i }, BlockName::Block);
+		map.Change({ i,0 }, BlockName::Block);
+		map.Change({ i,8 }, BlockName::Block);
+	}
 
 	SetFontSize(96);
 
@@ -62,16 +68,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		case Tutorial:
 			break;
 		case Play:
-			player.Move(map.GetMapPos(), {
-					map.GetMapPos().x + 2 * map.GetRadius() * (map.GetMapSize().x - 1),
-					map.GetMapPos().y + 2 * map.GetRadius() * (map.GetMapSize().y - 1) });
+			player.Move(map);
 			break;
 		case GameOver:
 			break;
-		default:
-			break;
 		}
-
 #pragma endregion
 #pragma region •`‰æˆ—
 		switch (scene)
@@ -82,8 +83,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		case Tutorial:
 			break;
 		case Play:
-			map.Draw(map.GetPlayerMapChip(player), player.GetAngle());
-			player.Draw();
+			map.Draw();
+			player.Draw(map);
 			break;
 		case GameOver:
 			break;
