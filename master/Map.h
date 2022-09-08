@@ -15,7 +15,9 @@ struct Color
 		Red = GetColor(255, 0, 0),
 		Green = GetColor(0, 255, 0),
 		Blue = GetColor(0, 0, 255),
-		Yellow = GetColor(255, 255, 0);
+		Yellow = GetColor(255, 255, 0),
+		Cyan = GetColor(0, 255, 255),
+		Magenta = GetColor(255, 0, 255);
 };
 
 class Map
@@ -33,10 +35,11 @@ public:
 	int GetRadius() { return chipRad; }
 	Vector2Int GetMapSize();
 	BlockName GetMapState(Vector2Int pos);
+	size_t CountBlockNum(BlockName blockName);
 
 	void MapInit(); // É}ÉbÉvÇBlockÇ≈èâä˙âª
 	void Change(Vector2Int num, BlockName blockName);
 	void Draw();
 private:
-	const vector<int>CHIP_COLOR = { color.Black,color.White,color.Green,color.Red };
+	const vector<int>CHIP_COLOR = { color.Black,color.White,color.Yellow,color.Green,color.Red };
 };

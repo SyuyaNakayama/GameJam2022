@@ -17,6 +17,18 @@ BlockName Map::GetMapState(Vector2Int pos)
 	return map[pos.y][pos.x];
 }
 
+size_t Map::CountBlockNum(BlockName blockName)
+{
+	size_t num=0;
+	for (size_t y = 0; y < map.size(); y++)	{
+		for (size_t x = 0; x < map[0].size(); x++)
+		{
+			num += map[y][x] == blockName;
+		}
+	}
+	return num;
+}
+
 void Map::MapInit()
 {
 	for (size_t y = 0; y < map.size(); y++) {

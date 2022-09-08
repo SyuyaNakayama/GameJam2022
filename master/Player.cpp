@@ -95,12 +95,12 @@ void Player::Destroy()
 void Player::Draw()
 {
 	Color color;
-	DrawCircle(mapPointer->GetChipPos(pos).x, mapPointer->GetChipPos(pos).y, 32, GetColor(0, 255, 0));
+	DrawCircle(mapPointer->GetChipPos(pos).x, mapPointer->GetChipPos(pos).y, 32, color.Cyan);
 	for (size_t i = 0; i < selectChip.size(); i++)
 	{
 		if (mode == Mode::Select)
 		{
-			DrawBoxWithVectorInt(mapPointer->GetChipPos(selectChip[i]), Vector2Int(mapPointer->GetRadius(), mapPointer->GetRadius()), color.Yellow, 1);
+			DrawBoxWithVectorInt(mapPointer->GetChipPos(selectChip[i]), Vector2Int(mapPointer->GetRadius(), mapPointer->GetRadius()), color.Magenta, 1);
 		}
 	}
 	DrawBoxWithVectorInt(mapPointer->GetChipPos(selectPos), Vector2Int(mapPointer->GetRadius(), mapPointer->GetRadius()), color.Blue, mode);
