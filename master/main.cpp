@@ -43,8 +43,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 	Color color;
 	// ---•Ï”‚ÌéŒ¾‚Æ‰Šú‰»---
-	Map map = Vector2Int(9, 9);
-		map.Change({ 3,3 }, BlockName::None);
+	Map map;
+	map.Change({ 3,3 }, BlockName::None);
 
 	Player player = { {3,3},&map };
 

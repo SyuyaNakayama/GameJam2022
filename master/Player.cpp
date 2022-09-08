@@ -79,13 +79,13 @@ void Player::Destroy()
 		}
 	}
 
-	if (input.IsTrigger(KEY_INPUT_SPACE))
+	if (input.IsTrigger(KEY_INPUT_SPACE) && !selectChip.empty())
 	{
 		for (size_t i = 0; i < selectChip.size(); i++)
 		{
 			mapPointer->Change(selectChip[i], None);
 		}
-		if (mode == Mode::Move) { pos = selectChip[selectChip.size() - 1]; }
+		if (mode == Mode::Move) { pos = selectChip.back(); }
 		selectNum = DESTROY_MAX;
 		destroyAnimetionFlag = 1;
 		selectChip.clear();

@@ -2,29 +2,18 @@
 #include "function.h"
 #include <cassert>
 
-Map::Map(Vector2Int num)
+Map::Map()
 {
-	SetMapSize(num);
 	MapInit();
-}
-
-void Map::SetMapSize(Vector2Int num)
-{
-	map.resize(num.y);
-	for (size_t i = 0; i < map.size(); i++) { map[i].resize(num.x); }
 }
 
 Vector2Int Map::GetMapSize()
 {
-	assert(!map.empty());
 	return { (int)map[0].size(),(int)map.size() };
 }
 
 BlockName Map::GetMapState(Vector2Int pos)
 {
-	assert(!map.empty());
-	assert(IsInsideValue(pos.x, map[0].size() - 1));
-	assert(IsInsideValue(pos.y, map.size() - 1));
 	return map[pos.y][pos.x];
 }
 

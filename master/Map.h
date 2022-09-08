@@ -1,4 +1,5 @@
 #pragma once
+#include <array>
 #include <vector>
 #include "DxLib.h"
 #include "Player.h"
@@ -20,22 +21,19 @@ struct Color
 class Map
 {
 private:
-	vector<vector<BlockName>>map;
+	array<array<BlockName, 10>, 10>map;
 	Vector2Int	pos = { 500,200 };
 	int	chipRad = 32;
 	Color color;
 public:
-	Map(Vector2Int num);
-
-	void SetMapPos(Vector2Int pos_) { pos = pos_; }
-	void SetRadius(int radius) { chipRad = radius; }
-	void SetMapSize(Vector2Int num);
+	Map();
 
 	Vector2Int GetMapPos() { return pos; }
 	Vector2Int GetChipPos(Vector2Int chipNum) { return pos + 2 * chipRad * chipNum; }
 	int GetRadius() { return chipRad; }
 	Vector2Int GetMapSize();
 	BlockName GetMapState(Vector2Int pos);
+
 	void MapInit(); // É}ÉbÉvÇBlockÇ≈èâä˙âª
 	void Change(Vector2Int num, BlockName blockName);
 	void Draw();
