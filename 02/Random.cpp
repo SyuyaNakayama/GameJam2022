@@ -5,12 +5,22 @@
 
 void InitRand() { srand(time(NULL)); }
 
-int GetRand(const int start, const int end) 
+int GetRand(const int start, const int end)
 {
-	return ((rand() % (end + 1)) + start);
+	int div = end - start;
+	if (div > 0) div++;
+	if (div < 0) div--;
+	if (div == 0) return end;
+
+	return ((rand() % div) + start);
 }
 
-float GetRandF(const float start, const float end) 
+float GetRandF(const float start, const float end)
 {
-	return (fmodf(rand(), (end + 1.0f)) + start);
+	float div = end - start;
+	if (div > 0.0f) div += 1.0f;
+	if (div < 0.0f) div -= 1.0f;
+	if (div == 0.0f) return end;
+
+	return (fmodf(rand(), div) + start);
 }

@@ -63,6 +63,12 @@
     <ClInclude Include="Particle.h">
       <Filter>ヘッダー ファイル\Particle</Filter>
     </ClInclude>
+    <ClInclude Include="Dust.h">
+      <Filter>ヘッダー ファイル\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="DustEmitter.h">
+      <Filter>ヘッダー ファイル\Particle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="function.cpp">
@@ -96,6 +102,12 @@
       <Filter>ソース ファイル\Draw</Filter>
     </ClCompile>
     <ClCompile Include="Particle.cpp">
+      <Filter>ソース ファイル\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="Dust.cpp">
+      <Filter>ソース ファイル\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="DustEmitter.cpp">
       <Filter>ソース ファイル\Particle</Filter>
     </ClCompile>
   </ItemGroup>

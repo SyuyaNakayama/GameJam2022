@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Dust.h" />
+    <ClInclude Include="DustEmitter.h" />
     <ClInclude Include="Ease.h" />
     <ClInclude Include="function.h" />
     <ClInclude Include="Input.h" />
@@ -31,6 +33,8 @@
     <ClInclude Include="Vector2.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Dust.cpp" />
+    <ClCompile Include="DustEmitter.cpp" />
     <ClCompile Include="Ease.cpp" />
     <ClCompile Include="function.cpp" />
     <ClCompile Include="Input.cpp" />

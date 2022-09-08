@@ -3,6 +3,7 @@
 #include "Input.h"
 #include "Pad.h"
 #include "function.h"
+#include "DustEmitter.h"
 
 // ウィンドウのサイズ
 const Vector2Int WIN_SIZE = { 800,800 };
@@ -33,6 +34,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	Pad* pad = Pad::GetInstance();
 	pad->Load();
 	int p = 0;
+	DustEmitter dustE;
 
 	while (!(ProcessMessage() == -1 || CheckHitKey(KEY_INPUT_ESCAPE)))
 	{
@@ -43,6 +45,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 		p += pad->Horizontal() * 10;
 		if (pad->IsTrigger(Pad::A)) pad->Viblation(p, 1000);
+		if (pad->IsTrigger(Pad::B)) dustE.Emit({ 100,100 }, { 200,100 }, 10);
+		dustE.Update();
 
 		pleyerPos.x += (input.isTrigger(KEY_INPUT_RIGHT)) - input.isTrigger(KEY_INPUT_LEFT);
 		pleyerPos.y += (input.isTrigger(KEY_INPUT_DOWN)) - input.isTrigger(KEY_INPUT_UP);
@@ -50,7 +54,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		Clamp(pleyerPos.y, BOX_NUM - 1);
 #pragma endregion
 #pragma region 描画処理
-		DrawBox(0, 0, WIN_SIZE.x, WIN_SIZE.y, GetColor(50, 100, 200), true);
+		DrawBox(0, 0, WIN_SIZE.x, WIN_SIZE.y, GetColor(17, 28, 36), true);
 		for (size_t y = 0; y < BOX_NUM; y++)
 		{
 			for (size_t x = 0; x < BOX_NUM; x++)
@@ -62,6 +66,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		}
 		pad->DrawButton({ 0,0 });
 		pad->DrawStick({ 128,128 });
+		dustE.Draw({});
 
 		DrawFormatString(0, 0, GetColor(255, 255, 0), "power = %d", p);
 
