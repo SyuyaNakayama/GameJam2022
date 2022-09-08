@@ -19,16 +19,28 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Ease.h" />
     <ClInclude Include="function.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="MapChipDraw.h" />
     <ClInclude Include="Pad.h" />
+    <ClInclude Include="Particle.h" />
+    <ClInclude Include="PlainChipDraw.h" />
+    <ClInclude Include="Random.h" />
+    <ClInclude Include="Shake.h" />
     <ClInclude Include="Vector2.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Ease.cpp" />
     <ClCompile Include="function.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MapChipDraw.cpp" />
     <ClCompile Include="Pad.cpp" />
+    <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="PlainChipDraw.cpp" />
+    <ClCompile Include="Random.cpp" />
+    <ClCompile Include="Shake.cpp" />
     <ClCompile Include="Vector2.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
