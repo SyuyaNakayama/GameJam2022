@@ -13,6 +13,6 @@ public:
 	void Initialize(const Vector2Int& pos, const int rad,
 		const Vector2Int speed, const int trans);
 	void Update();
-	void Draw(const Vector2Int& shake);
+	void Draw(const Vector2Int& camera);
 };
 

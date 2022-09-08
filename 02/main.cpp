@@ -3,7 +3,7 @@
 #include "Input.h"
 #include "Pad.h"
 #include "function.h"
-#include "DustEmitter.h"
+#include "MapChipDraw.h"
 
 // ウィンドウのサイズ
 const Vector2Int WIN_SIZE = { 800,800 };
@@ -34,7 +34,20 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	Pad* pad = Pad::GetInstance();
 	pad->Load();
 	int p = 0;
-	DustEmitter dustE;
+
+	Camera camera;
+	camera.Initialize({});
+
+	MapChipDraw mapChipD;
+	mapChipD.Load();
+	ChipDraw chipD[3];
+	for (size_t i = 0; i < 3; i++)
+	{
+		chipD[i].SetCamera(&camera);
+	}
+	bool b = false;
+	int ary = 0;
+	int t = 0;
 
 	while (!(ProcessMessage() == -1 || CheckHitKey(KEY_INPUT_ESCAPE)))
 	{
@@ -45,8 +58,27 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 		p += pad->Horizontal() * 10;
 		if (pad->IsTrigger(Pad::A)) pad->Viblation(p, 1000);
-		if (pad->IsTrigger(Pad::B)) dustE.Emit({ 100,100 }, { 200,100 }, 10);
-		dustE.Update();
+		if (pad->IsTrigger(Pad::B)) b = true;
+		if (b)
+		{
+			t++;
+			if (t >= 10)
+			{
+				chipD[ary].Initialze({ 200, 600 }, { ary,0 }, mapChipD.planeG[0]);
+				ary++;
+				if (ary >= 3)
+				{
+					b = false;
+					ary = 0;
+				}
+				t = 0;
+			}
+		}
+		for (size_t i = 0; i < 3; i++)
+		{
+			chipD[i].Update();
+		}
+		camera.Update();
 
 		pleyerPos.x += (input.isTrigger(KEY_INPUT_RIGHT)) - input.isTrigger(KEY_INPUT_LEFT);
 		pleyerPos.y += (input.isTrigger(KEY_INPUT_DOWN)) - input.isTrigger(KEY_INPUT_UP);
@@ -66,7 +98,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		}
 		pad->DrawButton({ 0,0 });
 		pad->DrawStick({ 128,128 });
-		dustE.Draw({});
+		for (size_t i = 0; i < 3; i++)
+		{
+			chipD[i].Draw(camera.GetPos());
+		}
 
 		DrawFormatString(0, 0, GetColor(255, 255, 0), "power = %d", p);
 

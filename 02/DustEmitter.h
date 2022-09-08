@@ -12,6 +12,6 @@ public:
 	~DustEmitter();
 	void Emit(const Vector2Int& leftTop, const Vector2Int& rightBottom, const int num);
 	void Update();
-	void Draw(const Vector2Int& shake);
+	void Draw(const Vector2Int& camera);
 };
 

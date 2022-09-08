@@ -15,18 +15,17 @@ float EaseOut(const float start, const float end, const float time, const float 
 }
 
 Ease::Ease() :
-	ratio(0.0f), increase(0.0f), decrease(0.0f)
+	ratio(0.0f), increase(0.0f)
 {}
 
-Ease::Ease(const float increase, const float decrease) :
-	ratio(0.0f), increase(increase), decrease(decrease)
+Ease::Ease(const float increase) :
+	ratio(0.0f), increase(increase)
 {}
 
-void Ease::Initialize(const float increase, const float decrease)
+void Ease::Initialize(const float increase)
 {
 	this->ratio = 0.0f;
 	this->increase = increase;
-	this->decrease = decrease;
 }
 
 void Ease::Update(const bool isEase)
@@ -35,11 +34,6 @@ void Ease::Update(const bool isEase)
 	{
 		ratio += increase;
 		if (ratio >= 1.0f) ratio = 1.0f;
-	}
-	else
-	{
-		ratio -= decrease;
-		if (ratio <= 0.0f) ratio = 0.0f;
 	}
 }
 

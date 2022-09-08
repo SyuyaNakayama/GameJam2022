@@ -1,4 +1,7 @@
 #pragma once
+#include "ChipDraw.h"
+#include <vector>
+
 class MapChipDraw
 {
 public:
@@ -9,12 +12,16 @@ public:
 		Coin,
 		Crystal,
 	};
-private:
-
+//private:
+	std::vector<ChipDraw> blocks;
+	int planeG[3];
 	int goldG;
 	int oreG;
 	int oreMaskG;
+	Camera* pCamera;
 public:
+	MapChipDraw();
 	void Load();
-	void Draw();
+	void Draw(const Vector2Int& camera);
+	void SetCamera(Camera* pCamera);
 };

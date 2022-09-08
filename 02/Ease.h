@@ -10,11 +10,10 @@ public:
 	float ratio;
 protected:
 	float increase;
-	float decrease;
 public:
 	Ease();
-	Ease(const float increase, const float decrease);
-	void Initialize(const float increase, const float decrease);
+	Ease(const float increase);
+	void Initialize(const float increase);
 	virtual void Update(const bool isEase);
 	float In(const float start, const float end, const float power);
 	float Out(const float start, const float end, const float power);

@@ -44,10 +44,10 @@ void DustEmitter::Update()
 	}
 }
 
-void DustEmitter::Draw(const Vector2Int& shake)
+void DustEmitter::Draw(const Vector2Int& camera)
 {
 	for (size_t i = 0; i < dusts.size(); i++)
 	{
-		if (!isDeath) dusts[i].Draw(shake);
+		if (!isDeath) dusts[i].Draw(camera);
 	}
 }

@@ -33,7 +33,7 @@ void Dust::Update()
 	}
 }
 
-void Dust::Draw(const Vector2Int& shake)
+void Dust::Draw(const Vector2Int& camera)
 {
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, trans);
 	DrawCircle(pos.x, pos.y, rad, GetColor(180, 200, 220), true);
