@@ -16,6 +16,13 @@ void Clamp(float& num, float max, float min)
 	if (num > max) { num = max; }
 	if (num < min) { num = min; }
 }
+void Clamp(Vector2Int& num, Vector2Int max, Vector2Int min)
+{
+	if (num.x > max.x) { num.x = max.x; }
+	if (num.x < min.x) { num.x = min.x; }
+	if (num.y > max.y) { num.y = max.y; }
+	if (num.y < min.y) { num.y = min.y; }
+}
 
 void DrawDebugNumber(int num, int y)
 {

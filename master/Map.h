@@ -5,7 +5,7 @@
 
 using namespace std;
 
-enum BlockName { None, Block, CoinBlock, Coin, CrystalBlock, Crystal };
+enum BlockName { None, Block, CoinBlock, Coin, CrystalBlock, Crystal, BombBlock };
 struct Color
 {
 	const int

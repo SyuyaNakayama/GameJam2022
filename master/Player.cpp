@@ -14,26 +14,31 @@ void Player::Move()
 	input.Update();
 	Vector2Int prePos = pos;
 	Vector2Int preSelectPos = selectPos;
-	
+
 	switch (mode)
 	{
 	case Mode::Move:
-		pos.x += input.isTrigger(KEY_INPUT_RIGHT) - input.isTrigger(KEY_INPUT_LEFT);
-		pos.y += input.isTrigger(KEY_INPUT_DOWN) - input.isTrigger(KEY_INPUT_UP);
+		pos.x += input.IsTrigger(KEY_INPUT_RIGHT) - input.IsTrigger(KEY_INPUT_LEFT);
+		pos.y += input.IsTrigger(KEY_INPUT_DOWN) - input.IsTrigger(KEY_INPUT_UP);
 
-		if (input.isTrigger(KEY_INPUT_RIGHT)) { direction = Right; }
-		if (input.isTrigger(KEY_INPUT_LEFT)) { direction = Left; }
-		if (input.isTrigger(KEY_INPUT_UP)) { direction = Up; }
-		if (input.isTrigger(KEY_INPUT_DOWN)) { direction = Down; }
+		if (input.IsTrigger(KEY_INPUT_RIGHT)) { direction = Right; }
+		if (input.IsTrigger(KEY_INPUT_LEFT)) { direction = Left; }
+		if (input.IsTrigger(KEY_INPUT_UP)) { direction = Up; }
+		if (input.IsTrigger(KEY_INPUT_DOWN)) { direction = Down; }
 		break;
 	case Select:
-		selectPos.x += input.isTrigger(KEY_INPUT_RIGHT) - input.isTrigger(KEY_INPUT_LEFT);
-		selectPos.y += input.isTrigger(KEY_INPUT_DOWN) - input.isTrigger(KEY_INPUT_UP);
+		if (input.IsTriggerMoveKey() && selectNum > 0)
+		{
+			selectChip.push_back(selectPos);
+			selectNum--;
+		}
+		selectPos.x += input.IsTrigger(KEY_INPUT_RIGHT) - input.IsTrigger(KEY_INPUT_LEFT);
+		selectPos.y += input.IsTrigger(KEY_INPUT_DOWN) - input.IsTrigger(KEY_INPUT_UP);
 		break;
 	}
 
-	Clamp(pos.x, mapPointer->GetMapSize().x - 1);
-	Clamp(pos.y, mapPointer->GetMapSize().y - 1);
+	Clamp(pos, mapPointer->GetMapSize() - Vector2Int(1, 1));
+	Clamp(selectPos, mapPointer->GetMapSize() - Vector2Int(1, 1));
 
 	switch (mapPointer->GetMapState(pos))
 	{
@@ -63,18 +68,34 @@ void Player::Destroy()
 	switch (mapPointer->GetMapState(selectPos))
 	{
 	case Block:case CoinBlock:case CrystalBlock:
-		if (input.isTrigger(KEY_INPUT_SPACE))
+		if (input.IsTrigger(KEY_INPUT_SPACE))
 		{
 			if (mode == Mode::Move) { mode = Select; }
 			else if (mode == Select) { mode = Mode::Move; }
 		}
+	}
+
+	if (input.IsTrigger(KEY_INPUT_SPACE))
+	{
+		for (size_t i = 0; i < selectChip.size(); i++)
+		{
+			mapPointer->Change(selectChip[i], None);
+		}
+		selectChip.clear();
+		selectNum = DESTROY_MAX;
 	}
 }
 
 void Player::Draw()
 {
 	Color color;
-	int selectColor[] = { color.Blue,color.Yellow };
 	DrawCircle(mapPointer->GetChipPos(pos).x, mapPointer->GetChipPos(pos).y, 32, GetColor(0, 255, 0));
 	DrawBoxWithVectorInt(mapPointer->GetChipPos(selectPos), Vector2Int(mapPointer->GetRadius(), mapPointer->GetRadius()), color.Blue, mode);
+	for (size_t i = 0; i < selectChip.size(); i++)
+	{
+		if (mode == Mode::Select)
+		{
+			DrawBoxWithVectorInt(mapPointer->GetChipPos(selectChip[i]), Vector2Int(mapPointer->GetRadius(), mapPointer->GetRadius()), color.Yellow, 1);
+		}
+	}
 }
