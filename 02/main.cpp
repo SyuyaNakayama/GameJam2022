@@ -40,11 +40,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 	MapChipDraw mapChipD;
 	mapChipD.Load();
-	ChipDraw chipD[3];
-	for (size_t i = 0; i < 3; i++)
-	{
-		chipD[i].SetCamera(&camera);
-	}
+	mapChipD.SetCamera(&camera);
 	bool b = false;
 	int ary = 0;
 	int t = 0;
@@ -64,7 +60,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			t++;
 			if (t >= 10)
 			{
-				chipD[ary].Initialze({ 200, 600 }, { ary,0 }, mapChipD.planeG[0]);
+				mapChipD.ChipInit(ary, 0);
 				ary++;
 				if (ary >= 3)
 				{
@@ -74,10 +70,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 				t = 0;
 			}
 		}
-		for (size_t i = 0; i < 3; i++)
-		{
-			chipD[i].Update();
-		}
+		mapChipD.Update();
 		camera.Update();
 
 		pleyerPos.x += (input.isTrigger(KEY_INPUT_RIGHT)) - input.isTrigger(KEY_INPUT_LEFT);
@@ -98,10 +91,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		}
 		pad->DrawButton({ 0,0 });
 		pad->DrawStick({ 128,128 });
-		for (size_t i = 0; i < 3; i++)
-		{
-			chipD[i].Draw(camera.GetPos());
-		}
+		mapChipD.Draw(camera.GetPos());
 
 		DrawFormatString(0, 0, GetColor(255, 255, 0), "power = %d", p);
 
