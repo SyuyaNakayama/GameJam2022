@@ -30,7 +30,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	// ---ïœêîÇÃêÈåæÇ∆èâä˙âª---
 	Input input;
 	Vector2Int pleyerPos = { 0,8 };
-	Pad pad;
+	Pad* pad = Pad::GetInstance();
+	pad->Load();
 	int p = 0;
 
 	while (!(ProcessMessage() == -1 || CheckHitKey(KEY_INPUT_ESCAPE)))
@@ -38,10 +39,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 #pragma region çXêVèàóù
 		ClearDrawScreen();
 		input.UpdateKeyState();
-		pad.Update();
+		pad->Update();
 
-		p += pad.Horizontal() * 10;
-		if (pad.IsTrigger(Pad::A)) pad.Viblation(p, 1000);
+		p += pad->Horizontal() * 10;
+		if (pad->IsTrigger(Pad::A)) pad->Viblation(p, 1000);
 
 		pleyerPos.x += (input.isTrigger(KEY_INPUT_RIGHT)) - input.isTrigger(KEY_INPUT_LEFT);
 		pleyerPos.y += (input.isTrigger(KEY_INPUT_DOWN)) - input.isTrigger(KEY_INPUT_UP);
@@ -49,6 +50,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		Clamp(pleyerPos.y, BOX_NUM - 1);
 #pragma endregion
 #pragma region ï`âÊèàóù
+		DrawBox(0, 0, WIN_SIZE.x, WIN_SIZE.y, GetColor(50, 100, 200), true);
 		for (size_t y = 0; y < BOX_NUM; y++)
 		{
 			for (size_t x = 0; x < BOX_NUM; x++)
@@ -58,6 +60,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 				DrawBoxWithVectorInt(boxPos, { BOX_RAD ,BOX_RAD }, WHITE, fillFlag);
 			}
 		}
+		pad->DrawButton({ 0,0 });
+		pad->DrawStick({ 128,128 });
 
 		DrawFormatString(0, 0, GetColor(255, 255, 0), "power = %d", p);
 
