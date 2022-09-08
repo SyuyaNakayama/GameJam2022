@@ -18,9 +18,6 @@ void Player::Move()
 	switch (mode)
 	{
 	case Mode::Move:
-		pos.x += input.IsTrigger(KEY_INPUT_RIGHT) - input.IsTrigger(KEY_INPUT_LEFT);
-		pos.y += input.IsTrigger(KEY_INPUT_DOWN) - input.IsTrigger(KEY_INPUT_UP);
-
 		if (input.IsTrigger(KEY_INPUT_RIGHT)) { direction = Right; }
 		if (input.IsTrigger(KEY_INPUT_LEFT)) { direction = Left; }
 		if (input.IsTrigger(KEY_INPUT_UP)) { direction = Up; }
@@ -48,16 +45,9 @@ void Player::Move()
 		break;
 	}
 
-	Clamp(pos, mapPointer->GetMapSize() - Vector2Int(1, 1));
 	Clamp(selectPos, mapPointer->GetMapSize() - Vector2Int(1, 1));
-	switch (mapPointer->GetMapState(pos))
+	if (mapPointer->GetMapState(selectPos) == None)
 	{
-	case Block:case CoinBlock:case CrystalBlock:
-		pos = prePos;
-	}
-	switch (mapPointer->GetMapState(selectPos))
-	{
-	case None:
 		selectPos = preSelectPos;
 	}
 }
@@ -95,9 +85,10 @@ void Player::Destroy()
 		{
 			mapPointer->Change(selectChip[i], None);
 		}
-		selectChip.clear();
+		if (mode == Mode::Move) { pos = selectChip[selectChip.size() - 1]; }
 		selectNum = DESTROY_MAX;
 		destroyAnimetionFlag = 1;
+		selectChip.clear();
 	}
 }
 
