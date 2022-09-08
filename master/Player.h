@@ -27,6 +27,7 @@ private:
 	bool destroyAnimetionFlag = 0;
 public:
 	Player(Vector2Int pos_, Map* pMap);
+	void SetPos(Vector2Int pos_) { pos = pos_; }
 	Vector2Int GetPos() { return pos; }
 	Direction GetDirection() { return direction; }
 	void Move();

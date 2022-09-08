@@ -31,43 +31,21 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	enum Scene { Title, Tutorial, Play, GameOver };
 	Scene scene = Scene::Play;
 
-	const vector<Vector2Int>MAP_SIZE =
-	{
-		{9,9},
-		{9,9},
-		{9,9},
-		{9,9}
-	};
 
-	const int STAGE_NUM = MAP_SIZE.size();
-	const int COIN_NUM = 7;
 
 	Color color;
 	// ---•Ï”‚ÌéŒ¾‚Æ‰Šú‰»---
 	Map map;
-	map.Change({ 1,5 }, CrystalBlock);
-	map.Change({ 8,7 }, CrystalBlock);
-	map.Change({ 0,9 }, CrystalBlock);
-	map.Change({ 3,3 }, BlockName::None);
-	for (size_t i = 0; i < COIN_NUM; i++)
-	{
-		Vector2Int coinBlockPos;
-		while (1)
-		{
-			coinBlockPos = { rand() % 10 ,rand() % 10 };
-			if (map.GetMapState(coinBlockPos) == Block)
-			{
-				map.Change(coinBlockPos, CoinBlock);
-				break;
-			}
-		}
-	}
-
-	Player player = { {3,3},&map };
+	map.Create();
+	
+	Player player = { {rand() % 2 + 4,rand() % 2 + 4},&map };
+	map.Change(player.GetPos(), None);
 
 	SetFontSize(32);
 
 	int startTime = GetNowCount();
+
+	Input input;
 
 	while (!(ProcessMessage() == -1 || CheckHitKey(KEY_INPUT_ESCAPE)))
 	{
@@ -81,9 +59,16 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		case Tutorial:
 			break;
 		case Play:
+			input.Update();
 			player.Move();
 			player.Destroy();
 			DrawTime(0, 32, GetNowCount() - startTime, 120);
+			if (input.IsTrigger(KEY_INPUT_R))
+			{
+				map.Create();
+				player.SetPos({ rand() % 2 + 4,rand() % 2 + 4 });
+				map.Change(player.GetPos(), None);
+			}
 			break;
 		case GameOver:
 			break;

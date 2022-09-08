@@ -50,10 +50,10 @@ void DrawTime(int x, int y, int time,int limitTime_s)
 		int s = (time % limitTime_s) / 1000;
 		int cs = (time % 1000) / 10;
 
-		DrawFormatString(x, y, GetColor(255, 255, 255), "TIME\n%02d.%02d", s, cs);
+		DrawFormatString(x, y, GetColor(255, 255, 255), "TIME:%02d.%02d", s, cs);
 	}
 	else
 	{
-		DrawFormatString(x, y, GetColor(255, 255, 255), "TIME\n00:00");
+		DrawFormatString(x, y, GetColor(255, 255, 255), "TIME:00:00");
 	}
 }
