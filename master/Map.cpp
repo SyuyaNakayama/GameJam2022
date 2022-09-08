@@ -5,6 +5,7 @@
 Map::Map(Vector2Int num)
 {
 	SetMapSize(num);
+	MapInit();
 }
 
 void Map::SetMapSize(Vector2Int num)
@@ -19,12 +20,20 @@ Vector2Int Map::GetMapSize()
 	return { (int)map[0].size(),(int)map.size() };
 }
 
+BlockName Map::GetMapState(Vector2Int pos)
+{
+	assert(!map.empty());
+	assert(IsInsideValue(pos.x, map[0].size() - 1));
+	assert(IsInsideValue(pos.y, map.size() - 1));
+	return map[pos.y][pos.x];
+}
+
 void Map::MapInit()
 {
 	for (size_t y = 0; y < map.size(); y++) {
 		for (size_t x = 0; x < map[y].size(); x++)
 		{
-			map[y][x] = None;
+			map[y][x] = Block;
 		}
 	}
 }

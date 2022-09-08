@@ -12,6 +12,8 @@ public:
 	Vector2Int& operator-=(const Vector2Int& v);
 	Vector2Int& operator*=(float s);
 	Vector2Int& operator/=(float s);
+
+	bool operator==(Vector2Int v);
 };
 
 // 2項演算子オーバーロード

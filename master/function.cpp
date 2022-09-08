@@ -1,11 +1,5 @@
 #include "DxLib.h"
 #include "function.h"
-void NumberLoop(int& num, int max, int min)
-{
-	if (num >= max) { num = min; }
-	if (num < min) { num = max - 1; }
-}
-int Square(int num) { return num * num; }
 void Clamp(int& num, int max, int min)
 {
 	if (num > max) { num = max; }
@@ -22,6 +16,11 @@ void Clamp(Vector2Int& num, Vector2Int max, Vector2Int min)
 	if (num.x < min.x) { num.x = min.x; }
 	if (num.y > max.y) { num.y = max.y; }
 	if (num.y < min.y) { num.y = min.y; }
+}
+
+bool IsInsideValue(int num, int max, int min)
+{
+	return num <= max && num >= min;
 }
 
 void DrawDebugNumber(int num, int y)

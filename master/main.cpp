@@ -44,15 +44,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	Color color;
 	// ---•Ï”‚ÌéŒ¾‚Æ‰Šú‰»---
 	Map map = Vector2Int(9, 9);
-	for (int i = 0; i < 9; i++)
-	{
-		map.Change({ 0,i }, BlockName::Block);
-		map.Change({ 8,i }, BlockName::Block);
-		map.Change({ i,0 }, BlockName::Block);
-		map.Change({ i,8 }, BlockName::Block);
-	}
+		map.Change({ 3,3 }, BlockName::None);
 
-	Player player = { {3,3},32,&map };
+	Player player = { {3,3},&map };
 
 	SetFontSize(96);
 

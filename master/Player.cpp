@@ -3,10 +3,10 @@
 #include "DxLib.h"
 #include <math.h>
 
-Player::Player(Vector2Int pos_, int rad_, Map* pMap)
+Player::Player(Vector2Int pos_, Map* pMap)
 {
 	selectPos = pos = pos_;
-	rad = rad_; mapPointer = pMap;
+	mapPointer = pMap; rad = pMap->GetRadius();
 }
 
 void Player::Move()
@@ -29,8 +29,19 @@ void Player::Move()
 	case Select:
 		if (input.IsTriggerMoveKey() && selectNum > 0)
 		{
-			selectChip.push_back(selectPos);
-			selectNum--;
+			bool isOk = 1;
+			if (!selectChip.empty())
+			{
+				for (size_t i = 0; i < selectChip.size(); i++)
+				{
+					isOk &= !(selectPos == selectChip[i]);
+				}
+			}
+			if (isOk)
+			{
+				selectChip.push_back(selectPos);
+				selectNum--;
+			}
 		}
 		selectPos.x += input.IsTrigger(KEY_INPUT_RIGHT) - input.IsTrigger(KEY_INPUT_LEFT);
 		selectPos.y += input.IsTrigger(KEY_INPUT_DOWN) - input.IsTrigger(KEY_INPUT_UP);
@@ -39,7 +50,6 @@ void Player::Move()
 
 	Clamp(pos, mapPointer->GetMapSize() - Vector2Int(1, 1));
 	Clamp(selectPos, mapPointer->GetMapSize() - Vector2Int(1, 1));
-
 	switch (mapPointer->GetMapState(pos))
 	{
 	case Block:case CoinBlock:case CrystalBlock:
@@ -54,16 +64,20 @@ void Player::Move()
 
 void Player::Destroy()
 {
-	if (mode == Mode::Move) {
+	if (mode == Mode::Move)
+	{
 		selectPos = pos;
-		switch (direction)
 		{
-		case Up:    selectPos.y--; break;
-		case Down:  selectPos.y++; break;
-		case Left:  selectPos.x--; break;
-		case Right: selectPos.x++; break;
+			switch (direction)
+			{
+			case Up:    selectPos.y--; break;
+			case Down:  selectPos.y++; break;
+			case Left:  selectPos.x--; break;
+			case Right: selectPos.x++; break;
+			}
 		}
 	}
+	Clamp(selectPos, mapPointer->GetMapSize() - Vector2Int(1, 1));
 
 	switch (mapPointer->GetMapState(selectPos))
 	{
@@ -83,6 +97,7 @@ void Player::Destroy()
 		}
 		selectChip.clear();
 		selectNum = DESTROY_MAX;
+		destroyAnimetionFlag = 1;
 	}
 }
 
@@ -90,7 +105,6 @@ void Player::Draw()
 {
 	Color color;
 	DrawCircle(mapPointer->GetChipPos(pos).x, mapPointer->GetChipPos(pos).y, 32, GetColor(0, 255, 0));
-	DrawBoxWithVectorInt(mapPointer->GetChipPos(selectPos), Vector2Int(mapPointer->GetRadius(), mapPointer->GetRadius()), color.Blue, mode);
 	for (size_t i = 0; i < selectChip.size(); i++)
 	{
 		if (mode == Mode::Select)
@@ -98,4 +112,5 @@ void Player::Draw()
 			DrawBoxWithVectorInt(mapPointer->GetChipPos(selectChip[i]), Vector2Int(mapPointer->GetRadius(), mapPointer->GetRadius()), color.Yellow, 1);
 		}
 	}
+	DrawBoxWithVectorInt(mapPointer->GetChipPos(selectPos), Vector2Int(mapPointer->GetRadius(), mapPointer->GetRadius()), color.Blue, mode);
 }

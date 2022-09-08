@@ -5,7 +5,7 @@
 
 using namespace std;
 
-enum BlockName { None, Block, CoinBlock, Coin, CrystalBlock, Crystal, BombBlock };
+enum BlockName { None, Block, CoinBlock, CrystalBlock, BombBlock };
 struct Color
 {
 	const int
@@ -35,9 +35,8 @@ public:
 	Vector2Int GetChipPos(Vector2Int chipNum) { return pos + 2 * chipRad * chipNum; }
 	int GetRadius() { return chipRad; }
 	Vector2Int GetMapSize();
-	BlockName GetMapState(Vector2Int pos) { return map[pos.y][pos.x]; }
-
-	void MapInit(); // マップをNoneで初期化
+	BlockName GetMapState(Vector2Int pos);
+	void MapInit(); // マップをBlockで初期化
 	void Change(Vector2Int num, BlockName blockName);
 	void Draw();
 private:

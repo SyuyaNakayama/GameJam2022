@@ -24,8 +24,9 @@ private:
 	std::vector<Vector2Int> selectChip;
 	Mode mode = Mode::Move;
 	Map* mapPointer;
+	bool destroyAnimetionFlag = 0;
 public:
-	Player(Vector2Int pos_, int rad_,Map* pMap);
+	Player(Vector2Int pos_, Map* pMap);
 	Vector2Int GetPos() { return pos; }
 	Direction GetDirection() { return direction; }
 	void Move();
