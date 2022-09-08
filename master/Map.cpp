@@ -44,5 +44,4 @@ void Map::Draw()
 			DrawBoxWithVectorInt(boxPos, { chipRad ,chipRad }, CHIP_COLOR[map[y][x]]);
 		}
 	}
-	
 }

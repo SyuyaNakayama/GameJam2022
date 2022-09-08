@@ -43,8 +43,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 	Color color;
 	// ---•Ï”‚ÌéŒ¾‚Æ‰Šú‰»---
-	Player player = { {3,3},32 };
-
 	Map map = Vector2Int(9, 9);
 	for (int i = 0; i < 9; i++)
 	{
@@ -53,6 +51,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		map.Change({ i,0 }, BlockName::Block);
 		map.Change({ i,8 }, BlockName::Block);
 	}
+
+	Player player = { {3,3},32,&map };
 
 	SetFontSize(96);
 
@@ -68,7 +68,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		case Tutorial:
 			break;
 		case Play:
-			player.Move(map);
+			player.Move();
+			player.Destroy();
 			break;
 		case GameOver:
 			break;
@@ -84,7 +85,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			break;
 		case Play:
 			map.Draw();
-			player.Draw(map);
+			player.Draw();
 			break;
 		case GameOver:
 			break;

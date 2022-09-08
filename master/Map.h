@@ -5,7 +5,7 @@
 
 using namespace std;
 
-enum BlockName { None, Block, CoinBlock, TreasureBox };
+enum BlockName { None, Block, CoinBlock, Coin, CrystalBlock, Crystal };
 struct Color
 {
 	const int
@@ -32,7 +32,7 @@ public:
 	void SetMapSize(Vector2Int num);
 
 	Vector2Int GetMapPos() { return pos; }
-	Vector2Int GetChipPos(Vector2Int chipNum){ return pos + 2 * chipRad * chipNum; }
+	Vector2Int GetChipPos(Vector2Int chipNum) { return pos + 2 * chipRad * chipNum; }
 	int GetRadius() { return chipRad; }
 	Vector2Int GetMapSize();
 	BlockName GetMapState(Vector2Int pos) { return map[pos.y][pos.x]; }
