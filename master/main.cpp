@@ -5,6 +5,7 @@
 #include "Map.h"
 #include "Player.h"
 #include "enum.h"
+#include "Timer.h"
 #include <vector>
 #include <stdlib.h>
 #include <time.h>
@@ -34,17 +35,12 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	// ---変数の宣言と初期化---
 	Map map;
 	map.Create();
-
-	//Player player = { {rand() % 2 + 4,rand() % 2 + 4},&map };
-	Player player = { {4,4},&map };
+	Player player = { {rand() % 2 + 4,rand() % 2 + 4},&map };
 	map.Change(player.GetPos(), None);
-
-	SetFontSize(32);
-
-	int startTime = GetNowCount();
-
+	Timer timer = { GetNowCount() ,100 };
 	Input input;
 
+	SetFontSize(32);
 	while (!(ProcessMessage() == -1 || CheckHitKey(KEY_INPUT_ESCAPE)))
 	{
 #pragma region 更新処理
@@ -60,12 +56,13 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			input.Update();
 			player.Move();
 			player.Destroy();
-			DrawTime(0, 32, GetNowCount() - startTime, 120);
 			if (input.IsTrigger(KEY_INPUT_R))
 			{
 				map.Create();
 				player.SetPos({ rand() % 2 + 4,rand() % 2 + 4 });
 				map.Change(player.GetPos(), None);
+			}
+			if (player.GetActionCount() <= 0 || timer.CountDown()) { scene = GameOver; SetFontSize(96);
 			}
 			break;
 		case GameOver:
@@ -83,9 +80,12 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		case Play:
 			map.Draw();
 			player.Draw();
+			timer.Draw({ 0,32 });
 			DrawFormatString(0, 0, color.White, "コイン残り%d枚", map.CountBlockNum(CoinBlock));
+			DrawFormatString(400, 0, color.White, "行動回数:%d回", player.GetActionCount());
 			break;
 		case GameOver:
+			DrawString(50, 150, "夏空へ、ゲームオーバー", color.White);
 			break;
 		default:
 			break;

@@ -10,4 +10,3 @@ bool IsInsideValue(int num, int max, int min = 0);
 void DrawDebugNumber(int num, int y = 0);
 void DrawDebugNumber(float num, int y = 0);
 void DrawBoxWithVectorInt(Vector2Int pos, Vector2Int rad, int color, bool fillFlag = 1);
-void DrawTime(int x, int y, int time, int limitTime_ms);

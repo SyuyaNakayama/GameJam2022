@@ -82,28 +82,47 @@ void Player::Destroy()
 	}
 
 	// 早期リターン
-	if (selectChip.empty()) { return; }
-	if (!(mapPointer->GetMapState(selectChip.back()) == BombBlock || input.IsTrigger(KEY_INPUT_SPACE))) { return; }
-
-	if (mapPointer->GetMapState(selectChip.back()) == BombBlock)
+	if (!selectChip.empty())
 	{
-		// 爆弾のブロック破戒
-		for (size_t i = 0; i < mapPointer->GetBomb().size(); i++)
+		if (mapPointer->GetMapState(selectChip.back()) == BombBlock || input.IsTrigger(KEY_INPUT_SPACE))
 		{
-			if (mapPointer->GetBomb()[i].GetPos() == selectChip.back())
+			if (mapPointer->GetMapState(selectChip.back()) == BombBlock)
 			{
-				mapPointer->BombDestroy(i);
+				// 爆弾のブロック破戒
+				for (size_t i = 0; i < mapPointer->GetBomb().size(); i++)
+				{
+					if (mapPointer->GetBomb()[i].GetPos() == selectChip.back())
+					{
+						mapPointer->BombDestroy(i);
+					}
+				}
 			}
+			for (size_t i = 0; i < selectChip.size(); i++)
+			{
+				mapPointer->Change(selectChip[i], None);
+			}
+			if (mode == Mode::Move) { pos = selectChip.back(); }
+			selectNum = DESTROY_MAX;
+			actionNum--;
+			destroyAnimetionFlag = 1;
+			countStartFlag = 1;
+			selectChip.clear();
 		}
 	}
-	for (size_t i = 0; i < selectChip.size(); i++)
+
+	if (input.IsTrigger(KEY_INPUT_C))
 	{
-		mapPointer->Change(selectChip[i], None);
+		selectNum = DESTROY_MAX;
+		mode = Mode::Move;
+		selectChip.clear();
 	}
-	if (mode == Mode::Move) { pos = selectChip.back(); }
-	selectNum = DESTROY_MAX;
-	destroyAnimetionFlag = 1;
-	selectChip.clear();
+
+	if (!countStartFlag) { return; }
+	if (++respawnTimer < respawnTimerLimit) { return; }
+	mapPointer->Respawn();
+	mapPointer->Change(pos, None);
+	respawnTimer = 0;
+	countStartFlag = 0;
 }
 
 void Player::Draw()

@@ -36,8 +36,8 @@ public:
 	Vector2Int GetMapPos() { return pos; }
 	Vector2Int GetChipPos(Vector2Int chipNum) { return pos + 2 * chipRad * chipNum; }
 	int GetRadius() { return chipRad; }
-	Vector2Int GetMapSize();
-	BlockName GetMapState(Vector2Int pos);
+	Vector2Int GetMapSize() { return { (int)map[0].size(),(int)map.size() }; }
+	BlockName GetMapState(Vector2Int pos) { return map[pos.y][pos.x]; }
 	vector<Bomb> GetBomb() { return bomb; }
 	size_t CountBlockNum(BlockName blockName);
 
@@ -45,8 +45,9 @@ public:
 	void Init(); // É}ÉbÉvÇBlockÇ≈èâä˙âª
 	void Change(Vector2Int num, BlockName blockName);
 	void Create();
-	void Draw();
+	void Respawn();
 	void BombDestroy(int bombIndex);
+	void Draw();
 private:
 	const vector<int>CHIP_COLOR = { color.Black,color.White,color.Yellow,color.Green,color.Red };
 };

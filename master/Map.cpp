@@ -19,14 +19,14 @@ void Map::BombDestroy(int bombIndex)
 	}
 }
 
-Vector2Int Map::GetMapSize()
+void Map::Respawn()
 {
-	return { (int)map[0].size(),(int)map.size() };
-}
-
-BlockName Map::GetMapState(Vector2Int pos)
-{
-	return map[pos.y][pos.x];
+	for (size_t y = 0; y < map.size(); y++) {
+		for (size_t x = 0; x < map[y].size(); x++)
+		{
+			if (map[y][x] == None) { map[y][x] = Block; }
+		}
+	}
 }
 
 size_t Map::CountBlockNum(BlockName blockName)
@@ -82,7 +82,7 @@ void Map::Create()
 		}
 	}
 	// ƒ{ƒ€”z’u
-	for (size_t i = 0; i <12; i++)
+	for (size_t i = 0; i < 12; i++)
 	{
 		Vector2Int bombBlockPos;
 		while (1)
