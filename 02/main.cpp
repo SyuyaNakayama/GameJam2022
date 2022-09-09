@@ -41,9 +41,14 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	MapChipDraw mapChipD;
 	mapChipD.Load();
 	mapChipD.SetCamera(&camera);
+
 	bool b = false;
 	int ary = 0;
 	int t = 0;
+
+	bool b2 = false;
+	int ary2 = 0;
+	int t2 = 0;
 
 	while (!(ProcessMessage() == -1 || CheckHitKey(KEY_INPUT_ESCAPE)))
 	{
@@ -55,6 +60,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		p += pad->Horizontal() * 10;
 		if (pad->IsTrigger(Pad::A)) pad->Viblation(p, 1000);
 		if (pad->IsTrigger(Pad::B)) b = true;
+		if (pad->IsTrigger(Pad::X)) b2 = true;
 		if (b)
 		{
 			t++;
@@ -68,6 +74,21 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 					ary = 0;
 				}
 				t = 0;
+			}
+		}
+		if (b2)
+		{
+			t2++;
+			if (t2 >= 10)
+			{
+				mapChipD.ChipBreak(ary2, 0);
+				ary2++;
+				if (ary2 >= 3)
+				{
+					b2 = false;
+					ary2 = 0;
+				}
+				t2 = 0;
 			}
 		}
 		mapChipD.Update();

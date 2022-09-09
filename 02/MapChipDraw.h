@@ -4,12 +4,13 @@
 class MapChipDraw
 {
 public:
-	enum BlockName
+	enum BlockType
 	{
 		None,
-		Block,
-		Coin,
-		Crystal,
+		Plain,
+		Gold,
+		Ore,
+		Bomb,
 	};
 private:
 	ChipDraw blocks[10][10];
@@ -17,6 +18,7 @@ private:
 	int goldG;
 	int oreG;
 	int oreMaskG;
+	int debriG[2];
 	Camera* pCamera;
 public:
 	MapChipDraw();
@@ -26,4 +28,5 @@ public:
 	void SetCamera(Camera* pCamera);
 //private:
 	void ChipInit(const int x, const int y);
+	void ChipBreak(const int x, const int y);
 };

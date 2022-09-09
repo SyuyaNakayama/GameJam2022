@@ -20,6 +20,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Debri.h" />
+    <ClInclude Include="DebriEmitter.h" />
     <ClInclude Include="Dust.h" />
     <ClInclude Include="DustEmitter.h" />
     <ClInclude Include="Ease.h" />
@@ -30,11 +32,14 @@
     <ClInclude Include="Particle.h" />
     <ClInclude Include="ChipDraw.h" />
     <ClInclude Include="Random.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Shake.h" />
     <ClInclude Include="Vector2.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Debri.cpp" />
+    <ClCompile Include="DebriEmitter.cpp" />
     <ClCompile Include="Dust.cpp" />
     <ClCompile Include="DustEmitter.cpp" />
     <ClCompile Include="Ease.cpp" />

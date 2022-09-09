@@ -9,6 +9,10 @@ MapChipDraw::MapChipDraw() :
 	{
 		planeG[i] = 0;
 	}
+	for (size_t i = 0; i < 2; i++)
+	{
+		debriG[i] = 0;
+	}
 }
 
 void MapChipDraw::Load()
@@ -18,7 +22,10 @@ void MapChipDraw::Load()
 	planeG[2] = LoadGraph("Resources/Block/plane_3.png");
 	goldG = LoadGraph("Resources/Block/gold.png");
 	oreG = LoadGraph("Resources/Block/ore.png");
-	oreG = LoadMask("Resources/Block/ore_mask.png");
+	debriG[0] = LoadGraph("Resources/Block/debri.png");
+	debriG[1] = LoadGraph("Resources/Block/debri2.png");
+
+	oreMaskG = LoadMask("Resources/Block/ore_mask.png");
 }
 
 void MapChipDraw::Update()
@@ -34,14 +41,22 @@ void MapChipDraw::Update()
 
 void MapChipDraw::ChipInit(const int x, const int y)
 {
-	int g = 0;
+	int g[2];
 
-	g = planeG[GetRand(0, 2)];
+	//g = planeG[GetRand(0, 2)];
 	//g = goldG;
-	//g = oreG;
+	g[0] = oreG;
 	//g = oreMaskG;
 
-	blocks[y][x].Initialze({ 200,500 }, { x, y }, g);
+	//g[1] = debriG[0];
+	g[1] = debriG[1];
+
+	blocks[y][x].Initialze({ 200,500 }, { x, y }, ChipDraw::BlockType::Ore, g[0], g[1]);
+}
+
+void MapChipDraw::ChipBreak(const int x, const int y)
+{
+	blocks[y][x].Break();
 }
 
 void MapChipDraw::Draw(const Vector2Int& camera)
