@@ -86,11 +86,10 @@ void Player::Destroy()
 
 	if (mapPointer->GetMapState(selectChip.back()) == BombBlock)
 	{
-		list<Bomb>::iterator bombItr = mapPointer->GetBomb().begin();
 		// ”š’e‚ÌƒuƒƒbƒN”j‰ú
-		for (size_t i = 0; i < mapPointer->GetBomb().size(); i++, bombItr++)
+		for (size_t i = 0; i < mapPointer->GetBomb().size(); i++)
 		{
-			if (bombItr->GetPos() == selectChip.back())
+			if (mapPointer->GetBomb()[i].GetPos() == selectChip.back())
 			{
 				mapPointer->BombDestroy(i);
 				break;

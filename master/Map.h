@@ -16,7 +16,7 @@ private:
 	Vector2Int	pos = { 500,200 };
 	int	chipRad = 32;
 	Color color;
-	list<Bomb> bomb;
+	vector<Bomb> bomb;
 
 	const vector<vector<Vector2Int>>crystalPos =
 	{
@@ -38,7 +38,7 @@ public:
 	int GetRadius() { return chipRad; }
 	Vector2Int GetMapSize();
 	BlockName GetMapState(Vector2Int pos);
-	list<Bomb> GetBomb() { return bomb; }
+	vector<Bomb> GetBomb() { return bomb; }
 	size_t CountBlockNum(BlockName blockName);
 
 	Map() { Init(); }

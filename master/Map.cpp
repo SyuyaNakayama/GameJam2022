@@ -4,23 +4,19 @@
 
 void Map::BombDestroy(int bombIndex)
 {
-	list<Bomb>::iterator bombItr = bomb.begin();
-	for (size_t i = 0; i < bombIndex; i++) { bombItr++; }
-	vector<Vector2Int>destroyPos = bombItr->Explosion();
+	vector<Vector2Int>destroyPos = bomb[bombIndex].Explosion();
 
 	for (size_t i = 0; i < destroyPos.size(); i++)
 	{
-		list<Bomb>::iterator bombItr2 = bomb.begin();
-		for (size_t j = 0; j < bomb.size(); j++, bombItr2++)
+		for (size_t j = 0; j < bomb.size(); j++)
 		{
-			if (destroyPos[i] == bombItr2->GetPos())
+			if (destroyPos[i] == bomb[bombIndex].GetPos())
 			{
 				BombDestroy(j);
 			}
 		}
 		Change(destroyPos[i], None);
 	}
-	bomb.erase(bombItr);
 }
 
 Vector2Int Map::GetMapSize()
