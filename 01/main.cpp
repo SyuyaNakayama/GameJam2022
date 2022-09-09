@@ -2,54 +2,100 @@
 #include "Vector2.h"
 #include "Input.h"
 #include "function.h"
+#include "Map.h"
+#include "Player.h"
+#include <vector>
+#include <stdlib.h>
+#include <time.h>
+
+using namespace std;
 
 // ウィンドウのサイズ
-const Vector2Int WIN_SIZE = { 800,800 };
+const Vector2Int WIN_SIZE = { 1280,1280 * 2 / 3 };
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	_In_ LPSTR lpCmdLine, _In_ int nCmdShow)
 {
-#pragma region DXlib初期設定
+#pragma region 初期設定
 	SetOutApplicationLogValidFlag(false);
 	ChangeWindowMode(TRUE);
 	SetWindowSizeChangeEnableFlag(FALSE, FALSE);
-	SetMainWindowText("GameJam2022");
+	SetMainWindowText("GameJam2022_之の人、採掘場にて。～アレッヒの地下奴隷～");
 	SetGraphMode(WIN_SIZE.x, WIN_SIZE.y, 32);
 	SetWindowSizeExtendRate(1.0);
 	SetDrawScreen(DX_SCREEN_BACK);
 	if (DxLib_Init() == -1) { return -1; }
+	srand(time(0));
 #pragma endregion
 	// ---定数の宣言と初期化---
-	const int
-		WHITE = GetColor(255, 255, 255),
-		BOX_NUM = 9,
-		OFFSET = 200,
-		BOX_RAD = 16;
+	enum Scene { Title, Tutorial, Play, GameOver };
+	Scene scene = Scene::Play;
 
+
+
+	Color color;
 	// ---変数の宣言と初期化---
+	Map map;
+	map.Create();
+
+	Player player = { {rand() % 2 + 4,rand() % 2 + 4},&map };
+	map.Change(player.GetPos(), None);
+
+	SetFontSize(32);
+
+	int startTime = GetNowCount();
+
 	Input input;
-	Vector2Int pleyerPos = { 0,8 };
 
 	while (!(ProcessMessage() == -1 || CheckHitKey(KEY_INPUT_ESCAPE)))
 	{
 #pragma region 更新処理
 		ClearDrawScreen();
-		input.UpdateKeyState();
 
-		pleyerPos.x += (input.isTrigger(KEY_INPUT_RIGHT)) - input.isTrigger(KEY_INPUT_LEFT);
-		pleyerPos.y += (input.isTrigger(KEY_INPUT_DOWN)) - input.isTrigger(KEY_INPUT_UP);
-		Clamp(pleyerPos.x, BOX_NUM - 1);
-		Clamp(pleyerPos.y, BOX_NUM - 1);
+		switch (scene)
+		{
+		case Title:
+			break;
+		case Tutorial:
+			break;
+		case Play:
+			input.Update();
+			player.Move();
+			player.Destroy();
+			DrawTime(0, 32, GetNowCount() - startTime, 120);
+			if (input.IsTrigger(KEY_INPUT_R))
+			{
+				map.Create();
+				player.SetPos({ rand() % 2 + 4,rand() % 2 + 4 });
+				map.Change(player.GetPos(), None);
+			}
+			if (player.GetActionCount() <= 0)
+			{
+				
+			}
+			break;
+		case GameOver:
+			break;
+		}
 #pragma endregion
 #pragma region 描画処理
-		for (size_t y = 0; y < BOX_NUM; y++)
+		switch (scene)
 		{
-			for (size_t x = 0; x < BOX_NUM; x++)
-			{
-				int fillFlag = (pleyerPos.x == x && pleyerPos.y == y);
-				Vector2Int boxPos = Vector2Int(OFFSET, OFFSET) + Vector2Int(2 * BOX_RAD * x, 2 * BOX_RAD * y);
-				DrawBoxWithVectorInt(boxPos, { BOX_RAD ,BOX_RAD }, WHITE, fillFlag);
-			}
+		case Title:
+			DrawString(50, 150, "之の人、採掘場にて。", color.White);
+			break;
+		case Tutorial:
+			break;
+		case Play:
+			map.Draw();
+			player.Draw();
+			DrawFormatString(0, 0, color.White, "コイン残り:%d枚", map.CountBlockNum(CoinBlock));
+			DrawFormatString(400, 0, color.White, "行動回数:%d回", player.GetActionCount());
+			break;
+		case GameOver:
+			break;
+		default:
+			break;
 		}
 
 		ScreenFlip();
