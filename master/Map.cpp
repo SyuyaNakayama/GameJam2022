@@ -82,20 +82,20 @@ void Map::Create()
 		}
 	}
 	// ƒ{ƒ€”z’u
-	for (size_t i = 0; i < 7; i++)
-	{
-		Vector2Int bombBlockPos;
-		while (1)
-		{
-			bombBlockPos = { rand() % 10 ,rand() % 10 };
-			if (GetMapState(bombBlockPos) == Block)
-			{
-				Change(bombBlockPos, BombBlock);
-				bomb.push_back({ bombBlockPos,rand() % 4 });
-				break;
-			}
-		}
-	}
+	//for (size_t i = 0; i < 70; i++)
+	//{
+	//	Vector2Int bombBlockPos;
+	//	while (1)
+	//	{
+	//		bombBlockPos = { rand() % 10 ,rand() % 10 };
+	//		if (GetMapState(bombBlockPos) == Block)
+	//		{
+	//			Change(bombBlockPos, BombBlock);
+	//			bomb.push_back({ bombBlockPos,rand() % 4 });
+	//			break;
+	//		}
+	//	}
+	//}
 	//bomb.push_back({ {5,4},Right });
 	//bomb.push_back({ {7,3},Up });
 	//list<Bomb>::iterator bItr = bomb.begin();

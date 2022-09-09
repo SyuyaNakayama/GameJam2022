@@ -6,7 +6,6 @@
 #include "enum.h"
 #include <vector>
 
-
 class Map;
 
 class Player
