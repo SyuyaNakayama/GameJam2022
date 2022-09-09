@@ -46,3 +46,35 @@ float Ease::Out(const float start, const float end, const float power)
 {
 	return EaseOut(start, end, ratio, power);
 }
+
+Ease2::Ease2() : 
+	decrease(0)
+{}
+
+Ease2::Ease2(const float increase, const float decrease)
+{
+	this->ratio = 0.0f;
+	this->increase = increase;
+	this->decrease = decrease;
+}
+
+void Ease2::Initialize(const float increase, const float decrease)
+{
+	this->ratio = 0.0f;
+	this->increase = increase;
+	this->decrease = decrease;
+}
+
+void Ease2::Update(const bool isEase)
+{
+	if (isEase)
+	{
+		ratio += increase;
+		if (ratio >= 1.0f) ratio = 1.0f;
+	}
+	else
+	{
+		ratio -= decrease;
+		if (ratio <= 0.0f) ratio = 0.0f;
+	}
+}

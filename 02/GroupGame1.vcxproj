@@ -19,12 +19,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ArrowDraw.h" />
+    <ClInclude Include="BrightDraw.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Debri.h" />
     <ClInclude Include="DebriEmitter.h" />
     <ClInclude Include="Dust.h" />
     <ClInclude Include="DustEmitter.h" />
     <ClInclude Include="Ease.h" />
+    <ClInclude Include="enum.h" />
     <ClInclude Include="function.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="MapChipDraw.h" />
@@ -37,6 +40,8 @@
     <ClInclude Include="Vector2.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ArrowDraw.cpp" />
+    <ClCompile Include="BrightDraw.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Debri.cpp" />
     <ClCompile Include="DebriEmitter.cpp" />

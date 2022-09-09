@@ -81,6 +81,15 @@
     <ClInclude Include="DebriEmitter.h">
       <Filter>ヘッダー ファイル\Particle</Filter>
     </ClInclude>
+    <ClInclude Include="enum.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="ArrowDraw.h">
+      <Filter>ヘッダー ファイル\Draw</Filter>
+    </ClInclude>
+    <ClInclude Include="BrightDraw.h">
+      <Filter>ヘッダー ファイル\Draw</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="function.cpp">
@@ -130,6 +139,12 @@
     </ClCompile>
     <ClCompile Include="DebriEmitter.cpp">
       <Filter>ソース ファイル\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="ArrowDraw.cpp">
+      <Filter>ソース ファイル\Draw</Filter>
+    </ClCompile>
+    <ClCompile Include="BrightDraw.cpp">
+      <Filter>ソース ファイル\Draw</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

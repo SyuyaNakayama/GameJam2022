@@ -1,22 +1,15 @@
 #pragma once
-#include "Ease.h"
 #include "DustEmitter.h"
 #include "DebriEmitter.h"
+#include "ArrowDraw.h"
+#include "BrightDraw.h"
 #include "Camera.h"
 
 class ChipDraw
 {
-public:
-	enum BlockType
-	{
-		None,
-		Plain,
-		Gold,
-		Ore,
-		Bomb,
-	};
 private:
 	Vector2Int pos;
+	Vector2Int number;
 	int height;
 	Ease ease;
 	int type;
@@ -30,20 +23,37 @@ private:
 	bool isBreak;
 	bool isEmit2;
 	
+	BrightDraw bright;
+	ArrowDraw arrow;
+
+	bool isDeath;
+
 	int trans;
+	int shadow;
+	int* brightness;
+
 	int blockG;
 	int debriG;
 
+	Vector2Int* playerPos;
 	Camera* pCamera;
 public:
 	ChipDraw();
-	void Initialze(const Vector2Int& leftTop, const Vector2Int& ary, const int type, const int blockG, const int debriG);
+	void Initialze(const Vector2Int& leftTop, const Vector2Int& ary, const int type,
+		const int blockG, const int debriG);
+	void SetMask(const int maskG, const int whiteG);
+	void SetArrow(const int direction, const int arrowG);
 	void Update();
 	void Break();
+	void Bright();
 	void Draw(const Vector2Int& camera);
+	void SetBrightness(int* brightness);
+	void SetPlayerPos(Vector2Int* playerPos);
 	void SetCamera(Camera* pCamera);
+	int GetType() { return type; }
 private:
 	void Landing();
 	void EmitDebris();
+	void UpdateShadow();
+	void DrawShadow(const Vector2Int& pos, const Vector2Int& camera);
 };
-

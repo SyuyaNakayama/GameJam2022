@@ -41,6 +41,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	MapChipDraw mapChipD;
 	mapChipD.Load();
 	mapChipD.SetCamera(&camera);
+	mapChipD.SetPlayerPos(&pleyerPos);
 
 	bool b = false;
 	int ary = 0;
@@ -61,12 +62,16 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		if (pad->IsTrigger(Pad::A)) pad->Viblation(p, 1000);
 		if (pad->IsTrigger(Pad::B)) b = true;
 		if (pad->IsTrigger(Pad::X)) b2 = true;
+		if (pad->IsTrigger(Pad::Y))
+		{
+			mapChipD.ChipBright(1, 0);
+		}
 		if (b)
 		{
 			t++;
 			if (t >= 10)
 			{
-				mapChipD.ChipInit(ary, 0);
+				mapChipD.ChipInit(ary, 0, ary+2);
 				ary++;
 				if (ary >= 3)
 				{
