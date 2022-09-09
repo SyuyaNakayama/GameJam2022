@@ -9,7 +9,7 @@ void Shake::Initialize()
 	dekey = 0;
 }
 
-void Shake::Shaking(const float swing, const float dekey)
+void Shake::Shaking(const int swing, const int dekey)
 {
 	value = {};
 	isShake = true;
@@ -27,11 +27,10 @@ void Shake::Update() {
 	if (isShake) {
 		value.x = GetRand(-swingValue, swingValue);
 		value.y = GetRand(-swingValue, swingValue);
-		value.z = GetRand(-swingValue, swingValue);
 	}
 
 	if (swingValue <= 0) {
-		value = { 0.0f, 0.0f, 0.0f };
+		value = { 0, 0 };
 		swingValue = 0;
 		isShake = false;
 	}

@@ -57,11 +57,20 @@
     <ClInclude Include="MapChipDraw.h">
       <Filter>ヘッダー ファイル\Draw</Filter>
     </ClInclude>
-    <ClInclude Include="PlainChipDraw.h">
+    <ClInclude Include="ChipDraw.h">
       <Filter>ヘッダー ファイル\Draw</Filter>
     </ClInclude>
     <ClInclude Include="Particle.h">
       <Filter>ヘッダー ファイル\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="Dust.h">
+      <Filter>ヘッダー ファイル\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="DustEmitter.h">
+      <Filter>ヘッダー ファイル\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -92,11 +101,20 @@
     <ClCompile Include="MapChipDraw.cpp">
       <Filter>ソース ファイル\Draw</Filter>
     </ClCompile>
-    <ClCompile Include="PlainChipDraw.cpp">
+    <ClCompile Include="ChipDraw.cpp">
       <Filter>ソース ファイル\Draw</Filter>
     </ClCompile>
     <ClCompile Include="Particle.cpp">
       <Filter>ソース ファイル\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="Dust.cpp">
+      <Filter>ソース ファイル\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="DustEmitter.cpp">
+      <Filter>ソース ファイル\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
