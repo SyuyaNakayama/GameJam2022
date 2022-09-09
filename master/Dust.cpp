@@ -10,6 +10,9 @@ void Dust::Initialize(const Vector2Int& pos, const int rad,
 {
 	this->pos = pos;
 	this->rad = rad;
+	this->trans = 255;
+	this->control = 0;
+	this->isDeath = false;
 	this->speed = speed;
 }
 

@@ -18,3 +18,14 @@ public:
 	float In(const float start, const float end, const float power);
 	float Out(const float start, const float end, const float power);
 };
+
+class Ease2 : public Ease
+{
+private:
+	float decrease;
+public:
+	Ease2();
+	Ease2(const float increase, const float decrease);
+	void Initialize(const float increase, const float decrease);
+	void Update(const bool isEase) override;
+};

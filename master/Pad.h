@@ -49,7 +49,10 @@ public:
 	void DrawB(const Vector2Int& pos);
 	void DrawX(const Vector2Int& pos);
 	void DrawY(const Vector2Int& pos);
+
+public:
 	static Pad* GetInstance();
+private:
 	Pad();
 	~Pad();
 	Pad(const Pad&) = delete;

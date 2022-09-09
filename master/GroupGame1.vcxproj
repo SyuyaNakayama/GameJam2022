@@ -19,9 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ArrowDraw.cpp" />
     <ClCompile Include="Bomb.cpp" />
+    <ClCompile Include="BrightDraw.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ChipDraw.cpp" />
+    <ClCompile Include="Debri.cpp" />
+    <ClCompile Include="DebriEmitter.cpp" />
     <ClCompile Include="Dust.cpp" />
     <ClCompile Include="DustEmitter.cpp" />
     <ClCompile Include="Ease.cpp" />
@@ -39,9 +43,13 @@
     <ClCompile Include="Vector2.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ArrowDraw.h" />
     <ClInclude Include="Bomb.h" />
+    <ClInclude Include="BrightDraw.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ChipDraw.h" />
+    <ClInclude Include="Debri.h" />
+    <ClInclude Include="DebriEmitter.h" />
     <ClInclude Include="Dust.h" />
     <ClInclude Include="DustEmitter.h" />
     <ClInclude Include="Ease.h" />

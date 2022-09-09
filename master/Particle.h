@@ -5,7 +5,7 @@ class Particle
 {
 public:
 	Vector2Int pos;
-	Vector2 scale;
+	float scale;
 	float rota;
 	int trans;
 public:
