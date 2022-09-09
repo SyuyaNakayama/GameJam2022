@@ -3,10 +3,9 @@
 #include "Input.h"
 #include "Map.h"
 #include "Pad.h"
+#include "enum.h"
 #include <vector>
 
-enum Direction { Up, Down, Left, Right };
-enum Mode{Move,Select};
 
 class Map;
 
@@ -15,7 +14,7 @@ class Player
 private:
 	static const int DESTROY_MAX = 3;
 
-	Vector2Int pos,selectPos;
+	Vector2Int pos, selectPos;
 	int rad;
 	Direction direction = Up;
 	Input input;

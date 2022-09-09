@@ -2,6 +2,27 @@
 #include "function.h"
 #include <cassert>
 
+void Map::BombDestroy(int bombIndex)
+{
+	list<Bomb>::iterator bombItr = bomb.begin();
+	for (size_t i = 0; i < bombIndex; i++) { bombItr++; }
+	vector<Vector2Int>destroyPos = bombItr->Explosion();
+
+	for (size_t i = 0; i < destroyPos.size(); i++)
+	{
+		list<Bomb>::iterator bombItr2 = bomb.begin();
+		for (size_t j = 0; j < bomb.size(); j++, bombItr2++)
+		{
+			if (destroyPos[i] == bombItr2->GetPos())
+			{
+				BombDestroy(j);
+			}
+		}
+		Change(destroyPos[i], None);
+	}
+	bomb.erase(bombItr);
+}
+
 Vector2Int Map::GetMapSize()
 {
 	return { (int)map[0].size(),(int)map.size() };
@@ -14,8 +35,8 @@ BlockName Map::GetMapState(Vector2Int pos)
 
 size_t Map::CountBlockNum(BlockName blockName)
 {
-	size_t num=0;
-	for (size_t y = 0; y < map.size(); y++)	{
+	size_t num = 0;
+	for (size_t y = 0; y < map.size(); y++) {
 		for (size_t x = 0; x < map[0].size(); x++)
 		{
 			num += map[y][x] == blockName;
@@ -36,17 +57,21 @@ void Map::Init()
 
 void Map::Change(Vector2Int num, BlockName blockName)
 {
+	assert(IsInsideValue(num.x, map.size()));
+	assert(IsInsideValue(num.y, map.size()));
 	map[num.y][num.x] = blockName;
 }
 
 void Map::Create()
 {
 	Init();
+	// クリスタル配置
 	crystalPattern = rand() % 9;
 	for (size_t i = 0; i < 3; i++)
 	{
 		Change(crystalPos[crystalPattern][i], CrystalBlock);
 	}
+	// コイン配置
 	for (size_t i = 0; i < COIN_NUM; i++)
 	{
 		Vector2Int coinBlockPos;
@@ -60,6 +85,27 @@ void Map::Create()
 			}
 		}
 	}
+	// ボム配置
+	for (size_t i = 0; i < 7; i++)
+	{
+		Vector2Int bombBlockPos;
+		while (1)
+		{
+			bombBlockPos = { rand() % 10 ,rand() % 10 };
+			if (GetMapState(bombBlockPos) == Block)
+			{
+				Change(bombBlockPos, BombBlock);
+				bomb.push_back({ bombBlockPos,rand() % 4 });
+				break;
+			}
+		}
+	}
+	//bomb.push_back({ {5,4},Right });
+	//bomb.push_back({ {7,3},Up });
+	//list<Bomb>::iterator bItr = bomb.begin();
+	//Change(bItr->GetPos(), BombBlock);
+	//bItr++;
+	//Change(bItr->GetPos(), BombBlock);
 }
 
 void Map::Draw()

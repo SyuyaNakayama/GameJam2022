@@ -4,6 +4,7 @@
 #include "function.h"
 #include "Map.h"
 #include "Player.h"
+#include "enum.h"
 #include <vector>
 #include <stdlib.h>
 #include <time.h>
@@ -28,17 +29,14 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	srand(time(0));
 #pragma endregion
 	// ---’è”‚ÌéŒ¾‚Æ‰Šú‰»---
-	enum Scene { Title, Tutorial, Play, GameOver };
 	Scene scene = Scene::Play;
-
-
-
 	Color color;
 	// ---•Ï”‚ÌéŒ¾‚Æ‰Šú‰»---
 	Map map;
 	map.Create();
-	
-	Player player = { {rand() % 2 + 4,rand() % 2 + 4},&map };
+
+	//Player player = { {rand() % 2 + 4,rand() % 2 + 4},&map };
+	Player player = { {4,4},&map };
 	map.Change(player.GetPos(), None);
 
 	SetFontSize(32);

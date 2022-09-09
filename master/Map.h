@@ -1,24 +1,13 @@
 #pragma once
 #include <array>
 #include <vector>
+#include <list>
 #include "DxLib.h"
 #include "Player.h"
+#include "enum.h"
+#include "Bomb.h"
 
 using namespace std;
-
-enum BlockName { None, Block, CoinBlock, CrystalBlock, BombBlock };
-struct Color
-{
-	const int
-		Black = GetColor(0, 0, 0),
-		White = GetColor(255, 255, 255),
-		Red = GetColor(255, 0, 0),
-		Green = GetColor(0, 255, 0),
-		Blue = GetColor(0, 0, 255),
-		Yellow = GetColor(255, 255, 0),
-		Cyan = GetColor(0, 255, 255),
-		Magenta = GetColor(255, 0, 255);
-};
 
 class Map
 {
@@ -27,6 +16,7 @@ private:
 	Vector2Int	pos = { 500,200 };
 	int	chipRad = 32;
 	Color color;
+	list<Bomb> bomb;
 
 	const vector<vector<Vector2Int>>crystalPos =
 	{
@@ -48,6 +38,7 @@ public:
 	int GetRadius() { return chipRad; }
 	Vector2Int GetMapSize();
 	BlockName GetMapState(Vector2Int pos);
+	list<Bomb> GetBomb() { return bomb; }
 	size_t CountBlockNum(BlockName blockName);
 
 	Map() { Init(); }
@@ -55,6 +46,7 @@ public:
 	void Change(Vector2Int num, BlockName blockName);
 	void Create();
 	void Draw();
+	void BombDestroy(int bombIndex);
 private:
 	const vector<int>CHIP_COLOR = { color.Black,color.White,color.Yellow,color.Green,color.Red };
 };

@@ -37,6 +37,10 @@ void Player::Move()
 			if (isOk)
 			{
 				selectChip.push_back(selectPos);
+				if (mapPointer->GetMapState(selectPos) == BombBlock)
+				{
+					mode = Mode::Move;
+				}
 				selectNum--;
 			}
 		}
@@ -71,25 +75,36 @@ void Player::Destroy()
 
 	switch (mapPointer->GetMapState(selectPos))
 	{
-	case Block:case CoinBlock:case CrystalBlock:
-		if (input.IsTrigger(KEY_INPUT_SPACE))
-		{
-			if (mode == Mode::Move) { mode = Select; }
-			else if (mode == Select) { mode = Mode::Move; }
-		}
+	case Block: case CoinBlock: case CrystalBlock: case BombBlock:
+		if (!input.IsTrigger(KEY_INPUT_SPACE)) { break; }
+		if (mode == Mode::Move) { mode = Select; }
+		else if (mode == Select) { mode = Mode::Move; }
 	}
 
-	if (input.IsTrigger(KEY_INPUT_SPACE) && !selectChip.empty())
+	if (selectChip.empty()) { return; }
+	if (!(mapPointer->GetMapState(selectChip.back()) == BombBlock || input.IsTrigger(KEY_INPUT_SPACE))) { return; }
+
+	if (mapPointer->GetMapState(selectChip.back()) == BombBlock)
 	{
-		for (size_t i = 0; i < selectChip.size(); i++)
+		list<Bomb>::iterator bombItr = mapPointer->GetBomb().begin();
+		// ”š’e‚ÌƒuƒƒbƒN”j‰ú
+		for (size_t i = 0; i < mapPointer->GetBomb().size(); i++, bombItr++)
 		{
-			mapPointer->Change(selectChip[i], None);
+			if (bombItr->GetPos() == selectChip.back())
+			{
+				mapPointer->BombDestroy(i);
+				break;
+			}
 		}
-		if (mode == Mode::Move) { pos = selectChip.back(); }
-		selectNum = DESTROY_MAX;
-		destroyAnimetionFlag = 1;
-		selectChip.clear();
 	}
+	for (size_t i = 0; i < selectChip.size(); i++)
+	{
+		mapPointer->Change(selectChip[i], None);
+	}
+	if (mode == Mode::Move) { pos = selectChip.back(); }
+	selectNum = DESTROY_MAX;
+	destroyAnimetionFlag = 1;
+	selectChip.clear();
 }
 
 void Player::Draw()
@@ -104,4 +119,5 @@ void Player::Draw()
 		}
 	}
 	DrawBoxWithVectorInt(mapPointer->GetChipPos(selectPos), Vector2Int(mapPointer->GetRadius(), mapPointer->GetRadius()), color.Blue, mode);
+	DrawDebugNumber((int)mapPointer->GetBomb().size(), 96);
 }
