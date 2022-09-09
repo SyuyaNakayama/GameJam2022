@@ -82,7 +82,7 @@ void Map::Create()
 		}
 	}
 	// ƒ{ƒ€”z’u
-	for (size_t i = 0; i < 12; i++)
+	for (size_t i = 0; i < 48; i++)
 	{
 		Vector2Int bombBlockPos;
 		while (1)
@@ -106,31 +106,27 @@ void Map::Draw()
 		{
 			boxPos = pos + Vector2Int(2 * chipRad * x, 2 * chipRad * y);
 			DrawBoxWithVectorInt(boxPos, { chipRad ,chipRad }, CHIP_COLOR[map[y][x]]);
-			if (map[y][x] == BombBlock)
+			if (map[y][x] != BombBlock) { continue; }
+			for (size_t i = 0; i < bomb.size(); i++)
 			{
-				for (size_t i = 0; i < bomb.size(); i++)
+				if (!(bomb[i].GetPos().x == x && bomb[i].GetPos().y == y)) { continue; }
+				Vector2Int pos = GetChipPos(bomb[i].GetPos());
+				switch (bomb[i].GetDirection())
 				{
-					if (bomb[i].GetPos().x == x && bomb[i].GetPos().y == y)
-					{
-						Vector2Int pos = GetChipPos(bomb[i].GetPos());
-						switch (bomb[i].GetDirection())
-						{
-						case Up:
-							DrawLine(pos.x, pos.y, pos.x, pos.y - 32, color.Black);
-							break;
-						case Down:
-							DrawLine(pos.x, pos.y, pos.x, pos.y + 32, color.Black);
-							break;
-						case Left:
-							DrawLine(pos.x, pos.y, pos.x - 32, pos.y, color.Black);
-							break;
-						case Right:
-							DrawLine(pos.x, pos.y, pos.x + 32, pos.y, color.Black);
-							break;
-						}
-						break;
-					}
+				case Up:
+					DrawLine(pos.x, pos.y, pos.x, pos.y - 32, color.Black);
+					break;
+				case Down:
+					DrawLine(pos.x, pos.y, pos.x, pos.y + 32, color.Black);
+					break;
+				case Left:
+					DrawLine(pos.x, pos.y, pos.x - 32, pos.y, color.Black);
+					break;
+				case Right:
+					DrawLine(pos.x, pos.y, pos.x + 32, pos.y, color.Black);
+					break;
 				}
+				break;
 			}
 		}
 	}

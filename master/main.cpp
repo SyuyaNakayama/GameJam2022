@@ -37,7 +37,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	map.Create();
 	Player player = { {rand() % 2 + 4,rand() % 2 + 4},&map };
 	map.Change(player.GetPos(), None);
-	Timer timer = { GetNowCount() ,100 };
+	Timer timer = { GetNowCount() ,120 };
 	Input input;
 
 	SetFontSize(32);
@@ -62,8 +62,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 				player.SetPos({ rand() % 2 + 4,rand() % 2 + 4 });
 				map.Change(player.GetPos(), None);
 			}
-			if (player.GetActionCount() <= 0 || timer.CountDown()) { scene = GameOver; SetFontSize(96);
-			}
+			if (player.GetActionCount() <= 0 || timer.CountDown()) { scene = GameOver; SetFontSize(96); }
 			break;
 		case GameOver:
 			break;
