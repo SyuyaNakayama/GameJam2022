@@ -9,11 +9,13 @@ class Bomb
 private:
 	Vector2Int pos;
 	Direction direction;
-	bool isExplsion = 0;
+	bool isExplosion = 0;
 public:
 	Bomb() { pos = {}; direction = Up; }
 	Bomb(Vector2Int pos_, int dir);
 	Vector2Int GetPos() { return pos; }
+	Direction GetDirection() { return direction; }
+	bool IsExplosion() { return isExplosion; }
 	void Rotate();
 	std::vector<Vector2Int> Explosion();
 };

@@ -10,7 +10,7 @@ void Map::BombDestroy(int bombIndex)
 	{
 		for (size_t j = 0; j < bomb.size(); j++)
 		{
-			if (destroyPos[i] == bomb[bombIndex].GetPos())
+			if (destroyPos[i] == bomb[j].GetPos() && !bomb[j].IsExplosion())
 			{
 				BombDestroy(j);
 			}
@@ -82,26 +82,20 @@ void Map::Create()
 		}
 	}
 	// ƒ{ƒ€”z’u
-	//for (size_t i = 0; i < 70; i++)
-	//{
-	//	Vector2Int bombBlockPos;
-	//	while (1)
-	//	{
-	//		bombBlockPos = { rand() % 10 ,rand() % 10 };
-	//		if (GetMapState(bombBlockPos) == Block)
-	//		{
-	//			Change(bombBlockPos, BombBlock);
-	//			bomb.push_back({ bombBlockPos,rand() % 4 });
-	//			break;
-	//		}
-	//	}
-	//}
-	//bomb.push_back({ {5,4},Right });
-	//bomb.push_back({ {7,3},Up });
-	//list<Bomb>::iterator bItr = bomb.begin();
-	//Change(bItr->GetPos(), BombBlock);
-	//bItr++;
-	//Change(bItr->GetPos(), BombBlock);
+	for (size_t i = 0; i <12; i++)
+	{
+		Vector2Int bombBlockPos;
+		while (1)
+		{
+			bombBlockPos = { rand() % 10 ,rand() % 10 };
+			if (GetMapState(bombBlockPos) == Block)
+			{
+				Change(bombBlockPos, BombBlock);
+				bomb.push_back({ bombBlockPos,rand() % 4 });
+				break;
+			}
+		}
+	}
 }
 
 void Map::Draw()
@@ -112,6 +106,32 @@ void Map::Draw()
 		{
 			boxPos = pos + Vector2Int(2 * chipRad * x, 2 * chipRad * y);
 			DrawBoxWithVectorInt(boxPos, { chipRad ,chipRad }, CHIP_COLOR[map[y][x]]);
+			if (map[y][x] == BombBlock)
+			{
+				for (size_t i = 0; i < bomb.size(); i++)
+				{
+					if (bomb[i].GetPos().x == x && bomb[i].GetPos().y == y)
+					{
+						Vector2Int pos = GetChipPos(bomb[i].GetPos());
+						switch (bomb[i].GetDirection())
+						{
+						case Up:
+							DrawLine(pos.x, pos.y, pos.x, pos.y - 32, color.Black);
+							break;
+						case Down:
+							DrawLine(pos.x, pos.y, pos.x, pos.y + 32, color.Black);
+							break;
+						case Left:
+							DrawLine(pos.x, pos.y, pos.x - 32, pos.y, color.Black);
+							break;
+						case Right:
+							DrawLine(pos.x, pos.y, pos.x + 32, pos.y, color.Black);
+							break;
+						}
+						break;
+					}
+				}
+			}
 		}
 	}
 }

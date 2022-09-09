@@ -46,6 +46,6 @@ std::vector<Vector2Int> Bomb::Explosion()
 		}
 		break;
 	}
-	isExplsion = 1;
+	isExplosion = 1;
 	return destroyPos;
 }

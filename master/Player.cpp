@@ -81,6 +81,7 @@ void Player::Destroy()
 		else if (mode == Select) { mode = Mode::Move; }
 	}
 
+	// ‘ŠúƒŠƒ^[ƒ“
 	if (selectChip.empty()) { return; }
 	if (!(mapPointer->GetMapState(selectChip.back()) == BombBlock || input.IsTrigger(KEY_INPUT_SPACE))) { return; }
 
@@ -92,7 +93,6 @@ void Player::Destroy()
 			if (mapPointer->GetBomb()[i].GetPos() == selectChip.back())
 			{
 				mapPointer->BombDestroy(i);
-				break;
 			}
 		}
 	}
