@@ -2,19 +2,19 @@
 #include "function.h"
 #include <cassert>
 
-void Map::BombDestroy(int bombIndex)
+void Map::BombDestroy(int bombIndex, Player* player)
 {
 	vector<Vector2Int>destroyPos = bomb[bombIndex].Explosion();
 
-	for (size_t i = 0; i < destroyPos.size(); i++)
-	{
+	for (size_t i = 0; i < destroyPos.size(); i++) {
 		for (size_t j = 0; j < bomb.size(); j++)
 		{
 			if (destroyPos[i] == bomb[j].GetPos() && !bomb[j].IsExplosion())
 			{
-				BombDestroy(j);
+				BombDestroy(j, player);
 			}
 		}
+		if (destroyPos[i] == player->GetLastSelectChip()) { player->DamageCountUp(); }
 		drawer.ChipBreak(destroyPos[i]);
 		Change(destroyPos[i], None);
 	}
@@ -25,9 +25,9 @@ void Map::Respawn()
 	for (size_t y = 0; y < map.size(); y++) {
 		for (size_t x = 0; x < map[y].size(); x++)
 		{
-			if (map[y][x] == None) 
-			{ 
-				map[y][x] = Block; 
+			if (map[y][x] == None)
+			{
+				map[y][x] = Block;
 				drawer.ChipInit({ (int)x, (int)y }, Block);
 			}
 		}
@@ -55,6 +55,7 @@ void Map::Init()
 			drawer.ChipInit({ (int)x, (int)y }, Block);
 		}
 	}
+	bomb.clear();
 }
 
 void Map::Change(Vector2Int num, BlockName blockName)
@@ -89,7 +90,7 @@ void Map::Create()
 		}
 	}
 	// ƒ{ƒ€”z’u
-	for (size_t i = 0; i < 16; i++)
+	for (size_t i = 0; i < 50; i++)
 	{
 		Vector2Int bombBlockPos;
 		while (1)
@@ -100,7 +101,7 @@ void Map::Create()
 				Change(bombBlockPos, BombBlock);
 				int random = rand() % 4;
 				drawer.ChipInit(bombBlockPos, BombBlock, random);
-				bomb.push_back({ bombBlockPos, random});
+				bomb.push_back({ bombBlockPos, random });
 				break;
 			}
 		}
@@ -139,7 +140,7 @@ void Map::Draw(const Vector2Int& camera)
 			}
 		}
 	}
-	drawer.Draw(camera);
+	//drawer.Draw(camera);
 }
 
 void Map::LoadAndSet()
@@ -157,6 +158,7 @@ void Map::SetOutSide(Camera* camera, Vector2Int* playerPos)
 void Map::Update()
 {
 	drawer.Update();
+	for (size_t i = 0; i < bomb.size(); i++) { bomb[i].Rotate(); }
 }
 
 void Map::DrawChipInit(const Vector2Int& num, const int blockName)

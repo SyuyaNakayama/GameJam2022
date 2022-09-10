@@ -2,9 +2,9 @@
 #include "DxLib.h"
 #include "function.h"
 
-bool Timer::CountDown()
+bool Timer::CountDown(int playerDamageCount)
 {
-	time = GetNowCount() - start;
+	time = GetNowCount() - start + playerDamageCount * 10000;
 
 	time = limit - time;
 	s = (time % limit) / 1000;

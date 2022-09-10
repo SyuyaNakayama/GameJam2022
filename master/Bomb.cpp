@@ -14,6 +14,16 @@ Bomb::Bomb(Vector2Int pos_, int dir)
 
 void Bomb::Rotate()
 {
+	if (--count > 0) { return; }
+	count = COUNT_MAX;
+
+	switch (direction)
+	{
+	case Up:	direction = Right;	break;
+	case Down:	direction = Left;	break;
+	case Left:	direction = Up;		break;
+	case Right:	direction = Down;	break;
+	}
 }
 
 std::vector<Vector2Int> Bomb::Explosion()

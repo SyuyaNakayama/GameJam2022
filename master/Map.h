@@ -10,6 +10,8 @@
 
 using namespace std;
 
+class Player;
+
 class Map
 {
 private:
@@ -49,7 +51,7 @@ public:
 	void Change(Vector2Int num, BlockName blockName);
 	void Create();
 	void Respawn();
-	void BombDestroy(int bombIndex);
+	void BombDestroy(int bombIndex, Player* player);
 	void Draw(const Vector2Int& camera);
 
 	void LoadAndSet();

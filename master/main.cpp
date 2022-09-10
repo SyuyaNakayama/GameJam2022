@@ -71,7 +71,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 				map.Change(player.GetPos(), None);
 			}
 			map.Update();
-			//if (player.GetActionCount() <= 0 || timer.CountDown()) { scene = GameOver; SetFontSize(96); }
+			if (player.GetActionCount() <= 0 || timer.CountDown(player.GetDamageCount())) { scene = GameOver; SetFontSize(96); }
 			break;
 		case GameOver:
 			break;

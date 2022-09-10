@@ -27,13 +27,17 @@ private:
 	Map* mapPointer;
 	bool destroyAnimetionFlag = 0;
 	bool countStartFlag = 0;
+	int damageCount = 0;
 public:
 	Player(Vector2Int pos_, Map* pMap);
 	void SetPos(Vector2Int pos_) { pos = pos_; }
 	Vector2Int GetPos() { return pos; }
 	Vector2Int* GetPosAdress() { return &pos; }
 	Direction GetDirection() { return direction; }
-	int GetActionCount() { return actionNum; }
+	int GetActionCount() { return actionNum - damageCount; }
+	Vector2Int GetLastSelectChip() { return selectChip[selectChip.size() - 2]; }
+	int GetDamageCount() { return damageCount; }
+	void DamageCountUp() { damageCount++; }
 	void Move();
 	void Draw();
 	void Destroy();

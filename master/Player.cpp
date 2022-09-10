@@ -82,7 +82,6 @@ void Player::Destroy()
 		else if (mode == Select) { mode = Mode::Move; }
 	}
 
-	// ‘ŠúƒŠƒ^[ƒ“
 	if (!selectChip.empty())
 	{
 		if (mapPointer->GetMapState(selectChip.back()) == BombBlock || input.IsTrigger(KEY_INPUT_SPACE))
@@ -94,7 +93,7 @@ void Player::Destroy()
 				{
 					if (mapPointer->GetBomb()[i].GetPos() == selectChip.back())
 					{
-						mapPointer->BombDestroy(i);
+						mapPointer->BombDestroy(i,this);
 					}
 				}
 			}
@@ -138,6 +137,6 @@ void Player::Draw()
 			DrawBoxWithVectorInt(mapPointer->GetChipPos(selectChip[i]), Vector2Int(mapPointer->GetRadius(), mapPointer->GetRadius()), color.Magenta, 1);
 		}
 	}
+	DrawDebugNumber(damageCount, 96);
 	DrawBoxWithVectorInt(mapPointer->GetChipPos(selectPos), Vector2Int(mapPointer->GetRadius(), mapPointer->GetRadius()), color.Blue, mode);
-	DrawDebugNumber((int)mapPointer->GetBomb().size(), 96);
 }
