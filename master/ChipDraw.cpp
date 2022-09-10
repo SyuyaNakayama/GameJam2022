@@ -1,10 +1,11 @@
 #include "ChipDraw.h"
 #include "enum.h"
 #include <math.h>
+#include "function.h"
 
 ChipDraw::ChipDraw() :
 	pos({ -256,-256 }), height(0), ease(), type(None),
-	dustE(), isLanding(false), isEmit(false), 
+	dustE(), isLanding(false), isEmit(false),
 	debriE(), shake(), isBreak(false), isEmit2(false),
 	bright(), arrow(), isDeath(false),
 	trans(255), shadow(255), brightness(nullptr),
@@ -12,9 +13,9 @@ ChipDraw::ChipDraw() :
 	pCamera(nullptr), playerPos(nullptr)
 {}
 
-void ChipDraw::Initialze(const Vector2Int& leftTop, const Vector2Int& ary, 
-		const int type, const bool isDeath,
-		const int blockG, const int debriG)
+void ChipDraw::Initialze(const Vector2Int& leftTop, const Vector2Int& ary,
+	const int type, const bool isDeath,
+	const int blockG, const int debriG)
 {
 	pos = { leftTop.x + ary.x * 64, leftTop.y + ary.y * 64 };
 	number = ary;
@@ -74,7 +75,7 @@ void ChipDraw::Update()
 		}
 
 		if (type == CrystalBlock) bright.Update();
-		//if (type == BombBlock) arrow.Update();
+		if (type == BombBlock) arrow.Update();
 
 		trans = (int)ease.Out(0.0f, 255.0f, 2.0f);
 	}
@@ -93,7 +94,7 @@ void ChipDraw::Break()
 {
 	shake.Shaking(10, 2);
 	isBreak = true;
-	if (pCamera == nullptr) return;
+	if (!pCamera) return;
 	pCamera->Shaking(5, 1);
 }
 
@@ -124,7 +125,6 @@ void ChipDraw::EmitDebris()
 		c[1] = { 160,70,40 };
 		break;
 	case None:
-	default:
 		break;
 	}
 	debriE.Emit({ pos.x - 32, pos.y - 32 }, { pos.x + 32, pos.y + 32 }, 20, c, debriG);
@@ -132,41 +132,36 @@ void ChipDraw::EmitDebris()
 
 void ChipDraw::UpdateShadow()
 {
-	if (playerPos == nullptr) return;
-	if (brightness == nullptr) return;
+	if (!playerPos || !brightness) return;
 
-	int x = abs(playerPos->x - number.x);
-	int y = abs(playerPos->y - number.y);
+	Vector2Int disPandB = Vector2Int(*playerPos - number).absVec();
 
 	int p = 0;
-	if (x >= y) p = x;
-	if (x <= y) p = y;
+	if (disPandB.x > disPandB.y) p = disPandB.x;
+	else p = disPandB.y;
 
 	if (p > *brightness) shadow = 255;
 	else shadow = 255 - ((*brightness - p) * 60);
 
-	if (shadow >= 255) shadow = 255;
-	if (shadow <= 0) shadow = 0;
+	Clamp(shadow, 255);
 }
 
 void ChipDraw::DrawShadow(const Vector2Int& camera)
 {
+	Color color;
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, shadow);
-	DrawBox(pos.x - 32 + camera.x, pos.y - 32 + camera.y,
-			pos.x + 32 + camera.x, pos.y + 32 + camera.y,
-			GetColor(0, 0, 0), true);
+	DrawBoxWithVectorInt(pos + camera, { 32,32 }, color.Black);
 }
 
 void ChipDraw::Draw(const Vector2Int& camera)
 {
-	Vector2Int p = 
+	Vector2Int p =
 	{
 		pos.x + shake.GetValue().x,
-		pos.y + height + shake.GetValue().y 
+		pos.y + height + shake.GetValue().y
 	};
-	bool d = !isDeath;
 
-	if (d) 
+	if (!isDeath)
 	{
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, trans);
 
@@ -177,7 +172,7 @@ void ChipDraw::Draw(const Vector2Int& camera)
 
 	DrawShadow(camera);
 
-	if (d)
+	if (!isDeath)
 	{
 		if (type == CrystalBlock) bright.Draw(p, camera, trans);
 
@@ -192,18 +187,18 @@ void ChipDraw::Draw(const Vector2Int& camera)
 
 void ChipDraw::SetBrightness(int* brightness)
 {
-	if (brightness == nullptr) return;
+	if (!brightness) return;
 	this->brightness = brightness;
 }
 
 void ChipDraw::SetPlayerPos(Vector2Int* playerPos)
 {
-	if (playerPos == nullptr) return;
+	if (!playerPos) return;
 	this->playerPos = playerPos;
 }
 
 void ChipDraw::SetCamera(Camera* pCamera)
 {
-	if (pCamera == nullptr) return;
+	if (!pCamera) return;
 	this->pCamera = pCamera;
 }

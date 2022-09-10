@@ -45,7 +45,6 @@ void DebriEmitter::Update()
 		}
 		debris[i].Update();
 	}
-
 }
 
 void DebriEmitter::Draw(const Vector2Int& camera)

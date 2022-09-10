@@ -1,6 +1,11 @@
 #include "Vector2.h"
 #include <cmath>
 
+Vector2Int Vector2Int::absVec()
+{
+	return { abs(x),abs(y)};
+}
+
 Vector2Int& Vector2Int::operator+=(const Vector2Int& v)
 {
 	x += v.x;

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
+#include <compare>
 
 void InitRand() { srand((int)time(NULL)); }
 

@@ -24,6 +24,5 @@ void Camera::Shaking(const int swing, const int dekey)
 
 Vector2Int Camera::GetPos()
 {
-	Vector2Int result = pos + shake.GetValue();
-	return result;
+	return pos + shake.GetValue();
 }

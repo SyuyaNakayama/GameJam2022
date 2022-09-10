@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "enum.h"
 #include "Timer.h"
+#include "Camera.h"
 #include <vector>
 #include <stdlib.h>
 #include <time.h>
@@ -33,6 +34,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	Scene scene = Scene::Play;
 	Color color;
 	// ---変数の宣言と初期化---
+	int stage = 0, score = 0;
 	Camera camera;
 	camera.Initialize({});
 	Map map;
@@ -54,6 +56,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		switch (scene)
 		{
 		case Title:
+			if (input.IsTrigger(KEY_INPUT_SPACE)) { scene = Tutorial; }
 			break;
 		case Tutorial:
 			break;
@@ -69,7 +72,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 				map.DrawChipInit(player.GetPos(), None);
 			}
 			map.Update();
-			if (player.GetActionCount() <= 0 || timer.CountDown()) { scene = GameOver; SetFontSize(96); }
+			//if (player.GetActionCount() <= 0 || timer.CountDown()) { scene = GameOver; SetFontSize(96); }
 			break;
 		case GameOver:
 			break;
@@ -94,8 +97,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			break;
 		case GameOver:
 			DrawString(50, 150, "夏空へ、ゲームオーバー", color.White);
-			break;
-		default:
 			break;
 		}
 

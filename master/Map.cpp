@@ -90,7 +90,7 @@ void Map::Create()
 		}
 	}
 	// ƒ{ƒ€”z’u
-	for (size_t i = 0; i < 48; i++)
+	for (size_t i = 0; i < 90; i++)
 	{
 		Vector2Int bombBlockPos;
 		while (1)

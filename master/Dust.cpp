@@ -18,21 +18,19 @@ void Dust::Initialize(const Vector2Int& pos, const int rad,
 
 void Dust::Update()
 {
-	if (!isDeath)
+	if (isDeath) { return; }
+	pos += speed;
+	control++;
+	if (control >= 10)
 	{
-		pos += speed;
-		control++;
-		if (control >= 10)
-		{
-			rad++;
-			control = 0;
-		}
-		trans -= 10;
-		if (trans <= 0)
-		{
-			trans = 0;
-			isDeath = true;
-		}
+		rad++;
+		control = 0;
+	}
+	trans -= 10;
+	if (trans <= 0)
+	{
+		trans = 0;
+		isDeath = true;
 	}
 }
 

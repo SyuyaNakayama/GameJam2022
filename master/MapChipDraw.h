@@ -5,14 +5,14 @@ class MapChipDraw
 {
 private:
 	ChipDraw blocks[10][10];
-	int planeG[3];
+	int planeG[3]{};
 	int goldG;
 	int oreG;
 	int oreMaskG;
 	int whiteG;
 	int bombG;
 	int arrowG;
-	int debriG[2];
+	int debriG[2]{};
 	Vector2Int* leftTop;
 	int brightness;
 	Vector2Int* playerPos;

@@ -5,29 +5,17 @@
 MapChipDraw::MapChipDraw() :
 	goldG(0), oreG(0), oreMaskG(0), whiteG(0), bombG(0), arrowG(0),
 	leftTop(nullptr), brightness(20), playerPos(nullptr), pCamera(nullptr)
-{
-	for (size_t i = 0; i < 3; i++)
-	{
-		planeG[i] = 0;
-	}
-	for (size_t i = 0; i < 2; i++)
-	{
-		debriG[i] = 0;
-	}
-}
+{}
 
 void MapChipDraw::Load()
 {
-	planeG[0] = LoadGraph("Resources/Block/plane_1.png");
-	planeG[1] = LoadGraph("Resources/Block/plane_2.png");
-	planeG[2] = LoadGraph("Resources/Block/plane_3.png");
+	LoadDivGraph("Resources/Block/plane.png", 3, 3, 1, 64, 64, planeG);
 	goldG = LoadGraph("Resources/Block/gold.png");
 	oreG = LoadGraph("Resources/Block/ore.png");
 	whiteG = LoadGraph("Resources/Block/white.png");
 	bombG = LoadGraph("Resources/Block/bomb.png");
 	arrowG = LoadGraph("Resources/Block/arrow.png");
-	debriG[0] = LoadGraph("Resources/Block/debri.png");
-	debriG[1] = LoadGraph("Resources/Block/debri2.png");
+	LoadDivGraph("Resources/Block/debri_.png", 2, 2, 1, 8, 8, debriG);
 
 	oreMaskG = LoadMask("Resources/Block/ore_mask.png");
 
@@ -54,9 +42,10 @@ void MapChipDraw::Update()
 void MapChipDraw::ChipInit(const Vector2Int& num, const int blockName, const int direction)
 {
 	int g[2] = { 0, 0 };
-	bool b = false;
-	bool b2 = false;
-	bool death = false;
+	bool
+		isCrystalBlock = false,
+		isBombBlock = false,
+		death = false;
 	switch (blockName)
 	{
 	case Block:
@@ -70,22 +59,21 @@ void MapChipDraw::ChipInit(const Vector2Int& num, const int blockName, const int
 	case CrystalBlock:
 		g[0] = oreG;
 		g[1] = debriG[1];
-		b = true;
+		isCrystalBlock = true;
 		break;
 	case BombBlock:
 		g[0] = bombG;
 		g[1] = debriG[0];
-		b2 = true;
+		isBombBlock = true;
 		break;
 	case None:
-	default:
 		death = true;
 		break;
 	}
 
 	blocks[num.y][num.x].Initialze(*leftTop, num, blockName, death, g[0], g[1]);
-	if (b) blocks[num.y][num.x].SetMask(oreMaskG, whiteG);
-	if (b2) blocks[num.y][num.x].SetArrow(direction, arrowG);
+	if (isCrystalBlock) blocks[num.y][num.x].SetMask(oreMaskG, whiteG);
+	if (isBombBlock) blocks[num.y][num.x].SetArrow(direction, arrowG);
 }
 
 void MapChipDraw::ChipBreak(const Vector2Int& num)
@@ -95,7 +83,7 @@ void MapChipDraw::ChipBreak(const Vector2Int& num)
 
 void MapChipDraw::ChipBright(const Vector2Int& num)
 {
-	if(blocks[num.y][num.x].GetType() != CrystalBlock) return;
+	if (blocks[num.y][num.x].GetType() != CrystalBlock) return;
 	blocks[num.y][num.x].Bright();
 }
 

@@ -7,6 +7,7 @@ public:
 	Vector2Int() {}
 	Vector2Int(int x, int y) { this->x = x, this->y = y; }
 
+	Vector2Int absVec();
 	// 代入演算子オーバーロード
 	Vector2Int& operator+=(const Vector2Int& v);
 	Vector2Int& operator-=(const Vector2Int& v);

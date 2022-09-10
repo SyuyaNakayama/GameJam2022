@@ -3,22 +3,14 @@
 
 BrightDraw::BrightDraw() :
 	topL(), topR(), btmL(), btmR(),
-	bright(false), 
+	bright(false),
 	corner1(false), finish1(false), corner2(false), finish2(false),
 	maskG(0), whiteG(0)
 {}
 
 void BrightDraw::Initialize(const Vector2Int& size, const int maskG, const int whiteG)
 {
-	bright = false;
-	topL = { -32, 32 };
-	topR = { -32, 32 };
-	btmL = { -32, 32 };
-	btmR = { -32, 32 };
-	corner1 = false;
-	finish1 = false;
-	corner2 = false;
-	finish2 = false;
+	Bright();
 	this->maskG = maskG;
 	this->whiteG = whiteG;
 }

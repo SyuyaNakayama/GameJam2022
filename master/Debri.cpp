@@ -6,7 +6,7 @@ Debri::Debri() :
 {}
 
 void Debri::Initialize(const Vector2Int& pos, const float scale, const float rota,
-					const Vector2Int speed, const Color color, const int graph)
+	const Vector2Int speed, const Color color, const int graph)
 {
 	this->pos = pos;
 	this->scale = scale;
@@ -20,22 +20,20 @@ void Debri::Initialize(const Vector2Int& pos, const float scale, const float rot
 
 void Debri::Update()
 {
-	if (!isDeath)
+	if (isDeath) { return; }
+	pos += speed;
+	speed.y += 1;
+
+	if (speed.x > 0) rota += DX_PI_F / 64.0f;
+	if (speed.x < 0) rota -= DX_PI_F / 64.0f;
+
+	scale += 0.1f;
+
+	trans -= 15;
+	if (trans <= 0)
 	{
-		pos += speed;
-		speed.y += 1;
-
-		if (speed.x > 0) rota += 3.141592f / 64.0f;
-		if (speed.x < 0) rota -= 3.141592f / 64.0f;
-		
-		scale += 0.1f;
-
-		trans -= 15;
-		if (trans <= 0)
-		{
-			trans = 0;
-			isDeath = true;
-		}
+		trans = 0;
+		isDeath = true;
 	}
 }
 
