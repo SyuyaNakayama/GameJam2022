@@ -4,7 +4,7 @@
 
 MapChipDraw::MapChipDraw() :
 	goldG(0), oreG(0), oreMaskG(0), whiteG(0), bombG(0),
-	leftTop(nullptr), brightness(20), playerPos(nullptr), pCamera(nullptr)
+	leftTop(nullptr), brightness(5), playerPos(nullptr), pCamera(nullptr)
 {}
 
 void MapChipDraw::Load()
@@ -143,6 +143,7 @@ void MapChipDraw::SetPlayerPos(Vector2Int* playerPos)
 			blocks[y][x].SetPlayerPos(playerPos);
 		}
 	}
+	arrowE.SetPlayerPos(playerPos);
 }
 
 void MapChipDraw::SetCamera(Camera* pCamera)

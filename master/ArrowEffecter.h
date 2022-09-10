@@ -23,5 +23,6 @@ public:
 	void Update();
 	void Draw(const Vector2Int& camera);
 	void SetLeftTop(Vector2Int* leftTop);
+	void SetPlayerPos(Vector2Int* playerPos);
 };
 

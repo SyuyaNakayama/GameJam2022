@@ -59,3 +59,12 @@ void ArrowEffecter::SetLeftTop(Vector2Int* leftTop)
 	if (leftTop == nullptr) return;
 	this->leftTop = leftTop;
 }
+
+void ArrowEffecter::SetPlayerPos(Vector2Int* playerPos)
+{
+	if (playerPos == nullptr) return;
+	for (size_t i = 0; i < effects.size(); i++)
+	{
+		effects[i].arrow.SetPlayerPos(playerPos);
+	}
+}
