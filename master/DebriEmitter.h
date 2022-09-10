@@ -14,6 +14,6 @@ public:
 			const Debri::Color color[2], const int graph);
 	void Update();
 	void Draw(const Vector2Int& camera);
-	bool GetIsDeath() { return isDeath; }
+	bool IsDeath() { return isDeath; }
 };
 

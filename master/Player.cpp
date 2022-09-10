@@ -100,9 +100,8 @@ void Player::Destroy()
 			}
 			for (size_t i = 0; i < selectChip.size(); i++)
 			{
-				mapPointer->Change(selectChip[i], None);
-				mapPointer->DrawChipInit(selectChip[i], None);
 				mapPointer->DrawChipBreak(selectChip[i]);
+				mapPointer->Change(selectChip[i], None);
 			}
 			if (mode == Mode::Move) { pos = selectChip.back(); }
 			selectNum = DESTROY_MAX;
@@ -124,7 +123,6 @@ void Player::Destroy()
 	if (++respawnTimer < respawnTimerLimit) { return; }
 	mapPointer->Respawn();
 	mapPointer->Change(pos, None);
-	mapPointer->DrawChipInit(pos, None);
 	respawnTimer = 0;
 	countStartFlag = 0;
 }

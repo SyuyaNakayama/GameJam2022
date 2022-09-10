@@ -2,11 +2,12 @@
 #include "enum.h"
 #include <math.h>
 #include "function.h"
+#include "EffectParameter.h"
 
 ChipDraw::ChipDraw() :
 	pos({ -256,-256 }), height(0), ease(), type(None),
 	dustE(), isLanding(false), isEmit(false),
-	debriE(), shake(), isBreak(false), isEmit2(false),
+	shake(), isBreak(false),
 	bright(), arrow(), isDeath(false),
 	trans(255), shadow(255), brightness(nullptr),
 	blockG(0), debriG(0),
@@ -27,7 +28,6 @@ void ChipDraw::Initialze(const Vector2Int& leftTop, const Vector2Int& ary,
 	isEmit = false;
 	shake.Initialize();
 	isBreak = false;
-	isEmit2 = false;
 	trans = 255;
 	shadow = 0;
 	this->blockG = blockG;
@@ -60,15 +60,7 @@ void ChipDraw::Update()
 		dustE.Update();
 
 		shake.Update();
-		if (!shake.IsShake() && isBreak) isEmit2 = true;
-		if (isEmit2)
-		{
-			EmitDebris();
-			isBreak = false;
-			isEmit2 = false;
-		}
-		debriE.Update();
-		if (debriE.GetIsDeath())
+		if (!shake.IsShake() && isBreak) 
 		{
 			isDeath = true;
 			type = None;
@@ -92,7 +84,7 @@ void ChipDraw::Landing()
 
 void ChipDraw::Break()
 {
-	shake.Shaking(10, 2);
+	shake.Shaking(10, 10 / BreakEffectTime);
 	isBreak = true;
 	if (!pCamera) return;
 	pCamera->Shaking(5, 1);
@@ -101,33 +93,6 @@ void ChipDraw::Break()
 void ChipDraw::Bright()
 {
 	bright.Bright();
-}
-
-void ChipDraw::EmitDebris()
-{
-	Debri::Color c[2];
-	switch (type)
-	{
-	case Block:
-		c[0] = { 150,210,220 };
-		c[1] = { 100,110,140 };
-		break;
-	case CoinBlock:
-		c[0] = { 250,250,100 };
-		c[1] = { 130,130,90 };
-		break;
-	case CrystalBlock:
-		c[0] = { 180,250,100 };
-		c[1] = { 70,80,110 };
-		break;
-	case BombBlock:
-		c[0] = { 240,170,20 };
-		c[1] = { 160,70,40 };
-		break;
-	case None:
-		break;
-	}
-	debriE.Emit({ pos.x - 32, pos.y - 32 }, { pos.x + 32, pos.y + 32 }, 20, c, debriG);
 }
 
 void ChipDraw::UpdateShadow()
@@ -179,7 +144,6 @@ void ChipDraw::Draw(const Vector2Int& camera)
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 		dustE.Draw(camera);
-		debriE.Draw(camera);
 	}
 
 	DrawFormatString(p.x, p.y, GetColor(0, 0, 255), "%d", type);

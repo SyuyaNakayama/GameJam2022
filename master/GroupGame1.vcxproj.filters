@@ -37,6 +37,12 @@
     <Filter Include="ヘッダー ファイル\Draw\Map">
       <UniqueIdentifier>{c4ccce35-bd83-450f-93cb-17ddc9288fdf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Draw\Effect">
+      <UniqueIdentifier>{759810d8-d952-41df-a2d6-af984f0fe007}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Draw\Effect">
+      <UniqueIdentifier>{9f721099-83b0-4ed2-a453-07a437bd7544}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Bomb.cpp">
@@ -51,10 +57,16 @@
     <ClCompile Include="main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
     <ClCompile Include="Pad.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector2.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Timer.cpp">
@@ -99,11 +111,14 @@
     <ClCompile Include="MapChipDraw.cpp">
       <Filter>ソース ファイル\Draw\Map</Filter>
     </ClCompile>
-    <ClCompile Include="Map.cpp">
-      <Filter>ソース ファイル\Draw\Map</Filter>
+    <ClCompile Include="BreakEffecter.cpp">
+      <Filter>ソース ファイル\Draw\Effect</Filter>
     </ClCompile>
-    <ClCompile Include="Vector2.cpp">
-      <Filter>ソース ファイル\Draw\Math</Filter>
+    <ClCompile Include="BrightEffecter.cpp">
+      <Filter>ソース ファイル\Draw\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="DustEffecter.cpp">
+      <Filter>ソース ファイル\Draw\Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -125,11 +140,17 @@
     <ClInclude Include="Player.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="Vector2.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>ヘッダー ファイル\Draw</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Ease.h">
       <Filter>ヘッダー ファイル\Draw\Math</Filter>
@@ -167,11 +188,17 @@
     <ClInclude Include="BrightDraw.h">
       <Filter>ヘッダー ファイル\Draw\Map</Filter>
     </ClInclude>
-    <ClInclude Include="Vector2.h">
-      <Filter>ヘッダー ファイル\Draw\Math</Filter>
+    <ClInclude Include="BreakEffecter.h">
+      <Filter>ヘッダー ファイル\Draw\Effect</Filter>
     </ClInclude>
-    <ClInclude Include="Map.h">
-      <Filter>ヘッダー ファイル\Draw\Map</Filter>
+    <ClInclude Include="BrightEffecter.h">
+      <Filter>ヘッダー ファイル\Draw\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="DustEffecter.h">
+      <Filter>ヘッダー ファイル\Draw\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectParameter.h">
+      <Filter>ヘッダー ファイル\Draw\Effect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

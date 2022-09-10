@@ -15,9 +15,8 @@ void Map::BombDestroy(int bombIndex)
 				BombDestroy(j);
 			}
 		}
-		Change(destroyPos[i], None);
-		DrawChipInit(destroyPos[i], None);
 		drawer.ChipBreak(destroyPos[i]);
+		Change(destroyPos[i], None);
 	}
 }
 
@@ -63,6 +62,7 @@ void Map::Change(Vector2Int num, BlockName blockName)
 	assert(IsInsideValue(num.x, map.size()));
 	assert(IsInsideValue(num.y, map.size()));
 	map[num.y][num.x] = blockName;
+	drawer.ChipInit(num, blockName);
 }
 
 void Map::Create()
@@ -73,7 +73,6 @@ void Map::Create()
 	for (size_t i = 0; i < 3; i++)
 	{
 		Change(crystalPos[crystalPattern][i], CrystalBlock);
-		drawer.ChipInit(crystalPos[crystalPattern][i], CrystalBlock);
 	}
 	// コイン配置
 	for (size_t i = 0; i < COIN_NUM; i++)
@@ -85,13 +84,12 @@ void Map::Create()
 			if (GetMapState(coinBlockPos) == Block)
 			{
 				Change(coinBlockPos, CoinBlock);
-				drawer.ChipInit(coinBlockPos, CoinBlock);
 				break;
 			}
 		}
 	}
 	// ボム配置
-	for (size_t i = 0; i < 90; i++)
+	for (size_t i = 0; i < 16; i++)
 	{
 		Vector2Int bombBlockPos;
 		while (1)

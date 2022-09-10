@@ -18,10 +18,8 @@ private:
 	bool isLanding;
 	bool isEmit;
 	
-	DebriEmitter debriE;
 	Shake shake;
 	bool isBreak;
-	bool isEmit2;
 	
 	BrightDraw bright;
 	ArrowDraw arrow;
@@ -55,7 +53,6 @@ public:
 	bool GetIsDeath() { return isDeath; }
 private:
 	void Landing();
-	void EmitDebris();
 	void UpdateShadow();
 	void DrawShadow(const Vector2Int& camera);
 };

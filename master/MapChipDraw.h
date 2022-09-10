@@ -1,10 +1,12 @@
 #pragma once
 #include "ChipDraw.h"
+#include "BreakEffecter.h"
 
 class MapChipDraw
 {
 private:
 	ChipDraw blocks[10][10];
+	BreakEffecter breakE;
 	int planeG[3]{};
 	int goldG;
 	int oreG;
@@ -12,7 +14,6 @@ private:
 	int whiteG;
 	int bombG;
 	int arrowG;
-	int debriG[2]{};
 	Vector2Int* leftTop;
 	int brightness;
 	Vector2Int* playerPos;

@@ -21,12 +21,15 @@
   <ItemGroup>
     <ClCompile Include="ArrowDraw.cpp" />
     <ClCompile Include="Bomb.cpp" />
+    <ClCompile Include="BreakEffecter.cpp" />
     <ClCompile Include="BrightDraw.cpp" />
+    <ClCompile Include="BrightEffecter.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ChipDraw.cpp" />
     <ClCompile Include="Debri.cpp" />
     <ClCompile Include="DebriEmitter.cpp" />
     <ClCompile Include="Dust.cpp" />
+    <ClCompile Include="DustEffecter.cpp" />
     <ClCompile Include="DustEmitter.cpp" />
     <ClCompile Include="Ease.cpp" />
     <ClCompile Include="function.cpp" />
@@ -45,14 +48,18 @@
   <ItemGroup>
     <ClInclude Include="ArrowDraw.h" />
     <ClInclude Include="Bomb.h" />
+    <ClInclude Include="BreakEffecter.h" />
     <ClInclude Include="BrightDraw.h" />
+    <ClInclude Include="BrightEffecter.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ChipDraw.h" />
     <ClInclude Include="Debri.h" />
     <ClInclude Include="DebriEmitter.h" />
     <ClInclude Include="Dust.h" />
+    <ClInclude Include="DustEffecter.h" />
     <ClInclude Include="DustEmitter.h" />
     <ClInclude Include="Ease.h" />
+    <ClInclude Include="EffectParameter.h" />
     <ClInclude Include="enum.h" />
     <ClInclude Include="function.h" />
     <ClInclude Include="Input.h" />

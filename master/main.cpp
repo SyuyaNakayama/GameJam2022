@@ -69,7 +69,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 				map.Create();
 				player.SetPos({ rand() % 2 + 4,rand() % 2 + 4 });
 				map.Change(player.GetPos(), None);
-				map.DrawChipInit(player.GetPos(), None);
 			}
 			map.Update();
 			//if (player.GetActionCount() <= 0 || timer.CountDown()) { scene = GameOver; SetFontSize(96); }

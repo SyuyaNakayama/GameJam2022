@@ -49,8 +49,9 @@ void DebriEmitter::Update()
 
 void DebriEmitter::Draw(const Vector2Int& camera)
 {
+	if (isDeath) return;
 	for (size_t i = 0; i < debris.size(); i++)
 	{
-		if (!isDeath) debris[i].Draw(camera);
+		debris[i].Draw(camera);
 	}
 }
