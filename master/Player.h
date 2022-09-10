@@ -35,7 +35,7 @@ public:
 	Vector2Int* GetPosAdress() { return &pos; }
 	Direction GetDirection() { return direction; }
 	int GetActionCount() { return actionNum - damageCount; }
-	Vector2Int GetLastSelectChip() { return selectChip[selectChip.size() - 2]; }
+	Vector2Int GetLastSelectChip();
 	int GetDamageCount() { return damageCount; }
 	void DamageCountUp() { damageCount++; }
 	void Move();

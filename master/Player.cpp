@@ -10,6 +10,12 @@ Player::Player(Vector2Int pos_, Map* pMap)
 	pad = Pad::GetInstance();
 }
 
+Vector2Int Player::GetLastSelectChip()
+{
+	if (selectChip.size() > 1) { return selectChip[selectChip.size() - 2]; }
+	return pos;
+}
+
 void Player::Move()
 {
 	input.Update();
@@ -93,7 +99,7 @@ void Player::Destroy()
 				{
 					if (mapPointer->GetBomb()[i].GetPos() == selectChip.back())
 					{
-						mapPointer->BombDestroy(i,this);
+						mapPointer->BombDestroy(i, this);
 					}
 				}
 			}
