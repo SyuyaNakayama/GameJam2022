@@ -23,7 +23,6 @@ private:
 	bool isBreak;
 	
 	BrightDraw bright;
-	ArrowDraw arrow;
 
 	bool isDeath;
 
@@ -40,7 +39,6 @@ public:
 	void Initialze(const Vector2Int& leftTop, const Vector2Int& ary, 
 		const int type, const bool isDeath, const int blockG);
 	void SetMask(const int maskG, const int whiteG);
-	void SetArrow(const int direction, const int arrowG);
 	void Update();
 	void Break();
 	void Bright();

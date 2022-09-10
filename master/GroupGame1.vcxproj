@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ArrowDraw.cpp" />
+    <ClCompile Include="ArrowEffecter.cpp" />
     <ClCompile Include="Bomb.cpp" />
     <ClCompile Include="BreakEffecter.cpp" />
     <ClCompile Include="BrightDraw.cpp" />
@@ -47,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArrowDraw.h" />
+    <ClInclude Include="ArrowEffecter.h" />
     <ClInclude Include="Bomb.h" />
     <ClInclude Include="BreakEffecter.h" />
     <ClInclude Include="BrightDraw.h" />

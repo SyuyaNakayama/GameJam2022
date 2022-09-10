@@ -62,7 +62,7 @@ void DustEffecter::Draw(const Vector2Int& camera)
 	if (isDeath) return;
 	for (size_t i = 0; i < effects.size(); i++)
 	{
-		if (++effects[i].timer < DustEffectTime) continue;
+		if (effects[i].timer < DustEffectTime) continue;
 		effects[i].dusts.Draw(camera);
 	}
 }

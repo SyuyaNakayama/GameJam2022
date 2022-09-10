@@ -120,6 +120,9 @@
     <ClCompile Include="DustEffecter.cpp">
       <Filter>ソース ファイル\Draw\Effect</Filter>
     </ClCompile>
+    <ClCompile Include="ArrowEffecter.cpp">
+      <Filter>ソース ファイル\Draw\Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bomb.h">
@@ -199,6 +202,9 @@
     </ClInclude>
     <ClInclude Include="DrawParameter.h">
       <Filter>ヘッダー ファイル\Draw</Filter>
+    </ClInclude>
+    <ClInclude Include="ArrowEffecter.h">
+      <Filter>ヘッダー ファイル\Draw\Effect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
