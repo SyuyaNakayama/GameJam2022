@@ -1,5 +1,6 @@
 #pragma once
 
-const int BreakEffectTime = 5;
-const int DustEffectTime = 20;
-const int ArrowEffectTime = 20;
+const int BreakStartTime = 5;
+const int DustStartTime = 20;
+const int ArrowStartTime = 20;
+const int BrightStartTime = 20;

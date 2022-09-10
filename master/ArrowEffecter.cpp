@@ -23,7 +23,7 @@ void ArrowEffecter::Erase(const Vector2Int& num)
 {
 	for (size_t i = 0; i < effects.size(); i++)
 	{
-		if (effects[i].arrow.GetNumber().x == num.x && 
+		if (effects[i].arrow.GetNumber().x == num.x &&
 			effects[i].arrow.GetNumber().y == num.y)
 		{
 			effects.erase(std::begin(effects) + i);
@@ -38,18 +38,24 @@ void ArrowEffecter::Crear()
 
 void ArrowEffecter::Update()
 {
+	if (isDeath) return;
 	for (size_t i = 0; i < effects.size(); i++)
 	{
-		if (++effects[i].timer >= ArrowEffectTime) effects[i].timer = ArrowEffectTime;
+		if (++effects[i].timer >= ArrowStartTime) effects[i].timer = ArrowStartTime;
 		effects[i].arrow.Update();
+	}
+	if (effects.size() <= 0)
+	{
+		isDeath = true;
 	}
 }
 
 void ArrowEffecter::Draw(const Vector2Int& camera)
 {
+	if (isDeath) return;
 	for (size_t i = 0; i < effects.size(); i++)
 	{
-		if (effects[i].timer < ArrowEffectTime) continue;
+		if (effects[i].timer < ArrowStartTime) continue;
 		effects[i].arrow.Draw(camera);
 	}
 }

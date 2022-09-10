@@ -16,7 +16,7 @@ void Map::BombDestroy(int bombIndex, Player* player)
 		}
 		if (destroyPos[i] == player->GetLastSelectChip()) { player->DamageCountUp(); }
 		drawer.ChipBreak(destroyPos[i]);
-		drawer.EraseArrow(destroyPos[i]);
+		drawer.EraseArrowAndBright(destroyPos[i]);
 		Change(destroyPos[i], None);
 	}
 }
@@ -29,6 +29,7 @@ void Map::Respawn()
 			if (map[y][x] == None)
 			{
 				map[y][x] = Block;
+				drawer.EraseArrowAndBright({ (int)x, (int)y });
 				drawer.ChipInit({ (int)x, (int)y }, Block);
 			}
 		}
@@ -57,13 +58,14 @@ void Map::Init()
 		}
 	}
 	bomb.clear();
-	drawer.CrearArrow();
+	drawer.ClearArrowAndBright();
 }
 
 void Map::Change(Vector2Int num, BlockName blockName)
 {
 	assert(IsInsideValue(num.x, map.size()));
 	assert(IsInsideValue(num.y, map.size()));
+	drawer.EraseArrowAndBright(num);
 	map[num.y][num.x] = blockName;
 	drawer.ChipInit(num, blockName);
 }
@@ -76,6 +78,7 @@ void Map::Create()
 	for (size_t i = 0; i < 3; i++)
 	{
 		Change(crystalPos[crystalPattern][i], CrystalBlock);
+		drawer.CreateBright(crystalPos[crystalPattern][i]);
 	}
 	// コイン配置
 	for (size_t i = 0; i < COIN_NUM; i++)
@@ -92,7 +95,7 @@ void Map::Create()
 		}
 	}
 	// ボム配置
-	for (size_t i = 0; i < 90; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		Vector2Int bombBlockPos;
 		while (1)
@@ -112,37 +115,37 @@ void Map::Create()
 
 void Map::Draw(const Vector2Int& camera)
 {
-	Vector2Int boxPos{};
-	for (size_t y = 0; y < map.size(); y++) {
-		for (size_t x = 0; x < map[y].size(); x++)
-		{
-			boxPos = pos + Vector2Int(2 * chipRad * x, 2 * chipRad * y);
-			DrawBoxWithVectorInt(boxPos, { chipRad ,chipRad }, CHIP_COLOR[map[y][x]]);
-			if (map[y][x] != BombBlock) { continue; }
-			for (size_t i = 0; i < bomb.size(); i++)
-			{
-				if (!(bomb[i].GetPos().x == x && bomb[i].GetPos().y == y)) { continue; }
-				Vector2Int pos = GetChipPos(bomb[i].GetPos());
-				switch (bomb[i].GetDirection())
-				{
-				case Up:
-					DrawLine(pos.x, pos.y, pos.x, pos.y - 32, color.Black);
-					break;
-				case Down:
-					DrawLine(pos.x, pos.y, pos.x, pos.y + 32, color.Black);
-					break;
-				case Left:
-					DrawLine(pos.x, pos.y, pos.x - 32, pos.y, color.Black);
-					break;
-				case Right:
-					DrawLine(pos.x, pos.y, pos.x + 32, pos.y, color.Black);
-					break;
-				}
-				break;
-			}
-		}
-	}
-	//drawer.Draw(camera);
+	//Vector2Int boxPos{};
+	//for (size_t y = 0; y < map.size(); y++) {
+	//	for (size_t x = 0; x < map[y].size(); x++)
+	//	{
+	//		boxPos = pos + Vector2Int(2 * chipRad * x, 2 * chipRad * y);
+	//		DrawBoxWithVectorInt(boxPos, { chipRad ,chipRad }, CHIP_COLOR[map[y][x]]);
+	//		if (map[y][x] != BombBlock) { continue; }
+	//		for (size_t i = 0; i < bomb.size(); i++)
+	//		{
+	//			if (!(bomb[i].GetPos().x == x && bomb[i].GetPos().y == y)) { continue; }
+	//			Vector2Int pos = GetChipPos(bomb[i].GetPos());
+	//			switch (bomb[i].GetDirection())
+	//			{
+	//			case Up:
+	//				DrawLine(pos.x, pos.y, pos.x, pos.y - 32, color.Black);
+	//				break;
+	//			case Down:
+	//				DrawLine(pos.x, pos.y, pos.x, pos.y + 32, color.Black);
+	//				break;
+	//			case Left:
+	//				DrawLine(pos.x, pos.y, pos.x - 32, pos.y, color.Black);
+	//				break;
+	//			case Right:
+	//				DrawLine(pos.x, pos.y, pos.x + 32, pos.y, color.Black);
+	//				break;
+	//			}
+	//			break;
+	//		}
+	//	}
+	//}
+	drawer.Draw(camera);
 }
 
 void Map::LoadAndSet()
@@ -178,7 +181,23 @@ void Map::DrawArrowInit(const Vector2Int& num, const int direction)
 	drawer.CreateArrow(num, direction);
 }
 
-void Map::DrawArrowErase(const Vector2Int& num)
+void Map::DrawBrightInit(const Vector2Int& num)
+{
+	drawer.CreateBright(num);
+}
+
+void Map::DrawBright()
+{
+	drawer.ChipBright();
+}
+
+void Map::DrawErase(const Vector2Int& num)
 {
 	drawer.EraseArrow(num);
+	drawer.EraseBright(num);
+}
+
+void Map::SetBrightness(const int brightness)
+{
+	drawer.SetBrightness(brightness);
 }

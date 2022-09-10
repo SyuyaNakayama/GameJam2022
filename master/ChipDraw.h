@@ -11,18 +11,16 @@ private:
 	Vector2Int pos;
 	Vector2Int number;
 	int type;
-	
+
 	// íÖínââèo
 	int height;
 	Ease ease;
 	bool isLanding;
 	bool isQuake;
-	
+
 	// îjâÛââèo
 	Shake shake;
 	bool isBreak;
-	
-	BrightDraw bright;
 
 	bool isDeath;
 
@@ -36,12 +34,10 @@ private:
 	Camera* pCamera;
 public:
 	ChipDraw();
-	void Initialze(const Vector2Int& leftTop, const Vector2Int& ary, 
+	void Initialze(const Vector2Int& leftTop, const Vector2Int& ary,
 		const int type, const bool isDeath, const int blockG);
-	void SetMask(const int maskG, const int whiteG);
 	void Update();
 	void Break();
-	void Bright();
 	void Draw(const Vector2Int& camera);
 	void SetBrightness(int* brightness);
 	void SetPlayerPos(Vector2Int* playerPos);

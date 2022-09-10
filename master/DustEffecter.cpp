@@ -40,11 +40,12 @@ void DustEffecter::Emit(const Vector2Int& num, const int blockName)
 
 void DustEffecter::Update()
 {
+	if (isDeath) return;
 	size_t count = 0;
 	for (size_t i = 0; i < effects.size(); i++)
 	{
-		if (++effects[i].timer < DustEffectTime) continue;
-		effects[i].timer = DustEffectTime;
+		if (++effects[i].timer < DustStartTime) continue;
+		effects[i].timer = DustStartTime;
 
 		if (effects[i].dusts.IsDeath()) count++;
 		if (count >= effects.size())
@@ -62,7 +63,7 @@ void DustEffecter::Draw(const Vector2Int& camera)
 	if (isDeath) return;
 	for (size_t i = 0; i < effects.size(); i++)
 	{
-		if (effects[i].timer < DustEffectTime) continue;
+		if (effects[i].timer < DustStartTime) continue;
 		effects[i].dusts.Draw(camera);
 	}
 }

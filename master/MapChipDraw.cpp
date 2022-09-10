@@ -3,8 +3,8 @@
 #include "enum.h"
 
 MapChipDraw::MapChipDraw() :
-	goldG(0), oreG(0), oreMaskG(0), whiteG(0), bombG(0),
-	leftTop(nullptr), brightness(5), playerPos(nullptr), pCamera(nullptr)
+	goldG(0), oreG(0), bombG(0),
+	leftTop(nullptr), brightness(20), playerPos(nullptr), pCamera(nullptr)
 {}
 
 void MapChipDraw::Load()
@@ -12,13 +12,11 @@ void MapChipDraw::Load()
 	LoadDivGraph("Resources/Block/plane.png", 3, 3, 1, 64, 64, planeG);
 	goldG = LoadGraph("Resources/Block/gold.png");
 	oreG = LoadGraph("Resources/Block/ore.png");
-	whiteG = LoadGraph("Resources/Block/white.png");
 	bombG = LoadGraph("Resources/Block/bomb.png");
-	breakE.Load();
 	dustE.Load();
+	breakE.Load();
 	arrowE.Load();
-	
-	oreMaskG = LoadMask("Resources/Block/ore_mask.png");
+	brightE.Load();
 
 	for (size_t y = 0; y < 10; y++)
 	{
@@ -38,18 +36,16 @@ void MapChipDraw::Update()
 			blocks[y][x].Update();
 		}
 	}
-	breakE.Update();
 	dustE.Update();
+	breakE.Update();
 	arrowE.Update();
+	brightE.Update();
 }
 
 void MapChipDraw::ChipInit(const Vector2Int& num, const int blockName)
 {
 	int g = 0;
-	bool
-		isCrystalBlock = false,
-		isBombBlock = false,
-		death = false;
+	bool death = false;
 	switch (blockName)
 	{
 	case Block:
@@ -60,7 +56,6 @@ void MapChipDraw::ChipInit(const Vector2Int& num, const int blockName)
 		break;
 	case CrystalBlock:
 		g = oreG;
-		isCrystalBlock = true;
 		break;
 	case BombBlock:
 		g = bombG;
@@ -72,7 +67,6 @@ void MapChipDraw::ChipInit(const Vector2Int& num, const int blockName)
 
 	blocks[num.y][num.x].Initialze(*leftTop, num, blockName, death, g);
 	dustE.Emit(num, blockName);
-	if (isCrystalBlock) blocks[num.y][num.x].SetMask(oreMaskG, whiteG);
 }
 
 void MapChipDraw::ChipBreak(const Vector2Int& num)
@@ -81,25 +75,46 @@ void MapChipDraw::ChipBreak(const Vector2Int& num)
 	breakE.Emit(num, blocks[num.y][num.x].GetType());
 }
 
-void MapChipDraw::ChipBright(const Vector2Int& num)
+void MapChipDraw::ChipBright()
 {
-	if (blocks[num.y][num.x].GetType() != CrystalBlock) return;
-	blocks[num.y][num.x].Bright();
+	brightE.Bright();
+}
+
+void MapChipDraw::EraseArrowAndBright(const Vector2Int& num)
+{
+	EraseArrow(num);
+	EraseBright(num);
+}
+void MapChipDraw::ClearArrowAndBright()
+{
+	CrearArrow();
+	CrearBright();
 }
 
 void MapChipDraw::CreateArrow(const Vector2Int& num, const int direction)
 {
-	arrowE.Emit(num, direction, &brightness, playerPos);
+	if (blocks[num.y][num.x].GetType() == BombBlock) arrowE.Emit(num, direction, &brightness, playerPos);
 }
-
 void MapChipDraw::EraseArrow(const Vector2Int& num)
 {
-	if ( blocks[num.y][num.x].GetType() == BombBlock) arrowE.Erase(num);
+	if (blocks[num.y][num.x].GetType() == BombBlock) arrowE.Erase(num);
 }
-
 void MapChipDraw::CrearArrow()
 {
 	arrowE.Crear();
+}
+
+void MapChipDraw::CreateBright(const Vector2Int& num)
+{
+	if (blocks[num.y][num.x].GetType() == CrystalBlock) brightE.Emit(num);
+}
+void MapChipDraw::EraseBright(const Vector2Int& num)
+{
+	if (blocks[num.y][num.x].GetType() == CrystalBlock) brightE.Erase(num);
+}
+void MapChipDraw::CrearBright()
+{
+	brightE.Crear();
 }
 
 void MapChipDraw::Draw(const Vector2Int& camera)
@@ -111,25 +126,27 @@ void MapChipDraw::Draw(const Vector2Int& camera)
 			blocks[y][x].Draw(camera);
 		}
 	}
-	breakE.Draw(camera);
 	dustE.Draw(camera);
+	breakE.Draw(camera);
 	arrowE.Draw(camera);
+	brightE.Draw(camera);
 }
 
 void MapChipDraw::SetLeftTop(Vector2Int* leftTop)
 {
 	if (leftTop == nullptr) return;
 	this->leftTop = leftTop;
-	breakE.SetLeftTop(leftTop);
 	dustE.SetLeftTop(leftTop);
+	breakE.SetLeftTop(leftTop);
 	arrowE.SetLeftTop(leftTop);
+	brightE.SetLeftTop(leftTop);
 }
 
 void MapChipDraw::SetBrightness(const int brightness)
 {
 	this->brightness = brightness;
 	if (this->brightness >= 20) this->brightness = 20;
-	if (this->brightness <= 0) this->brightness = 0;
+	if (this->brightness <= 4) this->brightness = 4;
 }
 
 void MapChipDraw::SetPlayerPos(Vector2Int* playerPos)

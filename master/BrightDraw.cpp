@@ -5,14 +5,21 @@ BrightDraw::BrightDraw() :
 	topL(), topR(), btmL(), btmR(),
 	bright(false),
 	corner1(false), finish1(false), corner2(false), finish2(false),
-	maskG(0), whiteG(0)
+	trans(0), whiteG(0)
 {}
 
-void BrightDraw::Initialize(const Vector2Int& size, const int maskG, const int whiteG)
+void BrightDraw::Initialize(const Vector2Int& leftTop, const Vector2Int& num, const int brightM[2], const int whiteG)
 {
+	this->number = num;
+	pos = { leftTop.x + num.x * 64, leftTop.y + num.y * 64 };
 	Bright();
 	bright = false;
-	this->maskG = maskG;
+	ease.Initialize(0.05f, 0.05f);
+	trans = 0;
+	for (size_t i = 0; i < 2; i++)
+	{
+		this->brightM[i] = brightM[i];
+	}
 	this->whiteG = whiteG;
 }
 
@@ -31,7 +38,13 @@ void BrightDraw::Bright()
 
 void BrightDraw::Update()
 {
-	if (bright) MoveBright();
+	ease.Update(bright);
+	trans = (int)ease.In(0.0f, 255.0f, 3.0f);
+
+	if (trans >= 255)
+	{
+		MoveBright();
+	}
 }
 
 void BrightDraw::MoveBright()
@@ -63,7 +76,7 @@ void BrightDraw::MoveBright()
 		}
 	}
 
-	if (!finish2 && topL.y <= 4)
+	if (!finish2 && topL.y <= 8)
 	{
 		if (!corner2)
 		{
@@ -91,14 +104,21 @@ void BrightDraw::MoveBright()
 	}
 }
 
-void BrightDraw::Draw(const Vector2Int& pos, const Vector2Int& camera, const int trans)
+void BrightDraw::Draw(const Vector2Int& camera)
 {
 	CreateMaskScreen();
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, trans);
-	DrawMask(pos.x - 32 + camera.x, pos.y - 32 + camera.y, maskG, DX_MASKTRANS_BLACK);
+	DrawMask(pos.x - 32 + camera.x, pos.y - 32 + camera.y, brightM[0], DX_MASKTRANS_BLACK);
+	DrawBox(
+		pos.x - 32 + camera.x, pos.y - 32 + camera.y,
+		pos.x + 32 + camera.x, pos.y + 32 + camera.y,
+		GetColor(150, 240, 80), true
+	);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
+	DrawMask(pos.x - 32 + camera.x, pos.y - 32 + camera.y, brightM[1], DX_MASKTRANS_BLACK);
 	if (bright)
 	{
-		SetDrawBright(200, 255, 150);
+		SetDrawBright(255, 255, 255);
 		DrawModiGraph(
 			pos.x + topL.x, pos.y + topL.y, // ¶ã
 			pos.x + topR.x, pos.y + topR.y, // ‰Eã
@@ -107,5 +127,6 @@ void BrightDraw::Draw(const Vector2Int& pos, const Vector2Int& camera, const int
 			whiteG, true);
 		SetDrawBright(255, 255, 255);
 	}
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	DeleteMaskScreen();
 }

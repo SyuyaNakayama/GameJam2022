@@ -70,6 +70,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 				player.SetPos({ rand() % 2 + 4,rand() % 2 + 4 });
 				map.Change(player.GetPos(), None);
 			}
+			if (input.IsTrigger(KEY_INPUT_N))
+			{
+				map.DrawBright();
+			}
 			map.Update();
 			if (player.GetActionCount() <= 0 || timer.CountDown(player.GetDamageCount())) { scene = GameOver; SetFontSize(96); }
 			break;

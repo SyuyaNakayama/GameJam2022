@@ -57,10 +57,17 @@ public:
 	void LoadAndSet();
 	void SetOutSide(Camera* camera, Vector2Int* playerPos);
 	void Update();
+
 	void DrawChipInit(const Vector2Int& num, const int blockName);
 	void DrawChipBreak(const Vector2Int& num);
+
 	void DrawArrowInit(const Vector2Int& num, const int direction);
-	void DrawArrowErase(const Vector2Int& num);
+	void DrawBrightInit(const Vector2Int& num);
+	void DrawBright();
+
+	void DrawErase(const Vector2Int& num);
+
+	void SetBrightness(const int brightness);
 private:
 	const vector<int>CHIP_COLOR = { color.Black,color.White,color.Yellow,color.Green,color.Red };
 };

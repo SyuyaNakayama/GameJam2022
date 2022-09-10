@@ -8,7 +8,7 @@ ChipDraw::ChipDraw() :
 	pos({ -256,-256 }), height(0), ease(), type(None),
 	isLanding(false), isQuake(false),
 	shake(), isBreak(false),
-	bright(), isDeath(false),
+	isDeath(false),
 	trans(255), shadow(255), brightness(nullptr),
 	blockG(0),
 	pCamera(nullptr), playerPos(nullptr)
@@ -20,7 +20,7 @@ void ChipDraw::Initialze(const Vector2Int& leftTop, const Vector2Int& ary,
 	pos = { leftTop.x + ary.x * 64, leftTop.y + ary.y * 64 };
 	number = ary;
 	height = 0;
-	ease.Initialize(1.0f / (float)DustEffectTime );
+	ease.Initialize(1.0f / (float)DustStartTime);
 	this->type = type;
 	this->isDeath = isDeath;
 	isLanding = false;
@@ -30,11 +30,6 @@ void ChipDraw::Initialze(const Vector2Int& leftTop, const Vector2Int& ary,
 	trans = 255;
 	shadow = 0;
 	this->blockG = blockG;
-}
-
-void ChipDraw::SetMask(const int maskG, const int whiteG)
-{
-	bright.Initialize({ 64,64 }, maskG, whiteG);
 }
 
 void ChipDraw::Update()
@@ -52,13 +47,11 @@ void ChipDraw::Update()
 		}
 
 		shake.Update();
-		if (!shake.IsShake() && isBreak) 
+		if (!shake.IsShake() && isBreak)
 		{
 			isDeath = true;
 			type = None;
 		}
-
-		if (type == CrystalBlock) bright.Update();
 
 		trans = (int)ease.Out(0.0f, 255.0f, 2.0f);
 	}
@@ -74,15 +67,10 @@ void ChipDraw::Landing()
 
 void ChipDraw::Break()
 {
-	shake.Shaking(10, 10 / BreakEffectTime);
+	shake.Shaking(10, 10 / BreakStartTime);
 	isBreak = true;
 	if (!pCamera) return;
 	pCamera->Shaking(5, 1);
-}
-
-void ChipDraw::Bright()
-{
-	bright.Bright();
 }
 
 void ChipDraw::UpdateShadow()
@@ -127,12 +115,10 @@ void ChipDraw::Draw(const Vector2Int& camera)
 
 	if (!isDeath)
 	{
-		if (type == CrystalBlock) bright.Draw(p, camera, trans);
-
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
 
-	DrawFormatString(p.x, p.y, GetColor(0, 0, 255), "%d", type);
+	//DrawFormatString(p.x, p.y, GetColor(0, 0, 255), "%d", type);
 }
 
 void ChipDraw::SetBrightness(int* brightness)

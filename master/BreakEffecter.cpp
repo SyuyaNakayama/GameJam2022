@@ -47,11 +47,12 @@ void BreakEffecter::Emit(const Vector2Int& num, const int blockName)
 
 void BreakEffecter::Update()
 {
+	if (isDeath) return;
 	size_t count = 0;
 	for (size_t i = 0; i < effects.size(); i++)
 	{
-		if (++effects[i].timer < BreakEffectTime) continue;
-		effects[i].timer = BreakEffectTime;
+		if (++effects[i].timer < BreakStartTime) continue;
+		effects[i].timer = BreakStartTime;
 
 		if (effects[i].debris.IsDeath()) count++;
 		if (count >= effects.size())
@@ -69,7 +70,7 @@ void BreakEffecter::Draw(const Vector2Int& camera)
 	if (isDeath) return;
 	for (size_t i = 0; i < effects.size(); i++)
 	{
-		if (effects[i].timer < BreakEffectTime) continue;
+		if (effects[i].timer < BreakStartTime) continue;
 		effects[i].debris.Draw(camera);
 	}
 }
