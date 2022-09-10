@@ -16,6 +16,7 @@ void Map::BombDestroy(int bombIndex, Player* player)
 		}
 		if (destroyPos[i] == player->GetLastSelectChip()) { player->DamageCountUp(); }
 		drawer.ChipBreak(destroyPos[i]);
+		drawer.EraseArrow(destroyPos[i]);
 		Change(destroyPos[i], None);
 	}
 }
@@ -56,6 +57,7 @@ void Map::Init()
 		}
 	}
 	bomb.clear();
+	drawer.CrearArrow();
 }
 
 void Map::Change(Vector2Int num, BlockName blockName)
@@ -100,8 +102,8 @@ void Map::Create()
 			{
 				Change(bombBlockPos, BombBlock);
 				int random = rand() % 4;
-				drawer.ChipInit(bombBlockPos, BombBlock, random);
-				bomb.push_back({ bombBlockPos, random });
+				drawer.CreateArrow(bombBlockPos, random);
+				bomb.push_back({ bombBlockPos, random});
 				break;
 			}
 		}
@@ -169,4 +171,14 @@ void Map::DrawChipInit(const Vector2Int& num, const int blockName)
 void Map::DrawChipBreak(const Vector2Int& num)
 {
 	drawer.ChipBreak(num);
+}
+
+void Map::DrawArrowInit(const Vector2Int& num, const int direction)
+{
+	drawer.CreateArrow(num, direction);
+}
+
+void Map::DrawArrowErase(const Vector2Int& num)
+{
+	drawer.EraseArrow(num);
 }

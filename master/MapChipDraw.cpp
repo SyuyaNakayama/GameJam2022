@@ -3,7 +3,7 @@
 #include "enum.h"
 
 MapChipDraw::MapChipDraw() :
-	goldG(0), oreG(0), oreMaskG(0), whiteG(0), bombG(0), arrowG(0),
+	goldG(0), oreG(0), oreMaskG(0), whiteG(0), bombG(0),
 	leftTop(nullptr), brightness(20), playerPos(nullptr), pCamera(nullptr)
 {}
 
@@ -16,9 +16,8 @@ void MapChipDraw::Load()
 	bombG = LoadGraph("Resources/Block/bomb.png");
 	breakE.Load();
 	dustE.Load();
-	arrowG = LoadGraph("Resources/Block/arrow.png");
+	arrowE.Load();
 	
-
 	oreMaskG = LoadMask("Resources/Block/ore_mask.png");
 
 	for (size_t y = 0; y < 10; y++)
@@ -41,9 +40,10 @@ void MapChipDraw::Update()
 	}
 	breakE.Update();
 	dustE.Update();
+	arrowE.Update();
 }
 
-void MapChipDraw::ChipInit(const Vector2Int& num, const int blockName, const int direction)
+void MapChipDraw::ChipInit(const Vector2Int& num, const int blockName)
 {
 	int g = 0;
 	bool
@@ -64,7 +64,6 @@ void MapChipDraw::ChipInit(const Vector2Int& num, const int blockName, const int
 		break;
 	case BombBlock:
 		g = bombG;
-		isBombBlock = true;
 		break;
 	case None:
 		death = true;
@@ -74,7 +73,6 @@ void MapChipDraw::ChipInit(const Vector2Int& num, const int blockName, const int
 	blocks[num.y][num.x].Initialze(*leftTop, num, blockName, death, g);
 	dustE.Emit(num, blockName);
 	if (isCrystalBlock) blocks[num.y][num.x].SetMask(oreMaskG, whiteG);
-	if (isBombBlock) blocks[num.y][num.x].SetArrow(direction, arrowG);
 }
 
 void MapChipDraw::ChipBreak(const Vector2Int& num)
@@ -89,6 +87,21 @@ void MapChipDraw::ChipBright(const Vector2Int& num)
 	blocks[num.y][num.x].Bright();
 }
 
+void MapChipDraw::CreateArrow(const Vector2Int& num, const int direction)
+{
+	arrowE.Emit(num, direction, &brightness, playerPos);
+}
+
+void MapChipDraw::EraseArrow(const Vector2Int& num)
+{
+	if ( blocks[num.y][num.x].GetType() == BombBlock) arrowE.Erase(num);
+}
+
+void MapChipDraw::CrearArrow()
+{
+	arrowE.Crear();
+}
+
 void MapChipDraw::Draw(const Vector2Int& camera)
 {
 	for (size_t y = 0; y < 10; y++)
@@ -100,6 +113,7 @@ void MapChipDraw::Draw(const Vector2Int& camera)
 	}
 	breakE.Draw(camera);
 	dustE.Draw(camera);
+	arrowE.Draw(camera);
 }
 
 void MapChipDraw::SetLeftTop(Vector2Int* leftTop)
@@ -108,6 +122,7 @@ void MapChipDraw::SetLeftTop(Vector2Int* leftTop)
 	this->leftTop = leftTop;
 	breakE.SetLeftTop(leftTop);
 	dustE.SetLeftTop(leftTop);
+	arrowE.SetLeftTop(leftTop);
 }
 
 void MapChipDraw::SetBrightness(const int brightness)

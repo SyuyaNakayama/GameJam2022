@@ -1,15 +1,18 @@
 #include "ArrowDraw.h"
-#include "DxLib.h"
 #include "enum.h"
+#include "function.h"
 
 ArrowDraw::ArrowDraw() :
-	scale(1.0f), rota(0.0f), direction(Up),
+	pos(), scale(1.0f), rota(0.0f), direction(Up),
 	ease(), timer(0), change(false),
-	trans(255), arrowG(0)
+	trans(255), shadow(0), brightness(nullptr), 
+	playerPos(nullptr)
 {}
 
-void ArrowDraw::Initialize(const int direction, const int arrowG)
+void ArrowDraw::Initialize(const Vector2Int& leftTop, const Vector2Int& num, const int direction, const int arrowG[2])
 {
+	this->number = num;
+	pos = { leftTop.x + num.x * 64, leftTop.y + num.y * 64 };
 	scale = 1.0f;
 	rota = 0.0f;
 	ChangeDirection(direction);
@@ -17,7 +20,10 @@ void ArrowDraw::Initialize(const int direction, const int arrowG)
 	timer = 0;
 	change = false;
 	trans = 255;
-	this->arrowG = arrowG;
+	for (size_t i = 0; i < 2; i++)
+	{
+		this->arrowG[i] = arrowG[i];
+	}
 }
 
 void ArrowDraw::Update()
@@ -52,6 +58,7 @@ void ArrowDraw::Update()
 		break;
 	}
 	ChangeDirection(direction);
+	UpdateShadow();
 }
 
 void ArrowDraw::ChangeDirection(const int direction)
@@ -74,10 +81,39 @@ void ArrowDraw::ChangeDirection(const int direction)
 	}
 }
 
-void ArrowDraw::Draw(const Vector2Int& pos, const Vector2Int& camera, const int trans)
+void ArrowDraw::UpdateShadow()
 {
-	int t = this->trans;
-	if (trans < 255) t = trans;
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, t);
-	DrawRotaGraph(pos.x + camera.x, pos.y - 8 + camera.y, scale, rota, arrowG, true);
+	if (!playerPos || !brightness) return;
+
+	Vector2Int disPandB = Vector2Int(*playerPos - number).absVec();
+
+	int p = 0;
+	if (disPandB.x > disPandB.y) p = disPandB.x;
+	else p = disPandB.y;
+
+	if (p > *brightness) shadow = 255;
+	else shadow = 255 - ((*brightness - p) * 60);
+
+	Clamp(shadow, 255);
+}
+
+void ArrowDraw::Draw(const Vector2Int& camera)
+{
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, trans);
+	DrawRotaGraph(pos.x + camera.x, pos.y - 8 + camera.y, scale, rota, arrowG[0], true);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, shadow);
+	DrawRotaGraph(pos.x + camera.x, pos.y - 8 + camera.y, scale, rota, arrowG[1], true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+}
+
+void ArrowDraw::SetBrightness(int* brightness)
+{
+	if (!brightness) return;
+	this->brightness = brightness;
+}
+
+void ArrowDraw::SetPlayerPos(Vector2Int* playerPos)
+{
+	if (!playerPos) return;
+	this->playerPos = playerPos;
 }

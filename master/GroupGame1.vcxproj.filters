@@ -120,11 +120,8 @@
     <ClCompile Include="DustEffecter.cpp">
       <Filter>ソース ファイル\Draw\Effect</Filter>
     </ClCompile>
-    <ClCompile Include="Input.cpp">
-      <Filter>ソース ファイル\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="Pad.cpp">
-      <Filter>ソース ファイル\Input</Filter>
+    <ClCompile Include="ArrowEffecter.cpp">
+      <Filter>ソース ファイル\Draw\Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -199,12 +196,6 @@
     </ClInclude>
     <ClInclude Include="DrawParameter.h">
       <Filter>ヘッダー ファイル\Draw</Filter>
-    </ClInclude>
-    <ClInclude Include="Input.h">
-      <Filter>ヘッダー ファイル\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="Pad.h">
-      <Filter>ヘッダー ファイル\Input</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

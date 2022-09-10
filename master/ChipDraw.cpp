@@ -8,7 +8,7 @@ ChipDraw::ChipDraw() :
 	pos({ -256,-256 }), height(0), ease(), type(None),
 	isLanding(false), isQuake(false),
 	shake(), isBreak(false),
-	bright(), arrow(), isDeath(false),
+	bright(), isDeath(false),
 	trans(255), shadow(255), brightness(nullptr),
 	blockG(0),
 	pCamera(nullptr), playerPos(nullptr)
@@ -20,7 +20,7 @@ void ChipDraw::Initialze(const Vector2Int& leftTop, const Vector2Int& ary,
 	pos = { leftTop.x + ary.x * 64, leftTop.y + ary.y * 64 };
 	number = ary;
 	height = 0;
-	ease.Initialize(0.05f);
+	ease.Initialize(1.0f / (float)DustEffectTime );
 	this->type = type;
 	this->isDeath = isDeath;
 	isLanding = false;
@@ -35,11 +35,6 @@ void ChipDraw::Initialze(const Vector2Int& leftTop, const Vector2Int& ary,
 void ChipDraw::SetMask(const int maskG, const int whiteG)
 {
 	bright.Initialize({ 64,64 }, maskG, whiteG);
-}
-
-void ChipDraw::SetArrow(const int direction, const int arrowG)
-{
-	arrow.Initialize(direction, arrowG);
 }
 
 void ChipDraw::Update()
@@ -64,7 +59,6 @@ void ChipDraw::Update()
 		}
 
 		if (type == CrystalBlock) bright.Update();
-		if (type == BombBlock) arrow.Update();
 
 		trans = (int)ease.Out(0.0f, 255.0f, 2.0f);
 	}
@@ -127,8 +121,6 @@ void ChipDraw::Draw(const Vector2Int& camera)
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, trans);
 
 		DrawGraph(p.x - 32 + camera.x, p.y - 32 + camera.y, blockG, true);
-
-		if (type == BombBlock) arrow.Draw(p, camera, trans);
 	}
 
 	DrawShadow(camera);
