@@ -15,6 +15,7 @@ void MapChipDraw::Load()
 	whiteG = LoadGraph("Resources/Block/white.png");
 	bombG = LoadGraph("Resources/Block/bomb.png");
 	breakE.Load();
+	dustE.Load();
 	arrowG = LoadGraph("Resources/Block/arrow.png");
 	
 
@@ -39,11 +40,12 @@ void MapChipDraw::Update()
 		}
 	}
 	breakE.Update();
+	dustE.Update();
 }
 
 void MapChipDraw::ChipInit(const Vector2Int& num, const int blockName, const int direction)
 {
-	int g[2] = { 0, 0 };
+	int g = 0;
 	bool
 		isCrystalBlock = false,
 		isBombBlock = false,
@@ -51,17 +53,17 @@ void MapChipDraw::ChipInit(const Vector2Int& num, const int blockName, const int
 	switch (blockName)
 	{
 	case Block:
-		g[0] = planeG[GetRand(0, 2)];
+		g = planeG[GetRand(0, 2)];
 		break;
 	case CoinBlock:
-		g[0] = goldG;
+		g = goldG;
 		break;
 	case CrystalBlock:
-		g[0] = oreG;
+		g = oreG;
 		isCrystalBlock = true;
 		break;
 	case BombBlock:
-		g[0] = bombG;
+		g = bombG;
 		isBombBlock = true;
 		break;
 	case None:
@@ -69,7 +71,8 @@ void MapChipDraw::ChipInit(const Vector2Int& num, const int blockName, const int
 		break;
 	}
 
-	blocks[num.y][num.x].Initialze(*leftTop, num, blockName, death, g[0], g[1]);
+	blocks[num.y][num.x].Initialze(*leftTop, num, blockName, death, g);
+	dustE.Emit(num, blockName);
 	if (isCrystalBlock) blocks[num.y][num.x].SetMask(oreMaskG, whiteG);
 	if (isBombBlock) blocks[num.y][num.x].SetArrow(direction, arrowG);
 }
@@ -96,6 +99,7 @@ void MapChipDraw::Draw(const Vector2Int& camera)
 		}
 	}
 	breakE.Draw(camera);
+	dustE.Draw(camera);
 }
 
 void MapChipDraw::SetLeftTop(Vector2Int* leftTop)
@@ -103,6 +107,7 @@ void MapChipDraw::SetLeftTop(Vector2Int* leftTop)
 	if (leftTop == nullptr) return;
 	this->leftTop = leftTop;
 	breakE.SetLeftTop(leftTop);
+	dustE.SetLeftTop(leftTop);
 }
 
 void MapChipDraw::SetBrightness(const int brightness)

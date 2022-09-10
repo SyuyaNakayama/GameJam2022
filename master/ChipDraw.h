@@ -10,14 +10,15 @@ class ChipDraw
 private:
 	Vector2Int pos;
 	Vector2Int number;
-	int height;
-	Ease ease;
 	int type;
 	
-	DustEmitter dustE;
+	// ’…’n‰‰o
+	int height;
+	Ease ease;
 	bool isLanding;
-	bool isEmit;
+	bool isQuake;
 	
+	// ”j‰ó‰‰o
 	Shake shake;
 	bool isBreak;
 	
@@ -31,15 +32,13 @@ private:
 	int* brightness;
 
 	int blockG;
-	int debriG;
 
 	Vector2Int* playerPos;
 	Camera* pCamera;
 public:
 	ChipDraw();
 	void Initialze(const Vector2Int& leftTop, const Vector2Int& ary, 
-		const int type, const bool isDeath,
-		const int blockG, const int debriG);
+		const int type, const bool isDeath, const int blockG);
 	void SetMask(const int maskG, const int whiteG);
 	void SetArrow(const int direction, const int arrowG);
 	void Update();

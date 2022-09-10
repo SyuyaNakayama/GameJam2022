@@ -2,21 +2,20 @@
 #include "enum.h"
 #include <math.h>
 #include "function.h"
-#include "EffectParameter.h"
+#include "DrawParameter.h"
 
 ChipDraw::ChipDraw() :
 	pos({ -256,-256 }), height(0), ease(), type(None),
-	dustE(), isLanding(false), isEmit(false),
+	isLanding(false), isQuake(false),
 	shake(), isBreak(false),
 	bright(), arrow(), isDeath(false),
 	trans(255), shadow(255), brightness(nullptr),
-	blockG(0), debriG(0),
+	blockG(0),
 	pCamera(nullptr), playerPos(nullptr)
 {}
 
 void ChipDraw::Initialze(const Vector2Int& leftTop, const Vector2Int& ary,
-	const int type, const bool isDeath,
-	const int blockG, const int debriG)
+	const int type, const bool isDeath, const int blockG)
 {
 	pos = { leftTop.x + ary.x * 64, leftTop.y + ary.y * 64 };
 	number = ary;
@@ -25,13 +24,12 @@ void ChipDraw::Initialze(const Vector2Int& leftTop, const Vector2Int& ary,
 	this->type = type;
 	this->isDeath = isDeath;
 	isLanding = false;
-	isEmit = false;
+	isQuake = false;
 	shake.Initialize();
 	isBreak = false;
 	trans = 255;
 	shadow = 0;
 	this->blockG = blockG;
-	this->debriG = debriG;
 }
 
 void ChipDraw::SetMask(const int maskG, const int whiteG)
@@ -51,13 +49,12 @@ void ChipDraw::Update()
 		ease.Update(true);
 		height = (int)ease.In(-160.0f, 0.0f, 3.0f);
 		if (height == 0) isLanding = true;
-		if (isLanding && !isEmit)
+		if (isLanding && !isQuake)
 		{
 			Landing();
 			isLanding = false;
-			isEmit = true;
+			isQuake = true;
 		}
-		dustE.Update();
 
 		shake.Update();
 		if (!shake.IsShake() && isBreak) 
@@ -77,7 +74,6 @@ void ChipDraw::Update()
 
 void ChipDraw::Landing()
 {
-	dustE.Emit({ pos.x - 32, pos.y - 32 }, { pos.x + 32, pos.y + 32 }, 10);
 	if (pCamera == nullptr) return;
 	pCamera->Shaking(5, 1);
 }
@@ -142,8 +138,6 @@ void ChipDraw::Draw(const Vector2Int& camera)
 		if (type == CrystalBlock) bright.Draw(p, camera, trans);
 
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-
-		dustE.Draw(camera);
 	}
 
 	DrawFormatString(p.x, p.y, GetColor(0, 0, 255), "%d", type);

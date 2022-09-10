@@ -2,29 +2,31 @@
 #include "DxLib.h"
 
 Dust::Dust() :
-	speed(0, 0), rad(0), isDeath(false), control(0)
+	speed(0, 0), isDeath(false), timer(0), graph(0)
 {}
 
-void Dust::Initialize(const Vector2Int& pos, const int rad,
-	const Vector2Int speed, const int trans)
+void Dust::Initialize(const Vector2Int& pos, const float scale, const float rota, const Vector2Int speed,
+	const Color color, const int trans, const int graph)
 {
 	this->pos = pos;
-	this->rad = rad;
-	this->trans = 255;
-	this->control = 0;
-	this->isDeath = false;
+	this->scale = scale;
+	this->rota = rota;
 	this->speed = speed;
+	this->color = color;
+	this->trans = trans;
+	this->graph = graph;
+	this->timer = 0;
+	this->isDeath = false;
 }
 
 void Dust::Update()
 {
 	if (isDeath) { return; }
 	pos += speed;
-	control++;
-	if (control >= 10)
+	if (++timer >= 10)
 	{
-		rad++;
-		control = 0;
+		scale += 0.1f;
+		timer = 0;
 	}
 	trans -= 10;
 	if (trans <= 0)
@@ -37,6 +39,8 @@ void Dust::Update()
 void Dust::Draw(const Vector2Int& camera)
 {
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, trans);
-	DrawCircle(pos.x, pos.y, rad, GetColor(180, 200, 220), true);
+	SetDrawBright(color.r, color.g, color.b);
+	DrawRotaGraph(pos.x, pos.y, scale, rota, graph, true);
+	SetDrawBright(255, 255, 255);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }

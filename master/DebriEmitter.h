@@ -11,7 +11,7 @@ public:
 	DebriEmitter();
 	~DebriEmitter();
 	void Emit(const Vector2Int& leftTop, const Vector2Int& rightBottom, const size_t num,
-			const Debri::Color color[2], const int graph);
+			const Particle::Color color[2], const int graph);
 	void Update();
 	void Draw(const Vector2Int& camera);
 	bool IsDeath() { return isDeath; }

@@ -2,11 +2,11 @@
 #include "DxLib.h"
 
 Debri::Debri() :
-	speed(), isDeath(false), color(), graph(0)
+	speed(), isDeath(false), graph(0)
 {}
 
-void Debri::Initialize(const Vector2Int& pos, const float scale, const float rota,
-	const Vector2Int speed, const Color color, const int graph)
+void Debri::Initialize(const Vector2Int& pos, const float scale, const float rota, const Vector2Int speed, 
+	const Color color, const int graph)
 {
 	this->pos = pos;
 	this->scale = scale;

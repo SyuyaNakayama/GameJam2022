@@ -10,7 +10,8 @@ DustEmitter::~DustEmitter()
 	dusts.clear();
 }
 
-void DustEmitter::Emit(const Vector2Int& leftTop, const Vector2Int& rightBottom, const size_t num)
+void DustEmitter::Emit(const Vector2Int& leftTop, const Vector2Int& rightBottom, const size_t num,
+	const Particle::Color color, const int graph)
 {
 	dusts.clear();
 	isDeath = false;
@@ -18,11 +19,12 @@ void DustEmitter::Emit(const Vector2Int& leftTop, const Vector2Int& rightBottom,
 	{
 		Dust dust;
 		Vector2Int pos = { GetRand(leftTop.x, rightBottom.x), GetRand(leftTop.y, rightBottom.y) };
-		int rad = GetRand(3, 5);
+		float scale = GetRandF(0.5f, 1.5f);
+		float rota = GetRandF(0, 3.141592f * 2.0f);
 		Vector2Int speed = { GetRand(-2, 2), GetRand(-2, 0) };
-		int trans = GetRand(100, 200);
+		int trans = GetRand(150, 250);
 
-		dust.Initialize(pos, rad, speed, trans);
+		dust.Initialize(pos, scale, rota, speed, color, trans, graph);
 
 		dusts.push_back(dust);
 	}
@@ -46,8 +48,9 @@ void DustEmitter::Update()
 
 void DustEmitter::Draw(const Vector2Int& camera)
 {
+	if (isDeath) return;
 	for (size_t i = 0; i < dusts.size(); i++)
 	{
-		if (!isDeath) dusts[i].Draw(camera);
+		dusts[i].Draw(camera);
 	}
 }

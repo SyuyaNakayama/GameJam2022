@@ -197,8 +197,8 @@
     <ClInclude Include="DustEffecter.h">
       <Filter>ヘッダー ファイル\Draw\Effect</Filter>
     </ClInclude>
-    <ClInclude Include="EffectParameter.h">
-      <Filter>ヘッダー ファイル\Draw\Effect</Filter>
+    <ClInclude Include="DrawParameter.h">
+      <Filter>ヘッダー ファイル\Draw</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

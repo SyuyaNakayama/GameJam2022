@@ -1,7 +1,6 @@
 #include "BreakEffecter.h"
-#include "DxLib.h"
 #include "enum.h"
-#include "EffectParameter.h"
+#include "DrawParameter.h"
 
 void BreakEffecter::Load()
 {
@@ -13,7 +12,7 @@ void BreakEffecter::Emit(const Vector2Int& num, const int blockName)
 	if (!leftTop) return;
 	BreakEffect effect;
 	Vector2Int p = { leftTop->x + num.x * 64, leftTop->y + num.y * 64 };
-	Debri::Color c[2]{};
+	Particle::Color c[2]{};
 	int g = 0;
 	switch (blockName)
 	{

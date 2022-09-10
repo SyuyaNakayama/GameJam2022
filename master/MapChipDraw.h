@@ -1,12 +1,14 @@
 #pragma once
 #include "ChipDraw.h"
 #include "BreakEffecter.h"
+#include "DustEffecter.h"
 
 class MapChipDraw
 {
 private:
 	ChipDraw blocks[10][10];
 	BreakEffecter breakE;
+	DustEffecter dustE;
 	int planeG[3]{};
 	int goldG;
 	int oreG;
