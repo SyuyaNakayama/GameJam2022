@@ -33,12 +33,17 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	Scene scene = Scene::Play;
 	Color color;
 	// ---•Ï”‚ÌéŒ¾‚Æ‰Šú‰»---
+	Camera camera;
+	camera.Initialize({});
 	Map map;
 	map.Create();
 	Player player = { {rand() % 2 + 4,rand() % 2 + 4},&map };
 	map.Change(player.GetPos(), None);
+	map.DrawChipInit(player.GetPos(), None);
+	map.SetOutSide(&camera, player.GetPosAdress());
 	Timer timer = { GetNowCount() ,120 };
 	Input input;
+	Pad* pad = Pad::GetInstance();
 
 	SetFontSize(32);
 	while (!(ProcessMessage() == -1 || CheckHitKey(KEY_INPUT_ESCAPE)))
@@ -61,12 +66,16 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 				map.Create();
 				player.SetPos({ rand() % 2 + 4,rand() % 2 + 4 });
 				map.Change(player.GetPos(), None);
+				map.DrawChipInit(player.GetPos(), None);
 			}
+			map.Update();
 			if (player.GetActionCount() <= 0 || timer.CountDown()) { scene = GameOver; SetFontSize(96); }
 			break;
 		case GameOver:
 			break;
 		}
+		camera.Update();
+		pad->Update();
 #pragma endregion
 #pragma region •`‰æˆ—
 		switch (scene)
@@ -77,7 +86,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		case Tutorial:
 			break;
 		case Play:
-			map.Draw();
+			map.Draw(camera.GetPos());
 			player.Draw();
 			timer.Draw({ 0,32 });
 			DrawFormatString(0, 0, color.White, "ƒRƒCƒ“c‚è%d–‡", map.CountBlockNum(CoinBlock));

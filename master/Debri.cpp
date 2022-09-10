@@ -25,8 +25,8 @@ void Debri::Update()
 		pos += speed;
 		speed.y += 1;
 
-		if (speed.x > 0) rota += 3.141592 / 64.0f;
-		if (speed.x < 0) rota -= 3.141592 / 64.0f;
+		if (speed.x > 0) rota += 3.141592f / 64.0f;
+		if (speed.x < 0) rota -= 3.141592f / 64.0f;
 		
 		scale += 0.1f;
 

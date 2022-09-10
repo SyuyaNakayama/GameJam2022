@@ -10,7 +10,7 @@ private:
 public:
 	DustEmitter();
 	~DustEmitter();
-	void Emit(const Vector2Int& leftTop, const Vector2Int& rightBottom, const int num);
+	void Emit(const Vector2Int& leftTop, const Vector2Int& rightBottom, const size_t num);
 	void Update();
 	void Draw(const Vector2Int& camera);
 };

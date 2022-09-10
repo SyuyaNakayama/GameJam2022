@@ -16,6 +16,7 @@ void Map::BombDestroy(int bombIndex)
 			}
 		}
 		Change(destroyPos[i], None);
+		drawer.ChipBreak(destroyPos[i]);
 	}
 }
 
@@ -24,7 +25,11 @@ void Map::Respawn()
 	for (size_t y = 0; y < map.size(); y++) {
 		for (size_t x = 0; x < map[y].size(); x++)
 		{
-			if (map[y][x] == None) { map[y][x] = Block; }
+			if (map[y][x] == None) 
+			{ 
+				map[y][x] = Block; 
+				drawer.ChipInit({ (int)x, (int)y }, Block);
+			}
 		}
 	}
 }
@@ -47,6 +52,7 @@ void Map::Init()
 		for (size_t x = 0; x < map[y].size(); x++)
 		{
 			map[y][x] = Block;
+			drawer.ChipInit({ (int)x, (int)y }, Block);
 		}
 	}
 }
@@ -66,6 +72,7 @@ void Map::Create()
 	for (size_t i = 0; i < 3; i++)
 	{
 		Change(crystalPos[crystalPattern][i], CrystalBlock);
+		drawer.ChipInit(crystalPos[crystalPattern][i], CrystalBlock);
 	}
 	// コイン配置
 	for (size_t i = 0; i < COIN_NUM; i++)
@@ -77,6 +84,7 @@ void Map::Create()
 			if (GetMapState(coinBlockPos) == Block)
 			{
 				Change(coinBlockPos, CoinBlock);
+				drawer.ChipInit(coinBlockPos, CoinBlock);
 				break;
 			}
 		}
@@ -91,14 +99,16 @@ void Map::Create()
 			if (GetMapState(bombBlockPos) == Block)
 			{
 				Change(bombBlockPos, BombBlock);
-				bomb.push_back({ bombBlockPos,rand() % 4 });
+				int random = rand() % 4;
+				drawer.ChipInit(bombBlockPos, BombBlock, random);
+				bomb.push_back({ bombBlockPos, random});
 				break;
 			}
 		}
 	}
 }
 
-void Map::Draw()
+void Map::Draw(const Vector2Int& camera)
 {
 	Vector2Int boxPos{};
 	for (size_t y = 0; y < map.size(); y++) {
@@ -130,4 +140,32 @@ void Map::Draw()
 			}
 		}
 	}
+	drawer.Draw(camera);
+}
+
+void Map::LoadAndSet()
+{
+	drawer.Load();
+	drawer.SetLeftTop(&pos);
+}
+
+void Map::SetOutSide(Camera* camera, Vector2Int* playerPos)
+{
+	drawer.SetCamera(camera);
+	drawer.SetPlayerPos(playerPos);
+}
+
+void Map::Update()
+{
+	drawer.Update();
+}
+
+void Map::DrawChipInit(const Vector2Int& num, const int blockName)
+{
+	drawer.ChipInit(num, blockName);
+}
+
+void Map::DrawChipBreak(const Vector2Int& num)
+{
+	drawer.ChipBreak(num);
 }

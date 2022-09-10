@@ -1,11 +1,10 @@
 #include "MapChipDraw.h"
-#include "DxLib.h"
 #include "Random.h"
 #include "enum.h"
 
 MapChipDraw::MapChipDraw() :
 	goldG(0), oreG(0), oreMaskG(0), whiteG(0), bombG(0), arrowG(0),
-	brightness(5), playerPos(nullptr), pCamera(nullptr)
+	leftTop(nullptr), brightness(20), playerPos(nullptr), pCamera(nullptr)
 {
 	for (size_t i = 0; i < 3; i++)
 	{
@@ -52,16 +51,12 @@ void MapChipDraw::Update()
 	}
 }
 
-void MapChipDraw::ChipInit(const int x, const int y, const int blockName)
+void MapChipDraw::ChipInit(const Vector2Int& num, const int blockName, const int direction)
 {
-	if (playerPos != nullptr)
-	{
-		if (playerPos->x == x && playerPos->y == y) return;
-	}
-
 	int g[2] = { 0, 0 };
 	bool b = false;
 	bool b2 = false;
+	bool death = false;
 	switch (blockName)
 	{
 	case Block:
@@ -84,22 +79,24 @@ void MapChipDraw::ChipInit(const int x, const int y, const int blockName)
 		break;
 	case None:
 	default:
+		death = true;
 		break;
 	}
-	blocks[y][x].Initialze({ 200,500 }, { x, y }, blockName, g[0], g[1]);
-	if (b) blocks[y][x].SetMask(oreMaskG, whiteG);
-	if (b2) blocks[y][x].SetArrow(Up, arrowG);
+
+	blocks[num.y][num.x].Initialze(*leftTop, num, blockName, death, g[0], g[1]);
+	if (b) blocks[num.y][num.x].SetMask(oreMaskG, whiteG);
+	if (b2) blocks[num.y][num.x].SetArrow(direction, arrowG);
 }
 
-void MapChipDraw::ChipBreak(const int x, const int y)
+void MapChipDraw::ChipBreak(const Vector2Int& num)
 {
-	blocks[y][x].Break();
+	blocks[num.y][num.x].Break();
 }
 
-void MapChipDraw::ChipBright(const int x, const int y)
+void MapChipDraw::ChipBright(const Vector2Int& num)
 {
-	if(blocks[y][x].GetType() != CrystalBlock) return;
-	blocks[y][x].Bright();
+	if(blocks[num.y][num.x].GetType() != CrystalBlock) return;
+	blocks[num.y][num.x].Bright();
 }
 
 void MapChipDraw::Draw(const Vector2Int& camera)
@@ -111,6 +108,12 @@ void MapChipDraw::Draw(const Vector2Int& camera)
 			blocks[y][x].Draw(camera);
 		}
 	}
+}
+
+void MapChipDraw::SetLeftTop(Vector2Int* leftTop)
+{
+	if (leftTop == nullptr) return;
+	this->leftTop = leftTop;
 }
 
 void MapChipDraw::SetBrightness(const int brightness)

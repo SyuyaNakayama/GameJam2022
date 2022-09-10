@@ -10,7 +10,7 @@ DustEmitter::~DustEmitter()
 	dusts.clear();
 }
 
-void DustEmitter::Emit(const Vector2Int& leftTop, const Vector2Int& rightBottom, const int num)
+void DustEmitter::Emit(const Vector2Int& leftTop, const Vector2Int& rightBottom, const size_t num)
 {
 	dusts.clear();
 	isDeath = false;
@@ -30,7 +30,7 @@ void DustEmitter::Emit(const Vector2Int& leftTop, const Vector2Int& rightBottom,
 
 void DustEmitter::Update()
 {
-	int count = 0;
+	size_t count = 0;
 	for (size_t i = 0; i < dusts.size(); i++)
 	{
 		if (dusts[i].isDeath) count++;

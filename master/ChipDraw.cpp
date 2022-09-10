@@ -1,5 +1,4 @@
 #include "ChipDraw.h"
-#include "DxLib.h"
 #include "enum.h"
 #include <math.h>
 
@@ -13,21 +12,23 @@ ChipDraw::ChipDraw() :
 	pCamera(nullptr), playerPos(nullptr)
 {}
 
-void ChipDraw::Initialze(const Vector2Int& leftTop, const Vector2Int& ary, const int type,
-				const int blockG, const int debriG)
+void ChipDraw::Initialze(const Vector2Int& leftTop, const Vector2Int& ary, 
+		const int type, const bool isDeath,
+		const int blockG, const int debriG)
 {
 	pos = { leftTop.x + ary.x * 64, leftTop.y + ary.y * 64 };
 	number = ary;
 	height = 0;
 	ease.Initialize(0.05f);
 	this->type = type;
+	this->isDeath = isDeath;
 	isLanding = false;
 	isEmit = false;
 	shake.Initialize();
 	isBreak = false;
 	isEmit2 = false;
 	trans = 255;
-	shadow = 255;
+	shadow = 0;
 	this->blockG = blockG;
 	this->debriG = debriG;
 }
@@ -44,31 +45,39 @@ void ChipDraw::SetArrow(const int direction, const int arrowG)
 
 void ChipDraw::Update()
 {
-	ease.Update(true);
-	height = (int)ease.In(-160.0f, 0.0f, 3.0f);
-	if (height == 0) isLanding = true;
-	if (isLanding && !isEmit)
+	if (!isDeath)
 	{
-		Landing();
-		isLanding = false;
-		isEmit = true;
+		ease.Update(true);
+		height = (int)ease.In(-160.0f, 0.0f, 3.0f);
+		if (height == 0) isLanding = true;
+		if (isLanding && !isEmit)
+		{
+			Landing();
+			isLanding = false;
+			isEmit = true;
+		}
+		dustE.Update();
+
+		shake.Update();
+		if (!shake.IsShake() && isBreak) isEmit2 = true;
+		if (isEmit2)
+		{
+			EmitDebris();
+			isBreak = false;
+			isEmit2 = false;
+		}
+		debriE.Update();
+		if (debriE.GetIsDeath())
+		{
+			isDeath = true;
+			type = None;
+		}
+
+		if (type == CrystalBlock) bright.Update();
+		//if (type == BombBlock) arrow.Update();
+
+		trans = (int)ease.Out(0.0f, 255.0f, 2.0f);
 	}
-	dustE.Update();
-
-	shake.Update();
-	if (!shake.IsShake() && isBreak) isEmit2 = true;
-	if(isEmit2)
-	{
-		EmitDebris();
-		isBreak = false;
-		isEmit2 = false;
-	}
-	debriE.Update();
-
-	if (type == CrystalBlock) bright.Update();
-	if (type == BombBlock) arrow.Update();
-
-	trans = (int)ease.Out(0.0f, 255.0f, 2.0f);
 
 	UpdateShadow();
 }
@@ -82,7 +91,7 @@ void ChipDraw::Landing()
 
 void ChipDraw::Break()
 {
-	shake.Shaking(10.0f, 2.0f);
+	shake.Shaking(10, 2);
 	isBreak = true;
 	if (pCamera == nullptr) return;
 	pCamera->Shaking(5, 1);
@@ -140,7 +149,7 @@ void ChipDraw::UpdateShadow()
 	if (shadow <= 0) shadow = 0;
 }
 
-void ChipDraw::DrawShadow(const Vector2Int& pos, const Vector2Int& camera)
+void ChipDraw::DrawShadow(const Vector2Int& camera)
 {
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, shadow);
 	DrawBox(pos.x - 32 + camera.x, pos.y - 32 + camera.y,
@@ -155,20 +164,30 @@ void ChipDraw::Draw(const Vector2Int& camera)
 		pos.x + shake.GetValue().x,
 		pos.y + height + shake.GetValue().y 
 	};
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, trans);
-	
-	DrawGraph(p.x - 32 + camera.x, p.y - 32 + camera.y, blockG, true);
-	
-	if (type == BombBlock) arrow.Draw(p, camera, trans);
-	
-	DrawShadow(p, camera);
+	bool d = !isDeath;
 
-	if (type == CrystalBlock) bright.Draw(p, camera, trans);
-	
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-	
-	dustE.Draw(camera);
-	debriE.Draw(camera);
+	if (d) 
+	{
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, trans);
+
+		DrawGraph(p.x - 32 + camera.x, p.y - 32 + camera.y, blockG, true);
+
+		if (type == BombBlock) arrow.Draw(p, camera, trans);
+	}
+
+	DrawShadow(camera);
+
+	if (d)
+	{
+		if (type == CrystalBlock) bright.Draw(p, camera, trans);
+
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+		dustE.Draw(camera);
+		debriE.Draw(camera);
+	}
+
+	DrawFormatString(p.x, p.y, GetColor(0, 0, 255), "%d", type);
 }
 
 void ChipDraw::SetBrightness(int* brightness)

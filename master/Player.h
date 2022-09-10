@@ -17,7 +17,7 @@ private:
 	int rad;
 	Direction direction = Up;
 	Input input;
-	Pad pad;
+	Pad* pad = nullptr;
 	int selectNum = DESTROY_MAX;
 	int actionNum = 20;
 	int respawnTimer = 0;
@@ -31,6 +31,7 @@ public:
 	Player(Vector2Int pos_, Map* pMap);
 	void SetPos(Vector2Int pos_) { pos = pos_; }
 	Vector2Int GetPos() { return pos; }
+	Vector2Int* GetPosAdress() { return &pos; }
 	Direction GetDirection() { return direction; }
 	int GetActionCount() { return actionNum; }
 	void Move();

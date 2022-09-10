@@ -39,7 +39,8 @@ private:
 	Camera* pCamera;
 public:
 	ChipDraw();
-	void Initialze(const Vector2Int& leftTop, const Vector2Int& ary, const int type,
+	void Initialze(const Vector2Int& leftTop, const Vector2Int& ary, 
+		const int type, const bool isDeath,
 		const int blockG, const int debriG);
 	void SetMask(const int maskG, const int whiteG);
 	void SetArrow(const int direction, const int arrowG);
@@ -55,5 +56,5 @@ private:
 	void Landing();
 	void EmitDebris();
 	void UpdateShadow();
-	void DrawShadow(const Vector2Int& pos, const Vector2Int& camera);
+	void DrawShadow(const Vector2Int& camera);
 };

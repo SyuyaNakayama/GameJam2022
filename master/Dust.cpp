@@ -2,7 +2,7 @@
 #include "DxLib.h"
 
 Dust::Dust() :
-	speed(0.0f, 0.0f), rad(0), isDeath(false), control(0)
+	speed(0, 0), rad(0), isDeath(false), control(0)
 {}
 
 void Dust::Initialize(const Vector2Int& pos, const int rad,

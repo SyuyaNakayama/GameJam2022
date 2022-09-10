@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "enum.h"
 #include "Bomb.h"
+#include "MapChipDraw.h"
 
 using namespace std;
 
@@ -32,6 +33,8 @@ private:
 	};
 	const int COIN_NUM = 7;
 	int crystalPattern;
+
+	MapChipDraw drawer;
 public:
 	Vector2Int GetMapPos() { return pos; }
 	Vector2Int GetChipPos(Vector2Int chipNum) { return pos + 2 * chipRad * chipNum; }
@@ -41,13 +44,19 @@ public:
 	vector<Bomb> GetBomb() { return bomb; }
 	size_t CountBlockNum(BlockName blockName);
 
-	Map() { Init(); }
+	Map() { LoadAndSet(); Init(); }
 	void Init(); // É}ÉbÉvÇBlockÇ≈èâä˙âª
 	void Change(Vector2Int num, BlockName blockName);
 	void Create();
 	void Respawn();
 	void BombDestroy(int bombIndex);
-	void Draw();
+	void Draw(const Vector2Int& camera);
+
+	void LoadAndSet();
+	void SetOutSide(Camera* camera, Vector2Int* playerPos);
+	void Update();
+	void DrawChipInit(const Vector2Int& num, const int blockName);
+	void DrawChipBreak(const Vector2Int& num);
 private:
 	const vector<int>CHIP_COLOR = { color.Black,color.White,color.Yellow,color.Green,color.Red };
 };
