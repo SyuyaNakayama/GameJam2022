@@ -15,7 +15,7 @@ void MapChipDraw::Load()
 	whiteG = LoadGraph("Resources/Block/white.png");
 	bombG = LoadGraph("Resources/Block/bomb.png");
 	arrowG = LoadGraph("Resources/Block/arrow.png");
-	LoadDivGraph("Resources/Block/debri_.png", 2, 2, 1, 8, 8, debriG);
+	LoadDivGraph("Resources/Block/debri.png", 2, 2, 1, 8, 8, debriG);
 
 	oreMaskG = LoadMask("Resources/Block/ore_mask.png");
 
