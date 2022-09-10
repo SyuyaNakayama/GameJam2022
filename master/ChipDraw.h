@@ -52,6 +52,7 @@ public:
 	void SetPlayerPos(Vector2Int* playerPos);
 	void SetCamera(Camera* pCamera);
 	int GetType() { return type; }
+	bool GetIsDeath() { return isDeath; }
 private:
 	void Landing();
 	void EmitDebris();

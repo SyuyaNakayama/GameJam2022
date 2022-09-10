@@ -101,6 +101,7 @@ void Player::Destroy()
 			for (size_t i = 0; i < selectChip.size(); i++)
 			{
 				mapPointer->Change(selectChip[i], None);
+				mapPointer->DrawChipInit(selectChip[i], None);
 				mapPointer->DrawChipBreak(selectChip[i]);
 			}
 			if (mode == Mode::Move) { pos = selectChip.back(); }

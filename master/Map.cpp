@@ -16,6 +16,7 @@ void Map::BombDestroy(int bombIndex)
 			}
 		}
 		Change(destroyPos[i], None);
+		DrawChipInit(destroyPos[i], None);
 		drawer.ChipBreak(destroyPos[i]);
 	}
 }

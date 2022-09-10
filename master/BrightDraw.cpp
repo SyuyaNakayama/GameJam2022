@@ -11,6 +11,7 @@ BrightDraw::BrightDraw() :
 void BrightDraw::Initialize(const Vector2Int& size, const int maskG, const int whiteG)
 {
 	Bright();
+	bright = false;
 	this->maskG = maskG;
 	this->whiteG = whiteG;
 }
