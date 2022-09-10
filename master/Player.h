@@ -41,4 +41,5 @@ public:
 	void Move();
 	void Draw();
 	void Destroy();
+	void ActionReset();
 };

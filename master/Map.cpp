@@ -19,6 +19,16 @@ void Map::BombDestroy(int bombIndex, Player* player)
 		drawer.EraseArrowAndBright(destroyPos[i]);
 		Change(destroyPos[i], None);
 	}
+	for (size_t y = 0; y < map.size(); y++) {
+		for (size_t x = 0; x < map[y].size(); x++)
+		{
+			if (map[y][x] == None)
+			{
+				bombBreak++;
+			}
+		}
+	}
+	bombBreak--;
 }
 
 void Map::Respawn()

@@ -149,3 +149,7 @@ void Player::Draw()
 	DrawDebugNumber(damageCount, 96);
 	DrawBoxWithVectorInt(mapPointer->GetChipPos(selectPos), Vector2Int(mapPointer->GetRadius(), mapPointer->GetRadius()), color.Blue, mode);
 }
+
+void Player::ActionReset() {
+	actionNum = 20;
+}

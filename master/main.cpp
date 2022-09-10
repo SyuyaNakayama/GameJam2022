@@ -23,7 +23,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	SetOutApplicationLogValidFlag(false);
 	ChangeWindowMode(TRUE);
 	SetWindowSizeChangeEnableFlag(FALSE, FALSE);
-	SetMainWindowText("GameJam2022_之の人、採掘場にて。～アレッヒの地下奴隷～");
+	SetMainWindowText("GameJam2022_コノヒト、サイクツジョウニテ。");
 	SetGraphMode(WIN_SIZE.x, WIN_SIZE.y, 32);
 	SetWindowSizeExtendRate(1.0);
 	SetDrawScreen(DX_SCREEN_BACK);
@@ -34,7 +34,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	Scene scene = Scene::Play;
 	Color color;
 	// ---変数の宣言と初期化---
-	int stage = 0, score = 0;
+	int stage = 1, score = 0;
+	int scoreCoin = 0;
 	Camera camera;
 	camera.Initialize({});
 	Map map;
@@ -62,22 +63,35 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			break;
 		case Play:
 			input.Update();
-			player.Move();
-			player.Destroy();
-			if (input.IsTrigger(KEY_INPUT_R))
+			if (stage == 1 || stage == 2 || stage == 3)
 			{
-				map.Create();
-				player.SetPos({ rand() % 2 + 4,rand() % 2 + 4 });
-				map.Change(player.GetPos(), None);
+				player.Move();
+				player.Destroy();
+				if (input.IsTrigger(KEY_INPUT_R))
+				{
+					map.Create();
+					player.SetPos({ rand() % 2 + 4,rand() % 2 + 4 });
+					map.Change(player.GetPos(), None);
+				}
+				if (input.IsTrigger(KEY_INPUT_N))
+				{
+					map.DrawBright();
+				}
+				map.Update();
+				if (map.CountBlockNum(CrystalBlock) == 0) {
+					stage++;
+					player.ActionReset();
+					scoreCoin += 7 - map.CountBlockNum(CoinBlock);
+					map.Create();
+					player.SetPos({ rand() % 2 + 4,rand() % 2 + 4 });
+					map.Change(player.GetPos(), None);
+					map.SetBrightness(player.GetActionCount());
+				}
 			}
-			if (input.IsTrigger(KEY_INPUT_N))
-			{
-				map.DrawBright();
-			}
-			map.Update();
 			if (player.GetActionCount() <= 0 || timer.CountDown(player.GetDamageCount())) { scene = GameOver; SetFontSize(96); }
 			break;
 		case GameOver:
+			score = (scoreCoin * 100) * (1 + (0.1 * stage)) + (map.GetBombBreakCount() * 50);
 			break;
 		}
 		camera.Update();
@@ -87,19 +101,26 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		switch (scene)
 		{
 		case Title:
-			DrawString(50, 150, "之の人、採掘場にて。\n\n　～アレッヒの地下奴隷～", color.White);
+			DrawString(50, 150, "コノヒト、サイクツジョウニテ。", color.White);
 			break;
 		case Tutorial:
 			break;
 		case Play:
-			map.Draw(camera.GetPos());
-			player.Draw();
-			timer.Draw({ 0,32 });
-			DrawFormatString(0, 0, color.White, "コイン残り%d枚", map.CountBlockNum(CoinBlock));
-			DrawFormatString(400, 0, color.White, "行動回数:%d回", player.GetActionCount());
+			if (stage == 1 || stage == 2 || stage == 3)
+			{
+				map.Draw(camera.GetPos());
+				player.Draw();
+				timer.Draw({ 0,32 });
+				DrawFormatString(0, 0, color.White, "コイン残り%d枚", map.CountBlockNum(CoinBlock));
+				DrawFormatString(400, 0, color.White, "行動回数:%d回", player.GetActionCount());
+				DrawFormatString(400, 50, color.White, "クリスタル:%d個", map.CountBlockNum(CrystalBlock));
+				DrawFormatString(400, 96, color.White, "ボムによる破壊:%d個", map.GetBombBreakCount());
+			}
+			DrawFormatString(800, 0, color.White, "ステージ:%d", stage);
 			break;
 		case GameOver:
-			DrawString(50, 150, "夏空へ、ゲームオーバー", color.White);
+			DrawString(400, 150, "リザルト", color.White);
+			DrawFormatString(400, 350, color.White, "スコア:%d", score);
 			break;
 		}
 
