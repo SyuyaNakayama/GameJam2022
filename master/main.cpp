@@ -34,7 +34,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	Scene scene = Scene::Play;
 	Color color;
 	// ---変数の宣言と初期化---
-	int stage = 1, score = 0;
+	int score = 0;
 	int scoreCoin = 0;
 	Camera camera;
 	camera.Initialize({});
@@ -63,8 +63,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			break;
 		case Play:
 			input.Update();
-			if (stage == 1 || stage == 2 || stage == 3)
-			{
+			
 				player.Move();
 				player.Destroy();
 				if (input.IsTrigger(KEY_INPUT_R))
@@ -79,19 +78,18 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 				}
 				map.Update();
 				if (map.CountBlockNum(CrystalBlock) == 0) {
-					stage++;
+					map.NextStage();
 					player.ActionReset();
 					scoreCoin += 7 - map.CountBlockNum(CoinBlock);
-					map.Create();
 					player.SetPos({ rand() % 2 + 4,rand() % 2 + 4 });
 					map.Change(player.GetPos(), None);
 					map.SetBrightness(player.GetActionCount());
 				}
-			}
+			
 			if (player.GetActionCount() <= 0 || timer.CountDown(player.GetDamageCount())) { scene = GameOver; SetFontSize(96); }
 			break;
 		case GameOver:
-			score = (scoreCoin * 100) * (1 + (0.1 * stage)) + (map.GetBombBreakCount() * 50);
+			score = (scoreCoin * 100) * (1 + (0.1 * map.GetStage())) + (map.GetBombBreakCount() * 50);
 			break;
 		}
 		camera.Update();
@@ -106,8 +104,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		case Tutorial:
 			break;
 		case Play:
-			if (stage == 1 || stage == 2 || stage == 3)
-			{
+			
 				map.Draw(camera.GetPos());
 				player.Draw();
 				timer.Draw({ 0,32 });
@@ -115,8 +112,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 				DrawFormatString(400, 0, color.White, "行動回数:%d回", player.GetActionCount());
 				DrawFormatString(400, 50, color.White, "クリスタル:%d個", map.CountBlockNum(CrystalBlock));
 				DrawFormatString(400, 96, color.White, "ボムによる破壊:%d個", map.GetBombBreakCount());
-			}
-			DrawFormatString(800, 0, color.White, "ステージ:%d", stage);
+			
+			DrawFormatString(800, 0, color.White, "ステージ:%d", map.GetStage());
 			break;
 		case GameOver:
 			DrawString(400, 150, "リザルト", color.White);

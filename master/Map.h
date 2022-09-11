@@ -21,6 +21,7 @@ private:
 	Color color;
 	vector<Bomb> bomb;
 	int bombBreak = 0;
+	int stage = 1;
 
 	const vector<vector<Vector2Int>>crystalPos =
 	{
@@ -39,6 +40,8 @@ private:
 
 	MapChipDraw drawer;
 public:
+	Map() { LoadAndSet(); Init(); }
+	
 	Vector2Int GetMapPos() { return pos; }
 	Vector2Int GetChipPos(Vector2Int chipNum) { return pos + 2 * chipRad * chipNum; }
 	int GetRadius() { return chipRad; }
@@ -46,30 +49,28 @@ public:
 	Vector2Int GetMapSize() { return { (int)map[0].size(),(int)map.size() }; }
 	BlockName GetMapState(Vector2Int pos) { return map[pos.y][pos.x]; }
 	vector<Bomb> GetBomb() { return bomb; }
-	size_t CountBlockNum(BlockName blockName);
+	int GetStage() { return stage; }
 
-	Map() { LoadAndSet(); Init(); }
 	void Init(); // É}ÉbÉvÇBlockÇ≈èâä˙âª
 	void Change(Vector2Int num, BlockName blockName);
 	void Create();
 	void Respawn();
 	void BombDestroy(int bombIndex, Player* player);
 	void Draw(const Vector2Int& camera);
+	size_t CountBlockNum(BlockName blockName);
 
 	void LoadAndSet();
+	void SetBrightness(const int brightness);
 	void SetOutSide(Camera* camera, Vector2Int* playerPos);
 	void Update();
+	void NextStage() { stage++; Create(); }
 
 	void DrawChipInit(const Vector2Int& num, const int blockName);
 	void DrawChipBreak(const Vector2Int& num);
-
 	void DrawArrowInit(const Vector2Int& num, const int direction);
 	void DrawBrightInit(const Vector2Int& num);
 	void DrawBright();
-
 	void DrawErase(const Vector2Int& num);
-
-	void SetBrightness(const int brightness);
 private:
 	const vector<int>CHIP_COLOR = { color.Black,color.White,color.Yellow,color.Green,color.Red };
 };

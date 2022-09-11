@@ -83,43 +83,54 @@ void Map::Change(Vector2Int num, BlockName blockName)
 void Map::Create()
 {
 	Init();
-	// クリスタル配置
-	crystalPattern = rand() % 9;
-	for (size_t i = 0; i < 3; i++)
+
+	// ノーマルステージ
+	if (stage % 4 != 0)
 	{
-		Change(crystalPos[crystalPattern][i], CrystalBlock);
-		drawer.CreateBright(crystalPos[crystalPattern][i]);
-	}
-	// コイン配置
-	for (size_t i = 0; i < COIN_NUM; i++)
-	{
-		Vector2Int coinBlockPos;
-		while (1)
+		// クリスタル配置
+		crystalPattern = rand() % 9;
+		for (size_t i = 0; i < 3; i++)
 		{
-			coinBlockPos = { rand() % 10 ,rand() % 10 };
-			if (GetMapState(coinBlockPos) == Block)
+			Change(crystalPos[crystalPattern][i], CrystalBlock);
+			drawer.CreateBright(crystalPos[crystalPattern][i]);
+		}
+		// コイン配置
+		for (size_t i = 0; i < COIN_NUM; i++)
+		{
+			Vector2Int coinBlockPos;
+			while (1)
 			{
-				Change(coinBlockPos, CoinBlock);
-				break;
+				coinBlockPos = { rand() % 10 ,rand() % 10 };
+				if (GetMapState(coinBlockPos) == Block)
+				{
+					Change(coinBlockPos, CoinBlock);
+					break;
+				}
+			}
+		}
+		// ボム配置
+		int bombNum = stage / 4 + 1;
+		for (size_t i = 0; i < 4; i++)
+		{
+			Vector2Int bombBlockPos;
+			while (1)
+			{
+				bombBlockPos = { rand() % 10 ,rand() % 10 };
+				if (GetMapState(bombBlockPos) == Block)
+				{
+					Change(bombBlockPos, BombBlock);
+					int random = rand() % 4;
+					drawer.CreateArrow(bombBlockPos, random);
+					bomb.push_back({ bombBlockPos, random });
+					break;
+				}
 			}
 		}
 	}
-	// ボム配置
-	for (size_t i = 0; i < 4; i++)
+	// BoneStage
+	else
 	{
-		Vector2Int bombBlockPos;
-		while (1)
-		{
-			bombBlockPos = { rand() % 10 ,rand() % 10 };
-			if (GetMapState(bombBlockPos) == Block)
-			{
-				Change(bombBlockPos, BombBlock);
-				int random = rand() % 4;
-				drawer.CreateArrow(bombBlockPos, random);
-				bomb.push_back({ bombBlockPos, random});
-				break;
-			}
-		}
+
 	}
 }
 
