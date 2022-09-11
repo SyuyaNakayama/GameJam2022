@@ -17,12 +17,14 @@ private:
 	int timer = 0;
 	bool wait = false;
 	int waitTime = 0;
+	int bombBreak = 0;
 public:
 	void Initialize();
 	void Update();
 	void PushBuck(const Vector2Int& num, const bool bomb = false);
 	bool PopFront(Vector2Int& reciever);
 	void Clear();
+	int GetBombBreak() { return bombBreak; }
 	void DrawDebug();
 };
 

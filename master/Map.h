@@ -21,7 +21,6 @@ private:
 	int	chipRad = 32;
 	Color color;
 	vector<Bomb> bomb;
-	int bombBreak = 0;
 	int stage = 1;
 
 	const vector<vector<Vector2Int>>crystalPos =
@@ -48,7 +47,7 @@ public:
 	Vector2Int GetMapPos() { return pos; }
 	Vector2Int GetChipPos(Vector2Int chipNum) { return pos + 2 * chipRad * chipNum; }
 	int GetRadius() { return chipRad; }
-	int GetBombBreakCount() { return bombBreak; }
+	int GetBombBreakCount() { return bbList.GetBombBreak(); }
 	Vector2Int GetMapSize() { return { (int)map[0].size(),(int)map.size() }; }
 	BlockName GetMapState(Vector2Int pos) { return map[pos.y][pos.x]; }
 	vector<Bomb> GetBomb() { return bomb; }

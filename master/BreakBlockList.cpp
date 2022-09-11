@@ -34,6 +34,7 @@ void BreakBlockList::PushBuck(const Vector2Int& num, const bool bomb)
 	b.exposure = bomb;
 	blocks.push_back(b);
 	wait = true;
+	if (bomb) bombBreak++;
 }
 
 bool BreakBlockList::PopFront(Vector2Int& reciever)

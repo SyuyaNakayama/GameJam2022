@@ -132,6 +132,9 @@
     <ClCompile Include="BreakBlockList.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Select.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bomb.h">
@@ -216,6 +219,9 @@
       <Filter>ヘッダー ファイル\Draw\Effect</Filter>
     </ClInclude>
     <ClInclude Include="BreakBlockList.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Select.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
