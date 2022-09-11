@@ -36,14 +36,19 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	// ---ïœêîÇÃêÈåæÇ∆èâä˙âª---
 	int stage = 1, score = 0;
 	int scoreCoin = 0;
+
 	Camera camera;
 	camera.Initialize({});
+
 	Map map;
 	map.Create();
+
 	Player player = { {rand() % 2 + 4,rand() % 2 + 4},&map };
+
 	map.Change(player.GetPos(), None);
-	map.DrawChipInit(player.GetPos(), None);
+	map.drawer.ChipInit(player.GetPos(), None);
 	map.SetOutSide(&camera, player.GetPosAdress());
+
 	Timer timer = { GetNowCount() ,120 };
 	Input input;
 	Pad* pad = Pad::GetInstance();
@@ -75,7 +80,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 				}
 				if (input.IsTrigger(KEY_INPUT_N))
 				{
-					map.DrawBright();
+					map.drawer.ChipBright();
 				}
 				map.Update();
 				if (map.CountBlockNum(CrystalBlock) == 0) {
@@ -85,7 +90,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 					map.Create();
 					player.SetPos({ rand() % 2 + 4,rand() % 2 + 4 });
 					map.Change(player.GetPos(), None);
-					map.SetBrightness(player.GetActionCount());
+					map.drawer.SetBrightness(player.GetActionCount());
 				}
 			}
 			if (player.GetActionCount() <= 0 || timer.CountDown(player.GetDamageCount())) { scene = GameOver; SetFontSize(96); }
