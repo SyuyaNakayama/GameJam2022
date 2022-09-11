@@ -3,45 +3,66 @@
 
 void BreakBlockList::Initialize()
 {
+	Reset();
+	bombBreak = 0;
+}
+
+void BreakBlockList::Reset()
+{
 	Clear();
-	timer = 0;
-	wait = false;
-	waitTime = 0;
+	for (size_t i = 0; i < 2; i++)
+	{
+		timer[i] = 0;
+		wait[i] = false;
+	}
 }
 
 void BreakBlockList::Update()
 {
-	front = { -1,-1 };
-	if (!wait) return;
-
-	if (blocks[0].exposure) waitTime = ExprosionTime;
-	else waitTime = MiningTime;
-
-	if (++timer >= waitTime)
+	for (size_t i = 0; i < 2; i++)
 	{
-		front = blocks[0].number;
-		blocks.erase(std::begin(blocks));
-		timer = 0;
-		wait = (blocks.size() >= 1);
-		waitTime = 0;
+		front[i] = { -1,-1 };
+		if (!wait[i]) continue;
+
+		int waitTime = 0;
+		if (i) waitTime = MiningTime;
+		else waitTime = ExprosionTime;
+
+		if (++timer[i] >= waitTime)
+		{
+			front[i] = blocks[i][0];
+			blocks[i].erase(std::begin(blocks[i]));
+			timer[i] = 0;
+			wait[i] = (blocks[i].size() >= 1);
+		}
 	}
 }
 
 void BreakBlockList::PushBuck(const Vector2Int& num, const bool bomb)
 {
-	BreakBlockPara b;
-	b.number = num;
-	b.exposure = bomb;
-	blocks.push_back(b);
-	wait = true;
+	Vector2Int b = num;
+	blocks[bomb].push_back(b);
+	timer[bomb] = 0;
+	wait[bomb] = true;
 	if (bomb) bombBreak++;
 }
 
-bool BreakBlockList::PopFront(Vector2Int& reciever)
+bool BreakBlockList::PopBroken(Vector2Int& reciever)
 {
-	if (front.x != -1 && front.y != -1)
+	if (front[0].x != -1 && front[0].y != -1)
 	{
-		reciever = front;
+		reciever = front[0];
+		return true;
+	}
+
+	return false;
+}
+
+bool BreakBlockList::PopExposure(Vector2Int& reciever)
+{
+	if (front[1].x != -1 && front[1].y != -1)
+	{
+		reciever = front[1];
 		return true;
 	}
 
@@ -50,13 +71,16 @@ bool BreakBlockList::PopFront(Vector2Int& reciever)
 
 void BreakBlockList::Clear()
 {
-	blocks.clear();
-	front = { -1,-1 };
+	for (size_t i = 0; i < 2; i++)
+	{
+		blocks[i].clear();
+		front[i] = {-1,-1};
+	}
 }
 
 void BreakBlockList::DrawDebug()
 {
-	int s = (int)blocks.size();
+	int s = (int)blocks[0].size();
 	DrawFormatString(300, 300, GetColor(255, 0, 0), "%d", s);
-	DrawFormatString(300, 150, GetColor(255, 0, 0), "%d", timer);
+	DrawFormatString(300, 150, GetColor(255, 0, 0), "%d", timer[0]);
 }

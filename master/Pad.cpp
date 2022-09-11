@@ -65,6 +65,26 @@ int Pad::Vertical()
 	return Up() - Down();
 }
 
+bool Pad::RightTrigger()
+{
+	return pad->X >= DOWN && oldpad->X >= 0;
+}
+
+bool Pad::LeftTrigger()
+{
+	return pad->X <= -DOWN && oldpad->X <= 0;
+}
+
+bool Pad::UpTrigger()
+{
+	return pad->Y <= -DOWN && oldpad->Y <= 0;
+}
+
+bool Pad::DownTrigger()
+{
+	return pad->Y >= DOWN && oldpad->Y >= 0;
+}
+
 bool Pad::IsTrigger(const int button)
 {
 	if (Y < button || button < A) return false;

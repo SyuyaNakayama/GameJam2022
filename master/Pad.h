@@ -26,6 +26,10 @@ public:
 	bool Down();
 	int Horizontal();
 	int Vertical();
+	bool RightTrigger();
+	bool LeftTrigger();
+	bool UpTrigger();
+	bool DownTrigger();
 
 	// ƒ{ƒ^ƒ“‘€ì
 	enum Button

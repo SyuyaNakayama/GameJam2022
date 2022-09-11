@@ -58,7 +58,7 @@ void Map::Init()
 		}
 	}
 	bomb.clear();
-	bbList.Initialize();
+	bbList.Reset();
 	drawer.ClearArrowAndBright();
 }
 
@@ -177,11 +177,18 @@ void Map::Update()
 {
 	bbList.Update();
 	Vector2Int n;
-	if (bbList.PopFront(n))
+	bool b;
+	for (size_t i = 0; i < 2; i++)
 	{
-		drawer.ChipBreak(n);
-		drawer.EraseArrowAndBright(n);
-		Change(n, None);
+		if (i) b = bbList.PopBroken(n);
+		else b = bbList.PopExposure(n);
+		
+		if (b)
+		{
+			drawer.ChipBreak(n);
+			drawer.EraseArrowAndBright(n);
+			Change(n, None);
+		}
 	}
 	drawer.Update();
 	for (size_t i = 0; i < bomb.size(); i++) { bomb[i].Rotate(); }

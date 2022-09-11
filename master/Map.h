@@ -62,7 +62,6 @@ public:
 	size_t CountBlockNum(BlockName blockName);
 
 	void LoadAndSet();
-	void SetBrightness(const int brightness);
 	void SetOutSide(Camera* camera, Vector2Int* playerPos);
 	void Update();
 	void NextStage() { stage++; Create(); }

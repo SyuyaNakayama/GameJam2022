@@ -1,19 +1,30 @@
 #pragma once
-#include "Vector2.h"
+#include "SelectDraw.h"
 #include <vector>
+
+class Map;
 
 class Select
 {
 private:
 	Vector2Int pos;
+	int direction = -1;
 	std::vector<Vector2Int> chose;
+	int choseMax = 0;
 
-	int setG = 0;
-	Vector2Int* leftTop = nullptr;
+	SelectDraw drawer;
+
+	Vector2Int* playerPos = nullptr;
+	Map* pMap = nullptr;
 public:
 	void Load();
-	void Initialize(const Vector2Int& playerPos);
+	void Initialize(const int choseMax);
 	void Update();
 	void Draw(const Vector2Int& camera);
-	void SetLeftTop(Vector2Int* leftTop);
+	void SetPlayerPos(Vector2Int* playerPos);
+	void SetMap(Map* map);
+private:
+	void DirectionUpdate();
+	void ChipSelect();
+	void Move();
 };
