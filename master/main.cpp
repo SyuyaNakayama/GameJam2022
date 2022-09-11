@@ -68,29 +68,29 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			break;
 		case Play:
 			input.Update();
-			
-				player.Move();
-				player.Destroy();
-				if (input.IsTrigger(KEY_INPUT_R))
-				{
-					map.Create();
-					player.SetPos({ rand() % 2 + 4,rand() % 2 + 4 });
-					map.Change(player.GetPos(), None);
-				}
-				if (input.IsTrigger(KEY_INPUT_N))
-				{
-					map.drawer.ChipBright();
-				}
-				map.Update();
-				if (map.CountBlockNum(CrystalBlock) == 0) {
-					map.NextStage();
-					player.ActionReset();
-					scoreCoin += 7 - map.CountBlockNum(CoinBlock);
-					player.SetPos({ rand() % 2 + 4,rand() % 2 + 4 });
-					map.Change(player.GetPos(), None);
-					map.drawer.SetBrightness(player.GetActionCount());
-				}
-			
+
+			player.Move();
+			player.Destroy();
+			if (input.IsTrigger(KEY_INPUT_R))
+			{
+				map.Create();
+				player.SetPos({ rand() % 2 + 4,rand() % 2 + 4 });
+				map.Change(player.GetPos(), None);
+			}
+			if (input.IsTrigger(KEY_INPUT_N))
+			{
+				map.drawer.ChipBright();
+			}
+			map.Update();
+			if (map.CountBlockNum(CrystalBlock) == 0) {
+				map.NextStage();
+				player.ActionReset();
+				scoreCoin += 7 - map.CountBlockNum(CoinBlock);
+				player.SetPos({ rand() % 2 + 4,rand() % 2 + 4 });
+				map.Change(player.GetPos(), None);
+				map.drawer.SetBrightness(player.GetActionCount());
+			}
+
 			if (player.GetActionCount() <= 0 || timer.CountDown(player.GetDamageCount())) { scene = GameOver; SetFontSize(96); }
 			break;
 		case GameOver:
@@ -109,15 +109,15 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		case Tutorial:
 			break;
 		case Play:
-			
-				map.Draw(camera.GetPos());
-				player.Draw();
-				timer.Draw({ 0,32 });
-				DrawFormatString(0, 0, color.White, "コイン残り%d枚", map.CountBlockNum(CoinBlock));
-				DrawFormatString(400, 0, color.White, "行動回数:%d回", player.GetActionCount());
-				DrawFormatString(400, 50, color.White, "クリスタル:%d個", map.CountBlockNum(CrystalBlock));
-				DrawFormatString(400, 96, color.White, "ボムによる破壊:%d個", map.GetBombBreakCount());
-			
+
+			map.Draw(camera.GetPos());
+			player.Draw();
+			timer.Draw({ 0,32 });
+			DrawFormatString(0, 0, color.White, "コイン残り%d枚", map.CountBlockNum(CoinBlock));
+			DrawFormatString(400, 0, color.White, "行動回数:%d回", player.GetActionCount());
+			DrawFormatString(400, 50, color.White, "クリスタル:%d個", map.CountBlockNum(CrystalBlock));
+			DrawFormatString(400, 96, color.White, "ボムによる破壊:%d個", map.GetBombBreakCount());
+
 			DrawFormatString(800, 0, color.White, "ステージ:%d", map.GetStage());
 			break;
 		case GameOver:

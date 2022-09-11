@@ -38,7 +38,11 @@ private:
 	};
 	const int COIN_NUM = 7;
 	int crystalPattern;
+	const vector<int>CHIP_COLOR = { color.Black,color.White,color.Yellow,color.Green,color.Red };
 public:
+	MapChipDraw drawer;
+	BreakBlockList bbList;
+
 	Map() { LoadAndSet(); Init(); }
 	
 	Vector2Int GetMapPos() { return pos; }
@@ -63,26 +67,4 @@ public:
 	void SetOutSide(Camera* camera, Vector2Int* playerPos);
 	void Update();
 	void NextStage() { stage++; Create(); }
-
-	void DrawChipInit(const Vector2Int& num, const int blockName);
-	void DrawChipBreak(const Vector2Int& num);
-	void DrawArrowInit(const Vector2Int& num, const int direction);
-	void DrawBrightInit(const Vector2Int& num);
-	void DrawBright();
-	void DrawErase(const Vector2Int& num);
-	void DrawErase(const Vector2Int& num);
-
-	void SetBrightness(const int brightness);
-	void DrawErase(const Vector2Int& num);
-
-	void SetBrightness(const int brightness);
-	void DrawErase(const Vector2Int& num);
-
-	void SetBrightness(const int brightness);
-private:
-	const vector<int>CHIP_COLOR = { color.Black,color.White,color.Yellow,color.Green,color.Red };
-
-public:
-	MapChipDraw drawer;
-	BreakBlockList bbList;
 };
