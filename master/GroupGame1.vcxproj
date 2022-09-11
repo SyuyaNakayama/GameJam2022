@@ -22,6 +22,7 @@
     <ClCompile Include="ArrowDraw.cpp" />
     <ClCompile Include="ArrowEffecter.cpp" />
     <ClCompile Include="Bomb.cpp" />
+    <ClCompile Include="BreakBlockList.cpp" />
     <ClCompile Include="BreakEffecter.cpp" />
     <ClCompile Include="BrightDraw.cpp" />
     <ClCompile Include="BrightEffecter.cpp" />
@@ -50,6 +51,7 @@
     <ClInclude Include="ArrowDraw.h" />
     <ClInclude Include="ArrowEffecter.h" />
     <ClInclude Include="Bomb.h" />
+    <ClInclude Include="BreakBlockList.h" />
     <ClInclude Include="BreakEffecter.h" />
     <ClInclude Include="BrightDraw.h" />
     <ClInclude Include="BrightEffecter.h" />

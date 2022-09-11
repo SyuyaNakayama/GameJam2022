@@ -15,9 +15,9 @@ void Map::BombDestroy(int bombIndex, Player* player)
 			}
 		}
 		if (destroyPos[i] == player->GetLastSelectChip()) { player->DamageCountUp(); }
-		drawer.ChipBreak(destroyPos[i]);
-		drawer.EraseArrowAndBright(destroyPos[i]);
-		Change(destroyPos[i], None);
+		//drawer.ChipBreak(destroyPos[i]);
+		//drawer.EraseArrowAndBright(destroyPos[i]);
+		bbList.PushBuck(destroyPos[i], true);
 	}
 	for (size_t y = 0; y < map.size(); y++) {
 		for (size_t x = 0; x < map[y].size(); x++)
@@ -68,6 +68,7 @@ void Map::Init()
 		}
 	}
 	bomb.clear();
+	bbList.Clear();
 	drawer.ClearArrowAndBright();
 }
 
@@ -167,6 +168,7 @@ void Map::Draw(const Vector2Int& camera)
 	//	}
 	//}
 	drawer.Draw(camera);
+	bbList.DrawDebug();
 }
 
 void Map::LoadAndSet()
@@ -183,42 +185,14 @@ void Map::SetOutSide(Camera* camera, Vector2Int* playerPos)
 
 void Map::Update()
 {
+	bbList.Update();
+	Vector2Int n;
+	if (bbList.PopFront(n))
+	{
+		drawer.ChipBreak(n);
+		drawer.EraseArrowAndBright(n);
+		Change(n, None);
+	}
 	drawer.Update();
 	for (size_t i = 0; i < bomb.size(); i++) { bomb[i].Rotate(); }
-}
-
-void Map::DrawChipInit(const Vector2Int& num, const int blockName)
-{
-	drawer.ChipInit(num, blockName);
-}
-
-void Map::DrawChipBreak(const Vector2Int& num)
-{
-	drawer.ChipBreak(num);
-}
-
-void Map::DrawArrowInit(const Vector2Int& num, const int direction)
-{
-	drawer.CreateArrow(num, direction);
-}
-
-void Map::DrawBrightInit(const Vector2Int& num)
-{
-	drawer.CreateBright(num);
-}
-
-void Map::DrawBright()
-{
-	drawer.ChipBright();
-}
-
-void Map::DrawErase(const Vector2Int& num)
-{
-	drawer.EraseArrow(num);
-	drawer.EraseBright(num);
-}
-
-void Map::SetBrightness(const int brightness)
-{
-	drawer.SetBrightness(brightness);
 }

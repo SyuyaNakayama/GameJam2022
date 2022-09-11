@@ -123,6 +123,15 @@
     <ClCompile Include="ArrowEffecter.cpp">
       <Filter>ソース ファイル\Draw\Effect</Filter>
     </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Pad.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="BreakBlockList.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bomb.h">
@@ -196,6 +205,18 @@
     </ClInclude>
     <ClInclude Include="DrawParameter.h">
       <Filter>ヘッダー ファイル\Draw</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Pad.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="ArrowEffecter.h">
+      <Filter>ヘッダー ファイル\Draw\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="BreakBlockList.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
