@@ -32,7 +32,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	srand(time(0));
 #pragma endregion
 	// ---’è”‚ÌéŒ¾‚Æ‰Šú‰»---
-	Scene scene = Scene::Title;
+	Scene scene = Scene::Play;
 	Color color;
 	// ---•Ï”‚ÌéŒ¾‚Æ‰Šú‰»---
 	int score = 0;
@@ -50,7 +50,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	map.drawer.ChipInit(player.GetPos(), None);
 	map.SetOutSide(&camera, player.GetPosAdress());
 
-	Timer timer = { GetNowCount() ,120 };
+	Timer timer = { GetNowCount() ,100 };
 	Input input;
 	Pad* pad = Pad::GetInstance();
 

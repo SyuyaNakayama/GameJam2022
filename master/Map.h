@@ -21,7 +21,7 @@ private:
 	int	chipRad = 32;
 	Color color;
 	vector<Bomb> bomb;
-	int stage = 1;
+	int stage = 4;
 
 	const vector<vector<Vector2Int>>crystalPos =
 	{
@@ -35,6 +35,32 @@ private:
 		{{1,2},{8,9},{9,2}},
 		{{1,8},{2,9},{8,1}}
 	};
+
+	//ボーナスステージ用マップ(固定)
+
+	//bonus Stage Bomb
+	const vector<Vector2Int>bSB =
+	{
+		{0,0},{0,4},{0,9},{5,0},{5,4},{5,9},{9,4},{9,9}
+	};
+
+	//bonus Stage Crystal
+	const vector<Vector2Int>bSC =
+	{
+		{0,5},{4,9},{9,0}
+	};
+
+	//bonus Stage Coin Gold
+	const vector<Vector2Int>bSCG =
+	{
+		{1,0},{2,0},{3,0},{4,0},{6,0},{7,0},{8,0},
+		{0,1},{0,2},{0,3},
+		{6,4},{7,4},{8,4},
+		{0,6},{0,7},{0,8},
+		{9,5},{9,6},{9,7},{9,8},
+		{1,9},{2,9},{3,9},{6,9},{7,9},{8,9}
+	};
+
 	const int COIN_NUM = 7;
 	int crystalPattern;
 	const vector<int>CHIP_COLOR = { color.Black,color.White,color.Yellow,color.Green,color.Red };

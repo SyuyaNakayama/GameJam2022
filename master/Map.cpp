@@ -118,9 +118,50 @@ void Map::Create()
 			}
 		}
 	}
-	// BoneStage
-	else
+	else//　ボーナスステージ
 	{
+		//クリスタル配置
+		for (size_t i = 0; i < 3; i++)
+		{
+			Change(bSC[i], CrystalBlock);
+			drawer.CreateBright(bSC[i]);
+		}
+
+		//ボム配置
+		for (size_t i = 0; i < 8; i++)
+		{
+			Change(bSB[i], BombBlock);
+			if (i == 0 || i == 3 || i == 4)
+			{
+				drawer.CreateArrow(bSB[i], Right);
+				bomb.push_back({ bSB[i], Right });
+			}
+
+			if (i == 1 || i == 2)
+			{
+				drawer.CreateArrow(bSB[i], Up);
+				bomb.push_back({ bSB[i], Up });
+			}
+			
+			if (i == 5 || i == 7)
+			{
+				drawer.CreateArrow(bSB[i], Left);
+				bomb.push_back({ bSB[i], Left });
+			}
+
+			if (i == 6)
+			{
+				drawer.CreateArrow(bSB[i], Down);
+				bomb.push_back({ bSB[i], Down });
+			}
+		}
+		 
+		//コイン配置
+		for (size_t i = 0; i < 26; i++)
+		{
+			Change(bSCG[i], CoinBlock);
+			drawer.CreateBright(bSCG[i]);
+		}
 
 	}
 }
