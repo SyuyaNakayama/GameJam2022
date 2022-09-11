@@ -151,6 +151,8 @@ void Player::Draw()
 	DrawBoxWithVectorInt(mapPointer->GetChipPos(selectPos), Vector2Int(mapPointer->GetRadius(), mapPointer->GetRadius()), color.Blue, mode);
 }
 
-void Player::ActionReset() {
+void Player::ActionReset() 
+{
+	damageCount = 0;
 	actionNum = 20;
 }

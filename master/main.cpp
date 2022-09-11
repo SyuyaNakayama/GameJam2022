@@ -10,6 +10,7 @@
 #include <vector>
 #include <stdlib.h>
 #include <time.h>
+#include <string>
 
 using namespace std;
 
@@ -31,7 +32,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	srand(time(0));
 #pragma endregion
 	// ---定数の宣言と初期化---
-	Scene scene = Scene::Play;
+	Scene scene = Scene::Title;
 	Color color;
 	// ---変数の宣言と初期化---
 	int score = 0;
@@ -53,21 +54,44 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	Input input;
 	Pad* pad = Pad::GetInstance();
 
-	SetFontSize(32);
+	int fontSize = 48;
+	vector<int> prologueFontColor(8, 0);
+	vector<string> prologueString =
+	{
+		"時は制暦2173年",
+		"アレッヒでは1人の男が",
+		"アクリスの人間から",
+		"強制労働が強いられた",
+		"鉱石を見つければ",
+		"それが給料になる",
+		"そんな男の地下採掘場でのお話",
+		"\nSPACEで次へ"
+	};
+	SetFontSize(fontSize);
 	while (!(ProcessMessage() == -1 || CheckHitKey(KEY_INPUT_ESCAPE)))
 	{
 #pragma region 更新処理
 		ClearDrawScreen();
 
+		input.Update();
 		switch (scene)
 		{
 		case Title:
-			if (input.IsTrigger(KEY_INPUT_SPACE)) { scene = Tutorial; }
+			if (input.IsTrigger(KEY_INPUT_SPACE)) { scene = Prologue; }
+			break;
+		case Prologue:
+			for (size_t i = 0; i < prologueFontColor.size(); i++)
+			{
+				const int INC_NUM = 4;
+				if (i == 0) { prologueFontColor[i] += INC_NUM; }
+				else { if (prologueFontColor[i - 1] >= 200) { prologueFontColor[i] += INC_NUM; } }
+				Clamp(prologueFontColor[i], 255);
+			}
+			if(prologueFontColor.back() >= 150&&input.IsTrigger(KEY_INPUT_SPACE)) { scene = Tutorial; }
 			break;
 		case Tutorial:
 			break;
 		case Play:
-			input.Update();
 
 			player.Move();
 			player.Destroy();
@@ -82,13 +106,15 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 				map.drawer.ChipBright();
 			}
 			map.Update();
-			if (map.CountBlockNum(CrystalBlock) == 0) {
+			if (map.CountBlockNum(CrystalBlock) == 0)
+			{
 				map.NextStage();
 				player.ActionReset();
 				scoreCoin += 7 - map.CountBlockNum(CoinBlock);
 				player.SetPos({ rand() % 2 + 4,rand() % 2 + 4 });
 				map.Change(player.GetPos(), None);
 				map.drawer.SetBrightness(player.GetActionCount());
+				timer = { GetNowCount() ,120 };
 			}
 
 			if (player.GetActionCount() <= 0 || timer.CountDown(player.GetDamageCount())) { scene = GameOver; SetFontSize(96); }
@@ -104,7 +130,14 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		switch (scene)
 		{
 		case Title:
-			DrawString(50, 150, "コノヒト、サイクツジョウニテ。", color.White);
+			DrawString(50, 150, "之の人、採掘場にて。～アレッヒの地下奴隷～", color.White);
+			break;
+		case Prologue:
+			for (size_t i = 0; i < prologueFontColor.size(); i++)
+			{
+				DrawString(200, 200 + fontSize * i, prologueString[i].c_str(),
+					GetColor(prologueFontColor[i], prologueFontColor[i], prologueFontColor[i]));
+			}
 			break;
 		case Tutorial:
 			break;
