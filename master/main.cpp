@@ -58,14 +58,14 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	vector<int> prologueFontColor(8, 0);
 	vector<string> prologueString =
 	{
-		"時は制暦2173年",
+		"時は制暦2173年、",
 		"アレッヒでは1人の男が",
 		"アクリスの人間から",
-		"強制労働が強いられた",
+		"強制労働が強いられた。",
 		"鉱石を見つければ",
-		"それが給料になる",
-		"そんな男の地下採掘場でのお話",
-		"\nSPACEで次へ"
+		"それが給料になる。",
+		"そんな男の地下採掘場でのお話。",
+		"\nSPACEで次へ→"
 	};
 	SetFontSize(fontSize);
 	while (!(ProcessMessage() == -1 || CheckHitKey(KEY_INPUT_ESCAPE)))
@@ -87,7 +87,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 				else { if (prologueFontColor[i - 1] >= 200) { prologueFontColor[i] += INC_NUM; } }
 				Clamp(prologueFontColor[i], 255);
 			}
-			if(prologueFontColor.back() >= 150&&input.IsTrigger(KEY_INPUT_SPACE)) { scene = Tutorial; }
+			if (prologueFontColor.back() >= 150 && input.IsTrigger(KEY_INPUT_SPACE)) { scene = Tutorial; }
 			break;
 		case Tutorial:
 			break;
