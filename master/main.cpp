@@ -114,17 +114,35 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			map.Update();
 			if (map.CountBlockNum(CrystalBlock) == 0)
 			{
+				if (map.GetStage() % 4 == 0)
+				{
+					scoreCoin += 26 - map.CountBlockNum(CoinBlock);
+				}
+				else
+				{
+					scoreCoin += 7 - map.CountBlockNum(CoinBlock);
+				}
 				map.NextStage();
-				scoreCoin += 7 - map.CountBlockNum(CoinBlock);
 				player.Reset({ rand() % 2 + 4,rand() % 2 + 4 }, Up);
 				map.Change(player.GetPos(), None);
 				timer = { GetNowCount() ,120 };
 			}
 
-			if (player.GetActionCount() <= 0 || timer.CountDown(player.GetDamageCount())) { scene = Result; SetFontSize(96); }
+			if (player.GetActionCount() <= 0 || timer.CountDown(player.GetDamageCount()))
+			{ 
+				if (map.GetStage() % 4 == 0)
+				{
+					scoreCoin += 26 - map.CountBlockNum(CoinBlock);
+				}
+				else
+				{
+					scoreCoin += 7 - map.CountBlockNum(CoinBlock);
+				}
+				score = (scoreCoin * 100) * (1 + (0.1 * map.GetStage())) + (map.GetBombBreakCount() * 50);
+				scene = Result; SetFontSize(96); 
+			}
 			break;
 		case Result:
-			score = (scoreCoin * 100) * (1 + (0.1 * map.GetStage())) + (map.GetBombBreakCount() * 50);
 			if (input->keys->IsTrigger(KEY_INPUT_SPACE))
 			{
 				scene = Ranking;
