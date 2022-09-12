@@ -33,7 +33,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	srand(time(0));
 #pragma endregion
 	// ---定数の宣言と初期化---
-	Scene scene = Scene::Title;
+	Scene scene = Scene::Result;
 	Color color;
 	// ---変数の宣言と初期化---
 	Font font;
@@ -118,9 +118,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 				timer = { GetNowCount() ,120 };
 			}
 
-			if (player.GetActionCount() <= 0 || timer.CountDown(player.GetDamageCount())) { scene = GameOver; SetFontSize(96); }
+			if (player.GetActionCount() <= 0 || timer.CountDown(player.GetDamageCount())) { scene = Result; SetFontSize(96); }
 			break;
-		case GameOver:
+		case Result:
 			score = (scoreCoin * 100) * (1 + (0.1 * map.GetStage())) + (map.GetBombBreakCount() * 50);
 			break;
 		}
@@ -131,16 +131,17 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		switch (scene)
 		{
 		case Title:
-			DrawString(50, 150, "之の人、採掘場にて。～アレッヒの地下奴隷～", color.White);
+			font.DrawUseFont({ 80,150 }, color.White, "之の人、採掘場にて。\n　～アレッヒの地下奴隷～", FontSize::LL);
+			font.DrawUseFont({ 370,450 }, color.White, "PRESS START", FontSize::LL);
 			break;
 		case Prologue:
-			for (size_t i = 0; i < prologueFontColor.size(); i++)
+			for (int i = 0; i < prologueFontColor.size(); i++)
 			{
-				DrawStringToHandle(200, 200 + (font.GetFontSize(FontSize::L) + 5) * i, prologueString[i].c_str(),
+				font.DrawUseFont({ 200,200 + (font.GetFontSize(FontSize::L) + 5) * i },
 					GetColor(prologueFontColor[i], prologueFontColor[i], prologueFontColor[i]),
-					font.Use(FontSize::L));
+					prologueString[i], FontSize::L);
 			}
-			DrawStringToHandle(1050, 50, "S:Skip", color.White, font.Use(FontSize::L));
+			font.DrawUseFont({ 1050,50 }, color.White, "S:Skip", FontSize::L);
 			break;
 		case Tutorial:
 			break;
@@ -154,9 +155,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			DrawFormatString(400, 96, color.White, "ボムによる破壊:%d個", map.GetBombBreakCount());
 			DrawFormatString(800, 0, color.White, "ステージ:%d", map.GetStage());
 			break;
-		case GameOver:
-			DrawString(400, 150, "リザルト", color.White);
-			DrawFormatString(400, 350, color.White, "スコア:%d", score);
+		case Result:
+			font.DrawUseFont({ 400,150 }, color.White, "リザルト", FontSize::LL);
+			DrawFormatStringToHandle(400, 350, color.White, font.Use(FontSize::LL), "スコア:%d", score);
 			break;
 		}
 
