@@ -71,16 +71,6 @@ void Player::Destroy()
 	pMap->bbList.PushBuck(move);
 	selecter.EraseRoute(0);
 	mode = Mode::Move;
-
-
-	countStartFlag = 1;
-	if (!countStartFlag) return;
-	if (++respawnTimer < respawnTimerLimit) return;
-	pMap->Respawn();
-	pMap->drawer.EraseArrowAndBright(pos);
-	pMap->Change(pos, None);
-	respawnTimer = 0;
-	countStartFlag = 0;
 }
 
 void Player::Move()
