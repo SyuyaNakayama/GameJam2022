@@ -14,9 +14,7 @@ void Map::BombDestroy(int bombIndex, Player* player)
 				BombDestroy(j, player);
 			}
 		}
-		if (destroyPos[i] == player->GetLastSelectChip()) { player->DamageCountUp(); }
-		//drawer.ChipBreak(destroyPos[i]);
-		//drawer.EraseArrowAndBright(destroyPos[i]);
+		if (destroyPos[i] == *playerPos) { player->DamageCountUp(); }
 		bbList.PushBuck(destroyPos[i], true);
 	}
 }
@@ -212,6 +210,7 @@ void Map::SetOutSide(Camera* camera, Vector2Int* playerPos)
 {
 	drawer.SetCamera(camera);
 	drawer.SetPlayerPos(playerPos);
+	this->playerPos = playerPos;
 }
 
 void Map::Update()

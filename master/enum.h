@@ -3,7 +3,7 @@
 
 enum BlockName { None, Block, CoinBlock, CrystalBlock, BombBlock };
 enum Direction { Up, Down, Left, Right };
-enum Mode { Move, Select };
+enum Mode { Select, Destroy, Move };
 enum Scene { Title, Prologue, Tutorial, Play, GameOver };
 
 struct Color

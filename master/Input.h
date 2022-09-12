@@ -1,12 +1,25 @@
 #pragma once
+#include "Keys.h"
+#include "Pad.h"
 
 class Input
 {
-private:
-	char key[256]{}, oldkey[256]{};
 public:
+	Pad* pad = nullptr;
+	Keys* keys = nullptr;
+public:
+	void Load();
 	void Update();
-	bool IsInput(const int KEY_NUM);
-	bool IsTrigger(const int KEY_NUM);
-	bool IsTriggerMoveKey();
+	bool IsRight();
+	bool IsLeft();
+	bool IsUp();
+	bool IsDown();
+	bool IsMove();
+public:
+	static Input* GetInstance();
+private:
+	Input() = default;
+	~Input() = default;
+	Input(const Input&) = delete;
+	const Input& operator=(const Input&) = delete;
 };

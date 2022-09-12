@@ -64,6 +64,7 @@ private:
 	const int COIN_NUM = 7;
 	int crystalPattern;
 	const vector<int>CHIP_COLOR = { color.Black,color.White,color.Yellow,color.Green,color.Red };
+	Vector2Int* playerPos = nullptr;
 public:
 	MapChipDraw drawer;
 	BreakBlockList bbList;

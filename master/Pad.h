@@ -20,16 +20,16 @@ public:
 	void Update();
 
 	// スティック操作
+	bool RightTrigger();
+	bool LeftTrigger();
+	bool UpTrigger();
+	bool DownTrigger();
 	bool Right();
 	bool Left();
 	bool Up();
 	bool Down();
 	int Horizontal();
 	int Vertical();
-	bool RightTrigger();
-	bool LeftTrigger();
-	bool UpTrigger();
-	bool DownTrigger();
 
 	// ボタン操作
 	enum Button

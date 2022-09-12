@@ -35,6 +35,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	Scene scene = Scene::Play;
 	Color color;
 	// ---変数の宣言と初期化---
+	Input* input = Input::GetInstance();
+	input->Load();
+
 	int score = 0;
 	int scoreCoin = 0;
 
@@ -44,14 +47,15 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	Map map;
 	map.Create();
 
-	Player player = { {rand() % 2 + 4,rand() % 2 + 4},&map };
+	Player player;
+	player.LoadAndSet(&map);
+	player.Initialize({rand() % 2 + 4,rand() % 2 + 4});
 
 	map.Change(player.GetPos(), None);
 	map.drawer.ChipInit(player.GetPos(), None);
 	map.SetOutSide(&camera, player.GetPosAdress());
 
 	Timer timer = { GetNowCount() ,100 };
-	Input input;
 	Pad* pad = Pad::GetInstance();
 
 	int fontSize = 48;
@@ -73,11 +77,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 #pragma region 更新処理
 		ClearDrawScreen();
 
-		input.Update();
+		input->Update();
 		switch (scene)
 		{
 		case Title:
-			if (input.IsTrigger(KEY_INPUT_SPACE)) { scene = Prologue; }
+			if (input->keys->IsTrigger(KEY_INPUT_SPACE)) { scene = Prologue; }
 			break;
 		case Prologue:
 			for (size_t i = 0; i < prologueFontColor.size(); i++)
@@ -87,33 +91,27 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 				else { if (prologueFontColor[i - 1] >= 200) { prologueFontColor[i] += INC_NUM; } }
 				Clamp(prologueFontColor[i], 255);
 			}
-			if (prologueFontColor.back() >= 150 && input.IsTrigger(KEY_INPUT_SPACE)) { scene = Tutorial; }
+			if (prologueFontColor.back() >= 150 && input->keys->IsTrigger(KEY_INPUT_SPACE)) { scene = Tutorial; }
 			break;
 		case Tutorial:
 			break;
 		case Play:
 
-			player.Move();
-			player.Destroy();
-			if (input.IsTrigger(KEY_INPUT_R))
+			player.Update();
+			if (input->keys->IsTrigger(KEY_INPUT_R))
 			{
 				map.Create();
-				player.SetPos({ rand() % 2 + 4,rand() % 2 + 4 });
+				player.Reset({ rand() % 2 + 4,rand() % 2 + 4 });
 				map.Change(player.GetPos(), None);
 			}
-			if (input.IsTrigger(KEY_INPUT_N))
-			{
-				map.drawer.ChipBright();
-			}
+
 			map.Update();
 			if (map.CountBlockNum(CrystalBlock) == 0)
 			{
 				map.NextStage();
-				player.ActionReset();
 				scoreCoin += 7 - map.CountBlockNum(CoinBlock);
-				player.SetPos({ rand() % 2 + 4,rand() % 2 + 4 });
+				player.Reset({ rand() % 2 + 4,rand() % 2 + 4 });
 				map.Change(player.GetPos(), None);
-				map.drawer.SetBrightness(player.GetActionCount());
 				timer = { GetNowCount() ,120 };
 			}
 
@@ -144,7 +142,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		case Play:
 
 			map.Draw(camera.GetPos());
-			player.Draw();
+			player.Draw(camera.GetPos());
 			timer.Draw({ 0,32 });
 			DrawFormatString(0, 0, color.White, "コイン残り%d枚", map.CountBlockNum(CoinBlock));
 			DrawFormatString(400, 0, color.White, "行動回数:%d回", player.GetActionCount());

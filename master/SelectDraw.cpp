@@ -17,7 +17,7 @@ void SelectDraw::Update()
 
 void SelectDraw::ChoseDraw(const Vector2Int& pos, const Vector2Int& camera)
 {
-	Vector2Int center = { leftTop.x + pos.x * 64 - 32, leftTop.y + pos.y * 64 - 32 };
+	Vector2Int center = { leftTop.x + pos.x * 64, leftTop.y + pos.y * 64 };
 	SetCompDraw(center);
 }
 
@@ -32,7 +32,7 @@ void SelectDraw::SetCompDraw(const Vector2Int& center)
 
 void SelectDraw::Draw(const Vector2Int& pos, const Vector2Int& camera)
 {
-	Vector2Int center = { leftTop.x + pos.x * 64 - 32, leftTop.y + pos.y * 64 - 32 };
+	Vector2Int center = { leftTop.x + pos.x * 64, leftTop.y + pos.y * 64 };
 	SetDraw(center);
 }
 

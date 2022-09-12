@@ -1,18 +1,43 @@
 #include "Input.h"
 #include "DxLib.h"
+
+Input* Input::GetInstance()
+{
+	static Input instance;
+	return &instance;
+}
+
+void Input::Load()
+{
+	keys = Keys::GetInstance();
+	pad = Pad::GetInstance();
+	keys->Load();
+	pad->Load();
+}
+
 void Input::Update()
 {
-	for (size_t i = 0; i < 256; i++) { oldkey[i] = key[i]; };
-	GetHitKeyStateAll(key);
+	keys->Update();
+	pad->Update();
 }
-bool Input::IsInput(const int KEY_NUM) { return key[KEY_NUM]; };
-bool Input::IsTrigger(const int KEY_NUM) { return key[KEY_NUM] && !oldkey[KEY_NUM]; }
 
-bool Input::IsTriggerMoveKey()
+bool Input::IsRight()
 {
-	return
-		IsTrigger(KEY_INPUT_UP) ||
-		IsTrigger(KEY_INPUT_DOWN) ||
-		IsTrigger(KEY_INPUT_RIGHT) ||
-		IsTrigger(KEY_INPUT_LEFT);
+	return keys->IsTrigger(KEY_INPUT_RIGHT) || pad->RightTrigger();
+}
+bool Input::IsLeft()
+{
+	return keys->IsTrigger(KEY_INPUT_LEFT) || pad->LeftTrigger();
+}
+bool Input::IsUp()
+{
+	return keys->IsTrigger(KEY_INPUT_UP) || pad->UpTrigger();
+}
+bool Input::IsDown()
+{
+	return keys->IsTrigger(KEY_INPUT_DOWN) || pad->DownTrigger();
+}
+bool Input::IsMove()
+{
+	return 	IsRight() || IsLeft() || IsUp() || IsDown();
 }

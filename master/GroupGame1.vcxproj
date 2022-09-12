@@ -36,6 +36,7 @@
     <ClCompile Include="Ease.cpp" />
     <ClCompile Include="function.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Keys.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="MapChipDraw.cpp" />
@@ -43,7 +44,7 @@
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Random.cpp" />
-    <ClCompile Include="Select.cpp" />
+    <ClCompile Include="Selecter.cpp" />
     <ClCompile Include="SelectDraw.cpp" />
     <ClCompile Include="Shake.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -69,13 +70,14 @@
     <ClInclude Include="enum.h" />
     <ClInclude Include="function.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="Keys.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MapChipDraw.h" />
     <ClInclude Include="Pad.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Random.h" />
-    <ClInclude Include="Select.h" />
+    <ClInclude Include="Selecter.h" />
     <ClInclude Include="SelectDraw.h" />
     <ClInclude Include="Shake.h" />
     <ClInclude Include="Timer.h" />

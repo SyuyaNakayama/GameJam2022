@@ -25,8 +25,8 @@ void BreakBlockList::Update()
 		if (!wait[i]) continue;
 
 		int waitTime = 0;
-		if (i) waitTime = MiningTime;
-		else waitTime = ExprosionTime;
+		if (i) waitTime = ExprosionTime;
+		else waitTime = MiningTime;
 
 		if (++timer[i] >= waitTime)
 		{

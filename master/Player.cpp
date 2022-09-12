@@ -1,158 +1,106 @@
 #include "Player.h"
 #include "function.h"
-#include "DxLib.h"
+#include "enum.h"
+#include "Map.h"
 #include <math.h>
 
-Player::Player(Vector2Int pos_, Map* pMap)
+void Player::LoadAndSet(Map* pMap)
 {
-	selectPos = pos = pos_;
-	mapPointer = pMap; rad = pMap->GetRadius();
-	pad = Pad::GetInstance();
+	this->pMap = pMap;
+	selecter.Load();
+	selecter.SetMap(pMap);
+	input = Input::GetInstance();
 }
 
-Vector2Int Player::GetLastSelectChip()
+void Player::Initialize(const Vector2Int& pos)
 {
-	if (selectChip.size() > 1) { return selectChip[selectChip.size() - 2]; }
-	return pos;
+	selecter.SetPlayerPos(&this->pos);
+	Reset(pos);
+	selecter.Initialize(DESTROY_MAX);
 }
 
-void Player::Move()
+void Player::Reset(const Vector2Int& pos)
 {
-	input.Update();
-	Vector2Int prePos = pos;
-	Vector2Int preSelectPos = selectPos;
+	this->pos = pos;
+	mode = Mode::Select;
+	direction = Up;
+	selecter.Reset();
+	move = { -1, -1 };
+	stopTimer = 0;
+	ActionReset();
+}
 
-	switch (mode)
-	{
-	case Mode::Move:
-		if (input.IsTrigger(KEY_INPUT_RIGHT)) { direction = Right; }
-		if (input.IsTrigger(KEY_INPUT_LEFT)) { direction = Left; }
-		if (input.IsTrigger(KEY_INPUT_UP)) { direction = Up; }
-		if (input.IsTrigger(KEY_INPUT_DOWN)) { direction = Down; }
-		break;
-	case Select:
-		if (input.IsTriggerMoveKey() && selectNum > 0)
-		{
-			bool isOk = 1;
-			if (!selectChip.empty())
-			{
-				for (size_t i = 0; i < selectChip.size(); i++)
-				{
-					isOk &= !(selectPos == selectChip[i]);
-				}
-			}
-			if (isOk)
-			{
-				selectChip.push_back(selectPos);
-				if (mapPointer->GetMapState(selectPos) == BombBlock)
-				{
-					mode = Mode::Move;
-				}
-				selectNum--;
-			}
-		}
-		selectPos.x += input.IsTrigger(KEY_INPUT_RIGHT) - input.IsTrigger(KEY_INPUT_LEFT);
-		selectPos.y += input.IsTrigger(KEY_INPUT_DOWN) - input.IsTrigger(KEY_INPUT_UP);
-		break;
-	}
+void Player::ActionReset()
+{
+	damageCount = 0;
+	actionNum = 20;
+}
 
-	Clamp(selectPos, mapPointer->GetMapSize() - Vector2Int(1, 1));
-	if (mapPointer->GetMapState(selectPos) == None)
+void Player::Update()
+{
+	selecter.Update();
+	if (selecter.IsDecision()) mode = Mode::Destroy;
+	Destroy();
+	Move();
+	if (damageCount > 0)
 	{
-		selectPos = preSelectPos;
+		actionNum - damageCount;
+		damageCount = 0;
 	}
+	pMap->drawer.SetBrightness(actionNum);
+	if ((actionNum - damageCount) == 5) pMap->drawer.ChipBright();
 }
 
 void Player::Destroy()
 {
-	if (mode == Mode::Move)
+	if (mode != Mode::Destroy) return;
+
+	if (selecter.IsSelectBomb())
 	{
-		selectPos = pos;
+		// 爆弾のブロック破戒
+		for (size_t i = 0; i < pMap->GetBomb().size(); i++)
 		{
-			switch (direction)
+			if (pMap->GetBomb()[i].GetPos() == selecter.GetRouteBack())
 			{
-			case Up:    selectPos.y--; break;
-			case Down:  selectPos.y++; break;
-			case Left:  selectPos.x--; break;
-			case Right: selectPos.x++; break;
+				pMap->BombDestroy(i, this);
 			}
 		}
 	}
-	Clamp(selectPos, mapPointer->GetMapSize() - Vector2Int(1, 1));
 
-	switch (mapPointer->GetMapState(selectPos))
-	{
-	case Block: case CoinBlock: case CrystalBlock: case BombBlock:
-		if (!input.IsTrigger(KEY_INPUT_SPACE)) { break; }
-		if (mode == Mode::Move) { mode = Select; }
-		else if (mode == Select) { mode = Mode::Move; }
-	}
+	move = selecter.GetRoutePos(0);
+	pMap->bbList.PushBuck(move);
+	selecter.EraseRoute(0);
+	actionNum--;
+	mode = Mode::Move;
 
-	if (!selectChip.empty())
-	{
-		if (mapPointer->GetMapState(selectChip.back()) == BombBlock || input.IsTrigger(KEY_INPUT_SPACE))
-		{
-			if (mapPointer->GetMapState(selectChip.back()) == BombBlock)
-			{
-				// 爆弾のブロック破戒
-				for (size_t i = 0; i < mapPointer->GetBomb().size(); i++)
-				{
-					if (mapPointer->GetBomb()[i].GetPos() == selectChip.back())
-					{
-						mapPointer->BombDestroy(i, this);
-					}
-				}
-			}
-			for (size_t i = 0; i < selectChip.size(); i++)
-			{
-				//mapPointer->drawer.ChipBreak(selectChip[i]);
-				//mapPointer->drawer.EraseArrowAndBright(selectChip[i]);
-				mapPointer->bbList.PushBuck(selectChip[i]);
-				//mapPointer->Change(selectChip[i], None);
-			}
-			if (mode == Mode::Move) { pos = selectChip.back(); }
-			selectNum = DESTROY_MAX;
-			actionNum--;
-			mapPointer->drawer.SetBrightness(actionNum);
-			destroyAnimetionFlag = 1;
-			countStartFlag = 1;
-			selectChip.clear();
-		}
-	}
 
-	if (input.IsTrigger(KEY_INPUT_C))
-	{
-		selectNum = DESTROY_MAX;
-		mode = Mode::Move;
-		selectChip.clear();
-	}
-
-	if (!countStartFlag) { return; }
-	if (++respawnTimer < respawnTimerLimit) { return; }
-	mapPointer->Respawn();
-	mapPointer->drawer.EraseArrowAndBright(pos);
-	mapPointer->Change(pos, None);
+	countStartFlag = 1;
+	if (!countStartFlag) return;
+	if (++respawnTimer < respawnTimerLimit) return;
+	pMap->Respawn();
+	pMap->drawer.EraseArrowAndBright(pos);
+	pMap->Change(pos, None);
 	respawnTimer = 0;
 	countStartFlag = 0;
 }
 
-void Player::Draw()
+void Player::Move()
 {
-	Color color;
-	DrawCircle(mapPointer->GetChipPos(pos).x, mapPointer->GetChipPos(pos).y, 32, color.Cyan);
-	for (size_t i = 0; i < selectChip.size(); i++)
-	{
-		if (mode == Mode::Select)
-		{
-			DrawBoxWithVectorInt(mapPointer->GetChipPos(selectChip[i]), Vector2Int(mapPointer->GetRadius(), mapPointer->GetRadius()), color.Magenta, 1);
-		}
-	}
-	DrawDebugNumber(damageCount, 96);
-	DrawBoxWithVectorInt(mapPointer->GetChipPos(selectPos), Vector2Int(mapPointer->GetRadius(), mapPointer->GetRadius()), color.Blue, mode);
+	if (mode != Mode::Move) return;
+	if (move.x == -1 && move.y == -1) return;
+
+	pos = move;
+	Clamp(pos, pMap->GetMapSize() - Vector2Int(1, 1));
+	move = { -1, -1 };
+
+	if (selecter.GetRouteSize() >= 1) mode = Mode::Destroy;
+	else mode = Mode::Select;
 }
 
-void Player::ActionReset() 
+void Player::Draw(const Vector2Int& camera)
 {
-	damageCount = 0;
-	actionNum = 20;
+	selecter.Draw(camera);
+	Color color;
+	DrawCircle(pMap->GetChipPos(pos).x, pMap->GetChipPos(pos).y, 32, color.Cyan);
+	DrawDebugNumber(damageCount, 96);
 }

@@ -1,9 +1,6 @@
 #pragma once
-#include "Vector2.h"
+#include "Selecter.h"
 #include "Input.h"
-#include "Map.h"
-#include "Pad.h"
-#include "enum.h"
 #include <vector>
 
 class Map;
@@ -13,33 +10,38 @@ class Player
 private:
 	static const int DESTROY_MAX = 3;
 
-	Vector2Int pos, selectPos;
-	int rad;
-	Direction direction = Up;
-	Input input;
-	Pad* pad = nullptr;
-	int selectNum = DESTROY_MAX;
+	Vector2Int pos;
+	int direction = 0;
 	int actionNum = 20;
+	int damageCount = 0;
+	Selecter selecter;
+	Vector2Int move;
+
+	int mode = 0;
+	int stopTimer = 0;
+
+	Map* pMap = nullptr;
+	Input* input;
+
+	bool countStartFlag = 0;
 	int respawnTimer = 0;
 	int respawnTimerLimit = 120;
-	std::vector<Vector2Int> selectChip;
-	Mode mode = Mode::Move;
-	Map* mapPointer;
-	bool destroyAnimetionFlag = 0;
-	bool countStartFlag = 0;
-	int damageCount = 0;
 public:
-	Player(Vector2Int pos_, Map* pMap);
-	void SetPos(Vector2Int pos_) { pos = pos_; }
+	void LoadAndSet(Map* pMap);
+	void Initialize(const Vector2Int& pos);
+	void Reset(const Vector2Int& pos);
+	void Update();
+	void Draw(const Vector2Int& camera);
+private:
+	void Destroy();
+	void Move();
+	void ActionReset();
+public:
 	Vector2Int GetPos() { return pos; }
 	Vector2Int* GetPosAdress() { return &pos; }
-	Direction GetDirection() { return direction; }
-	int GetActionCount() { return actionNum - damageCount; }
-	Vector2Int GetLastSelectChip();
+	int GetDirection() { return direction; }
+	void SetPos(const Vector2Int& pos) { this->pos = pos; }
+	int GetActionCount() { return actionNum; }
 	int GetDamageCount() { return damageCount; }
 	void DamageCountUp() { damageCount++; }
-	void Move();
-	void Draw();
-	void Destroy();
-	void ActionReset();
 };

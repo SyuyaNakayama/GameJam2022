@@ -13,6 +13,7 @@ Pad::Pad() :
 	GetJoypadDirectInputState(DX_INPUT_PAD1, pad);
 	GetJoypadDirectInputState(DX_INPUT_PAD1, oldpad);
 }
+
 Pad::~Pad()
 {
 	delete pad;
@@ -40,6 +41,22 @@ void Pad::Update()
 	}
 }
 
+bool Pad::RightTrigger()
+{
+	return pad->X >= DOWN && oldpad->X >= 0;
+}
+bool Pad::LeftTrigger()
+{
+	return pad->X <= -DOWN && oldpad->X <= 0;
+}
+bool Pad::UpTrigger()
+{
+	return pad->Y <= -DOWN && oldpad->Y <= 0;
+}
+bool Pad::DownTrigger()
+{
+	return pad->Y >= DOWN && oldpad->Y >= 0;
+}
 bool Pad::Right()
 {
 	return pad->X >= DOWN && oldpad->X >= DOWN;
@@ -63,26 +80,6 @@ int Pad::Horizontal()
 int Pad::Vertical()
 {
 	return Up() - Down();
-}
-
-bool Pad::RightTrigger()
-{
-	return pad->X >= DOWN && oldpad->X >= 0;
-}
-
-bool Pad::LeftTrigger()
-{
-	return pad->X <= -DOWN && oldpad->X <= 0;
-}
-
-bool Pad::UpTrigger()
-{
-	return pad->Y <= -DOWN && oldpad->Y <= 0;
-}
-
-bool Pad::DownTrigger()
-{
-	return pad->Y >= DOWN && oldpad->Y >= 0;
 }
 
 bool Pad::IsTrigger(const int button)
