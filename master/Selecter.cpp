@@ -8,17 +8,17 @@ void Selecter::Load()
 	input = Input::GetInstance();
 }
 
-void Selecter::Initialize(const int choseMax)
+void Selecter::Initialize(const int choseMax, const int direction)
 {
-	Reset();
+	Reset(direction);
 	drawer.Initialize(pMap->GetMapPos());
 	this->choseMax = choseMax;
 }
 
-void Selecter::Reset()
+void Selecter::Reset(const int direction)
 {
 	pos = *playerPos;
-	direction = Up;
+	this->direction = direction;
 	chose.clear();
 	decision = false;
 	bomb = false;
@@ -59,8 +59,7 @@ void Selecter::Move()
 
 void Selecter::ChipSelect()
 {
-	if (input->pad->IsTrigger(input->pad->Y) &&
-		(chose.size() >= choseMax || bomb))
+	if (input->pad->IsTrigger(input->pad->Y) && chose.size() >= 1)
 	{
 		decision = true;
 	}
@@ -97,8 +96,8 @@ void Selecter::Draw(const Vector2Int& camera)
 	if (chose.size() >= choseMax || !bomb) drawer.Draw(pos, camera);
 
 	int a = chose.size();
-	DrawFormatString(100,400, GetColor(0,255,255),"%d",a);
-	DrawFormatString(100,500, GetColor(0,255,255),"%d",decision);
+	DrawFormatString(100, 400, GetColor(0, 255, 255), "%d", a);
+	DrawFormatString(100, 500, GetColor(0, 255, 255), "%d", decision);
 }
 
 void Selecter::SetPlayerPos(Vector2Int* playerPos)

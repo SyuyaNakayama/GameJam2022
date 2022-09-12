@@ -18,17 +18,20 @@ private:
 	Vector2Int move;
 
 	int mode = 0;
+	int next = 0;
 	int stopTimer = 0;
 
 	Map* pMap = nullptr;
 	Input* input;
 public:
 	void LoadAndSet(Map* pMap);
-	void Initialize(const Vector2Int& pos);
-	void Reset(const Vector2Int& pos);
+	void Initialize(const Vector2Int& pos, const int direction);
+	void Reset(const Vector2Int& pos, const int direction);
 	void Update();
 	void Draw(const Vector2Int& camera);
 private:
+	void Stop();
+	void Select();
 	void Destroy();
 	void Move();
 	void ActionReset();

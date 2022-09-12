@@ -20,7 +20,13 @@ public:
 	bool PopBroken(Vector2Int& reciever);
 	bool PopExposure(Vector2Int& reciever);
 	void Clear();
-	int GetBombBreak() { return bombBreak; }
 	void DrawDebug();
+public:
+	int GetBombBreak() { return bombBreak; }
+	bool IsAct() {
+		int a = blocks[0].size();
+		int b = blocks[1].size();
+		return a >= 1 && b >= 1;
+	}
 };
 

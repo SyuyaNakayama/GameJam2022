@@ -1,21 +1,22 @@
 #include "Bomb.h"
+#include "enum.h"
 
-Bomb::Bomb(Vector2Int pos_, int dir)
+void Bomb::Initialize(const Vector2Int& pos, const int direction)
 {
-	pos = pos_; 
-	switch (dir)
+	this->pos = pos;
+	switch (direction)
 	{
-	case 0:	direction = Up;    break;
-	case 1:	direction = Down;  break;
-	case 2:	direction = Left;  break;
-	case 3:	direction = Right; break;
+	case 0:	this->direction = Up;    break;
+	case 1:	this->direction = Down;  break;
+	case 2:	this->direction = Left;  break;
+	case 3:	this->direction = Right; break;
 	}
 }
 
 void Bomb::Rotate()
 {
-	if (--count > 0) { return; }
-	count = COUNT_MAX;
+	if (++timer <= RotaTimer) return;
+	timer = 0;
 
 	switch (direction)
 	{

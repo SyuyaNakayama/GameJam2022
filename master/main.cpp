@@ -33,7 +33,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	srand(time(0));
 #pragma endregion
 	// ---定数の宣言と初期化---
-	Scene scene = Scene::Play;
+	Scene scene = Scene::Result;
 	Color color;
 	// ---変数の宣言と初期化---
 	Font font;
@@ -48,15 +48,15 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	camera.Initialize({});
 
 	Map map;
+	map.LoadAndSet();
 	map.Create();
 
 	Player player;
 	player.LoadAndSet(&map);
-	player.Initialize({ rand() % 2 + 4,rand() % 2 + 4 });
+	player.Initialize({ rand() % 2 + 4,rand() % 2 + 4 }, Up);
 
-	map.Change(player.GetPos(), None);
-	map.drawer.ChipInit(player.GetPos(), None);
 	map.SetOutSide(&camera, player.GetPosAdress());
+	map.Change(player.GetPos(), None);
 
 	Timer timer = { GetNowCount() ,100 };
 	Pad* pad = Pad::GetInstance();
@@ -104,7 +104,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			if (input->keys->IsTrigger(KEY_INPUT_R))
 			{
 				map.Create();
-				player.Reset({ rand() % 2 + 4,rand() % 2 + 4 });
+				player.Reset({ rand() % 2 + 4,rand() % 2 + 4 }, Up);
 				map.Change(player.GetPos(), None);
 			}
 
@@ -113,7 +113,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			{
 				map.NextStage();
 				scoreCoin += 7 - map.CountBlockNum(CoinBlock);
-				player.Reset({ rand() % 2 + 4,rand() % 2 + 4 });
+				player.Reset({ rand() % 2 + 4,rand() % 2 + 4 }, Up);
 				map.Change(player.GetPos(), None);
 				timer = { GetNowCount() ,120 };
 			}
@@ -165,10 +165,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 #pragma endregion
 	}
 #pragma region 終了処理
-	// 全リソースファイル削除
-	InitGraph();
-	InitSoundMem();
-	DxLib_End();
-	return 0;
+// 全リソースファイル削除
+InitGraph();
+InitSoundMem();
+DxLib_End();
+return 0;
 #pragma endregion
 }
