@@ -22,15 +22,21 @@ void Selecter::Reset(const int direction)
 	chose.clear();
 	decision = false;
 	bomb = false;
+	drawer.Reset();
 }
 
 void Selecter::Update()
+{
+	SummaryUpdate();
+	drawer.Update();
+}
+
+void Selecter::SummaryUpdate()
 {
 	if (decision) return;
 	DirectionUpdate();
 	Move();
 	ChipSelect();
-	drawer.Update();
 }
 
 void Selecter::DirectionUpdate()
@@ -62,8 +68,9 @@ void Selecter::ChipSelect()
 	if (input->pad->IsTrigger(input->pad->Y) && chose.size() >= 1)
 	{
 		decision = true;
+		drawer.ClearChose();
 	}
-	if (input->pad->IsTrigger(input->pad->B) && !bomb)
+	else if (input->pad->IsTrigger(input->pad->B) && !bomb)
 	{
 		if (chose.size() >= choseMax) return;
 		for (size_t i = 0; i < chose.size(); i++)
@@ -76,24 +83,20 @@ void Selecter::ChipSelect()
 
 		Vector2Int c = pos;
 		chose.push_back(c);
+		drawer.CreateChose(c, chose.size());
 	}
-	if (input->pad->IsTrigger(input->pad->A))
+	else if (input->pad->IsTrigger(input->pad->A))
 	{
-		for (size_t i = 0; i < chose.size(); i++)
-		{
-			chose.clear();
-		}
+		drawer.ClearChose();
+		chose.clear();
 		bomb = false;
 	}
 }
 
 void Selecter::Draw(const Vector2Int& camera)
 {
-	for (size_t i = 0; i < chose.size(); i++)
-	{
-		drawer.ChoseDraw(chose[i], camera);
-	}
-	if (chose.size() >= choseMax || !bomb) drawer.Draw(pos, camera);
+	drawer.ChoseDraw(camera);
+	if (chose.size() < choseMax && !bomb) drawer.Draw(pos, camera);
 
 	int a = chose.size();
 	DrawFormatString(100, 400, GetColor(0, 255, 255), "%d", a);

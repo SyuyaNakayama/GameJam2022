@@ -37,6 +37,7 @@ public:
 	bool IsDecision() { return decision; }
 	bool IsSelectBomb() { return bomb; }
 private:
+	void SummaryUpdate();
 	void DirectionUpdate();
 	void ChipSelect();
 	void Move();
