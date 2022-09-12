@@ -33,7 +33,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	srand(time(0));
 #pragma endregion
 	// ---’è”‚ÌéŒ¾‚Æ‰Šú‰»---
-	Scene scene = Scene::Title;
+	Scene scene = Scene::Play;
 	Color color;
 	// ---•Ï”‚ÌéŒ¾‚Æ‰Šú‰»---
 	Font font;

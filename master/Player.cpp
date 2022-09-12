@@ -70,7 +70,6 @@ void Player::Destroy()
 	move = selecter.GetRoutePos(0);
 	pMap->bbList.PushBuck(move);
 	selecter.EraseRoute(0);
-	actionNum--;
 	mode = Mode::Move;
 
 
@@ -94,7 +93,12 @@ void Player::Move()
 	move = { -1, -1 };
 
 	if (selecter.GetRouteSize() >= 1) mode = Mode::Destroy;
-	else mode = Mode::Select;
+	else 
+	{
+		mode = Mode::Select;
+		actionNum--;
+		selecter.Reset();
+	}
 }
 
 void Player::Draw(const Vector2Int& camera)
