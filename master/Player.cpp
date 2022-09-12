@@ -12,19 +12,20 @@ void Player::LoadAndSet(Map* pMap)
 	input = Input::GetInstance();
 }
 
-void Player::Initialize(const Vector2Int& pos)
+void Player::Initialize(const Vector2Int& pos, const int direction)
 {
 	selecter.SetPlayerPos(&this->pos);
-	Reset(pos);
-	selecter.Initialize(DESTROY_MAX);
+	Reset(pos, direction);
+	selecter.Initialize(DESTROY_MAX, direction);
 }
 
-void Player::Reset(const Vector2Int& pos)
+void Player::Reset(const Vector2Int& pos, const int direction)
 {
 	this->pos = pos;
 	mode = Mode::Select;
-	direction = Up;
-	selecter.Reset();
+	next = Mode::Select;
+	this->direction = direction;
+	selecter.Reset(direction);
 	move = { -1, -1 };
 	stopTimer = 0;
 	ActionReset();
@@ -39,38 +40,61 @@ void Player::ActionReset()
 void Player::Update()
 {
 	selecter.Update();
-	if (selecter.IsDecision()) mode = Mode::Destroy;
+	Stop();
+	Select();
 	Destroy();
 	Move();
 	if (damageCount > 0)
 	{
-		actionNum - damageCount;
+		actionNum -= damageCount;
 		damageCount = 0;
 	}
 	pMap->drawer.SetBrightness(actionNum);
 	if ((actionNum - damageCount) == 5) pMap->drawer.ChipBright();
 }
 
+void Player::Stop()
+{
+	if (mode != Mode::Stop) return;
+
+	if (pMap->breakCount <= 0) mode = next;
+}
+
+void Player::Select()
+{
+	if (mode != Mode::Select) return;
+
+	if (selecter.IsDecision())
+	{
+		mode = Mode::Stop;
+		next = Mode::Destroy;
+	}
+}
+
 void Player::Destroy()
 {
 	if (mode != Mode::Destroy) return;
+
+	move = selecter.GetRoutePos(0);
+	pMap->breakCount++;
+	pMap->bbList.PushBuck(move);
 
 	if (selecter.IsSelectBomb())
 	{
 		// ”š’e‚ÌƒuƒƒbƒN”j‰ú
 		for (size_t i = 0; i < pMap->GetBomb().size(); i++)
 		{
-			if (pMap->GetBomb()[i].GetPos() == selecter.GetRouteBack())
+			if (pMap->GetBomb()[i].GetPos() == move)
 			{
+				pMap->EraseBomb(i);
 				pMap->BombDestroy(i, this);
 			}
 		}
 	}
 
-	move = selecter.GetRoutePos(0);
-	pMap->bbList.PushBuck(move);
 	selecter.EraseRoute(0);
-	mode = Mode::Move;
+	mode = Mode::Stop;
+	next = Mode::Move;
 }
 
 void Player::Move()
@@ -82,12 +106,17 @@ void Player::Move()
 	Clamp(pos, pMap->GetMapSize() - Vector2Int(1, 1));
 	move = { -1, -1 };
 
-	if (selecter.GetRouteSize() >= 1) mode = Mode::Destroy;
-	else 
+	if (selecter.GetRouteSize() >= 1)
 	{
-		mode = Mode::Select;
+		mode = Mode::Stop;
+		next = Mode::Destroy;
+	}
+	else
+	{
+		mode = Mode::Stop;
+		next = Mode::Select;
 		actionNum--;
-		selecter.Reset();
+		selecter.Reset(selecter.GetDirection());
 	}
 }
 

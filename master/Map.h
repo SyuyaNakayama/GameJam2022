@@ -72,9 +72,22 @@ private:
 public:
 	MapChipDraw drawer;
 	BreakBlockList bbList;
+	int breakCount = 0;
+public:
+	void LoadAndSet();
+	void SetOutSide(Camera* camera, Vector2Int* playerPos);
+	void Init(); // マップをBlockで初期化
+	void Create();
 
-	Map() { LoadAndSet(); Init(); }
-	
+	void Update();
+	void Change(Vector2Int num, BlockName blockName);
+	void Respawn();
+	void BombDestroy(int bombIndex, Player* player);
+	void EraseBomb(const int num);
+	void Draw(const Vector2Int& camera);
+private:
+	void RespawnTimerUpdate();
+public:
 	Vector2Int GetMapPos() { return pos; }
 	Vector2Int GetChipPos(Vector2Int chipNum) { return pos + 2 * chipRad * chipNum; }
 	int GetRadius() { return chipRad; }
@@ -83,19 +96,6 @@ public:
 	BlockName GetMapState(Vector2Int pos) { return map[pos.y][pos.x]; }
 	vector<Bomb> GetBomb() { return bomb; }
 	int GetStage() { return stage; }
-
-	void Init(); // マップをBlockで初期化
-	void Change(Vector2Int num, BlockName blockName);
-	void Create();
-	void Respawn();
-	void BombDestroy(int bombIndex, Player* player);
-	void Draw(const Vector2Int& camera);
 	size_t CountBlockNum(BlockName blockName);
-
-	void LoadAndSet();
-	void SetOutSide(Camera* camera, Vector2Int* playerPos);
-	void Update();
 	void NextStage() { stage++; Create(); }
-private:
-	void RespawnTimerUpdate();
 };
