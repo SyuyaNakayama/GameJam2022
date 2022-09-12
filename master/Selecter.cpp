@@ -65,12 +65,12 @@ void Selecter::Move()
 
 void Selecter::ChipSelect()
 {
-	if (input->pad->IsTrigger(input->pad->Y) && chose.size() >= 1)
+	if (input->IsDone() && chose.size() >= 1)
 	{
 		decision = true;
 		drawer.ClearChose();
 	}
-	else if (input->pad->IsTrigger(input->pad->B) && !bomb)
+	else if (input->IsSelect() && !bomb)
 	{
 		if (chose.size() >= choseMax) return;
 		for (size_t i = 0; i < chose.size(); i++)
@@ -85,7 +85,7 @@ void Selecter::ChipSelect()
 		chose.push_back(c);
 		drawer.CreateChose(c, chose.size());
 	}
-	else if (input->pad->IsTrigger(input->pad->A))
+	else if (input->IsCancel())
 	{
 		drawer.ClearChose();
 		chose.clear();

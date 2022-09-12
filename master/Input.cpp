@@ -41,3 +41,20 @@ bool Input::IsMove()
 {
 	return 	IsRight() || IsLeft() || IsUp() || IsDown();
 }
+
+bool Input::IsSelect()
+{
+	return keys->IsTrigger(KEY_INPUT_SPACE) || pad->IsTrigger(Pad::B);
+}
+
+bool Input::IsDone()
+{
+	return keys->IsTrigger(KEY_INPUT_RETURN) || pad->IsTrigger(Pad::Y);
+}
+
+bool Input::IsCancel()
+{
+	return	keys->IsTrigger(KEY_INPUT_LSHIFT) || 
+			keys->IsTrigger(KEY_INPUT_RSHIFT) || 
+			pad->IsTrigger(Pad::A);
+}
