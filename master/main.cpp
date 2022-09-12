@@ -7,6 +7,7 @@
 #include "enum.h"
 #include "Timer.h"
 #include "Camera.h"
+#include "Font.h"
 #include <vector>
 #include <stdlib.h>
 #include <time.h>
@@ -32,9 +33,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	srand(time(0));
 #pragma endregion
 	// ---定数の宣言と初期化---
-	Scene scene = Scene::Play;
+	Scene scene = Scene::Title;
 	Color color;
 	// ---変数の宣言と初期化---
+	Font font;
+
 	Input* input = Input::GetInstance();
 	input->Load();
 
@@ -49,7 +52,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 	Player player;
 	player.LoadAndSet(&map);
-	player.Initialize({rand() % 2 + 4,rand() % 2 + 4});
+	player.Initialize({ rand() % 2 + 4,rand() % 2 + 4 });
 
 	map.Change(player.GetPos(), None);
 	map.drawer.ChipInit(player.GetPos(), None);
@@ -92,11 +95,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 				Clamp(prologueFontColor[i], 255);
 			}
 			if (prologueFontColor.back() >= 150 && input->keys->IsTrigger(KEY_INPUT_SPACE)) { scene = Tutorial; }
+			if (input->keys->IsTrigger(KEY_INPUT_S)) { scene = Tutorial; }
 			break;
 		case Tutorial:
 			break;
 		case Play:
-
 			player.Update();
 			if (input->keys->IsTrigger(KEY_INPUT_R))
 			{
@@ -133,14 +136,15 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		case Prologue:
 			for (size_t i = 0; i < prologueFontColor.size(); i++)
 			{
-				DrawString(200, 200 + fontSize * i, prologueString[i].c_str(),
-					GetColor(prologueFontColor[i], prologueFontColor[i], prologueFontColor[i]));
+				DrawStringToHandle(200, 200 + (font.GetFontSize(FontSize::L) + 5) * i, prologueString[i].c_str(),
+					GetColor(prologueFontColor[i], prologueFontColor[i], prologueFontColor[i]),
+					font.Use(FontSize::L));
 			}
+			DrawStringToHandle(1050, 50, "S:Skip", color.White, font.Use(FontSize::L));
 			break;
 		case Tutorial:
 			break;
 		case Play:
-
 			map.Draw(camera.GetPos());
 			player.Draw(camera.GetPos());
 			timer.Draw({ 0,32 });
@@ -148,7 +152,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			DrawFormatString(400, 0, color.White, "行動回数:%d回", player.GetActionCount());
 			DrawFormatString(400, 50, color.White, "クリスタル:%d個", map.CountBlockNum(CrystalBlock));
 			DrawFormatString(400, 96, color.White, "ボムによる破壊:%d個", map.GetBombBreakCount());
-
 			DrawFormatString(800, 0, color.White, "ステージ:%d", map.GetStage());
 			break;
 		case GameOver:
