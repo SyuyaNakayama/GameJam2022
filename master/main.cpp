@@ -171,6 +171,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			DrawFormatStringToHandle(400, 350, color.White, font.Use(FontSize::LL), "スコア:%d", score);
 			break;
 		case Ranking:
+			DrawFormatStringToHandle(400, 100, color.White, font.Use(FontSize::LL), "スコア:%d", score);
 			ranking.Draw(font);
 			break;
 		}
@@ -179,10 +180,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 #pragma endregion
 	}
 #pragma region 終了処理
-// 全リソースファイル削除
-InitGraph();
-InitSoundMem();
-DxLib_End();
-return 0;
+	// 全リソースファイル削除
+	InitGraph();
+	InitSoundMem();
+	InitFontToHandle();
+	DxLib_End();
+	return 0;
 #pragma endregion
 }

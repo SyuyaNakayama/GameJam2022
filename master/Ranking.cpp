@@ -19,6 +19,9 @@ RankingManager::RankingManager()
 
 void RankingManager::Update(int newScore)
 {
+	vector<string>rankStr;
+	for (size_t i = 1; i <= 5; i++) { rankStr.push_back(to_string(i) + "ˆÊ "); }
+
 	scoreList.push_back(newScore);
 	sort(scoreList.begin(), scoreList.end());
 	reverse(scoreList.begin(), scoreList.end());
@@ -34,5 +37,5 @@ void RankingManager::Update(int newScore)
 void RankingManager::Draw(Font& font)
 {
 	Color color;
-	font.DrawUseFont({ 400,200 }, color.White, str.c_str(), FontSize::LL);
+	font.DrawUseFont({ 400,250 }, color.White, str.c_str(), FontSize::LL);
 }
