@@ -9,9 +9,10 @@
 #include "Camera.h"
 #include "Font.h"
 #include <vector>
-#include <stdlib.h>
-#include <time.h>
 #include <string>
+#include <fstream>
+#include <algorithm>
+#include "Ranking.h"
 
 using namespace std;
 
@@ -30,10 +31,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	SetWindowSizeExtendRate(1.0);
 	SetDrawScreen(DX_SCREEN_BACK);
 	if (DxLib_Init() == -1) { return -1; }
-	srand(time(0));
 #pragma endregion
 	// ---定数の宣言と初期化---
-	Scene scene = Scene::Play;
+	Scene scene = Scene::Ranking;
 	Color color;
 	// ---変数の宣言と初期化---
 	Font font;
@@ -62,6 +62,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	Pad* pad = Pad::GetInstance();
 
 	int fontSize = 48;
+
+	RankingManager ranking;
+
 	vector<int> prologueFontColor(8, 0);
 	vector<string> prologueString =
 	{
@@ -122,6 +125,14 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			break;
 		case Result:
 			score = (scoreCoin * 100) * (1 + (0.1 * map.GetStage())) + (map.GetBombBreakCount() * 50);
+			if (input->keys->IsTrigger(KEY_INPUT_SPACE))
+			{
+				scene = Ranking;
+				ranking.Update(score);
+			}
+			break;
+		case Ranking:
+			if (input->keys->IsTrigger(KEY_INPUT_SPACE)) { scene = Title; }
 			break;
 		}
 		camera.Update();
@@ -158,6 +169,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		case Result:
 			font.DrawUseFont({ 400,150 }, color.White, "リザルト", FontSize::LL);
 			DrawFormatStringToHandle(400, 350, color.White, font.Use(FontSize::LL), "スコア:%d", score);
+			break;
+		case Ranking:
+			ranking.Draw(font);
 			break;
 		}
 

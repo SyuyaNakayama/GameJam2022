@@ -45,6 +45,7 @@
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Random.cpp" />
+    <ClCompile Include="Ranking.cpp" />
     <ClCompile Include="Selecter.cpp" />
     <ClCompile Include="SelectDraw.cpp" />
     <ClCompile Include="Shake.cpp" />
@@ -79,6 +80,7 @@
     <ClInclude Include="Particle.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Random.h" />
+    <ClInclude Include="Ranking.h" />
     <ClInclude Include="Selecter.h" />
     <ClInclude Include="SelectDraw.h" />
     <ClInclude Include="Shake.h" />
