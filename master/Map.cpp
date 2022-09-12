@@ -228,8 +228,21 @@ void Map::Update()
 			drawer.ChipBreak(n);
 			drawer.EraseArrowAndBright(n);
 			Change(n, None);
+			countStartFlag = true;
 		}
 	}
+	RespawnTimerUpdate();
 	drawer.Update();
 	for (size_t i = 0; i < bomb.size(); i++) { bomb[i].Rotate(); }
+}
+
+void Map::RespawnTimerUpdate()
+{
+	if (!countStartFlag) return;
+	if (++respawnTimer < respawnTimerLimit) return;
+	Respawn();
+	drawer.EraseArrowAndBright(*playerPos);
+	Change(*playerPos, None);
+	respawnTimer = 0;
+	countStartFlag = false;
 }

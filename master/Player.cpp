@@ -70,18 +70,7 @@ void Player::Destroy()
 	move = selecter.GetRoutePos(0);
 	pMap->bbList.PushBuck(move);
 	selecter.EraseRoute(0);
-	actionNum--;
 	mode = Mode::Move;
-
-
-	countStartFlag = 1;
-	if (!countStartFlag) return;
-	if (++respawnTimer < respawnTimerLimit) return;
-	pMap->Respawn();
-	pMap->drawer.EraseArrowAndBright(pos);
-	pMap->Change(pos, None);
-	respawnTimer = 0;
-	countStartFlag = 0;
 }
 
 void Player::Move()
@@ -94,7 +83,12 @@ void Player::Move()
 	move = { -1, -1 };
 
 	if (selecter.GetRouteSize() >= 1) mode = Mode::Destroy;
-	else mode = Mode::Select;
+	else 
+	{
+		mode = Mode::Select;
+		actionNum--;
+		selecter.Reset();
+	}
 }
 
 void Player::Draw(const Vector2Int& camera)

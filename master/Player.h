@@ -22,10 +22,6 @@ private:
 
 	Map* pMap = nullptr;
 	Input* input;
-
-	bool countStartFlag = 0;
-	int respawnTimer = 0;
-	int respawnTimerLimit = 120;
 public:
 	void LoadAndSet(Map* pMap);
 	void Initialize(const Vector2Int& pos);

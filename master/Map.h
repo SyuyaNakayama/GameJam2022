@@ -23,6 +23,10 @@ private:
 	vector<Bomb> bomb;
 	int stage = 4;
 
+	bool countStartFlag = false;
+	int respawnTimer = 0;
+	int respawnTimerLimit = 120;
+
 	const vector<vector<Vector2Int>>crystalPos =
 	{
 		{{2,1},{4,9},{8,3}},
@@ -92,4 +96,6 @@ public:
 	void SetOutSide(Camera* camera, Vector2Int* playerPos);
 	void Update();
 	void NextStage() { stage++; Create(); }
+private:
+	void RespawnTimerUpdate();
 };

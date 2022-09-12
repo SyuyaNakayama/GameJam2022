@@ -95,6 +95,10 @@ void Selecter::Draw(const Vector2Int& camera)
 		drawer.ChoseDraw(chose[i], camera);
 	}
 	if (chose.size() >= choseMax || !bomb) drawer.Draw(pos, camera);
+
+	int a = chose.size();
+	DrawFormatString(100,400, GetColor(0,255,255),"%d",a);
+	DrawFormatString(100,500, GetColor(0,255,255),"%d",decision);
 }
 
 void Selecter::SetPlayerPos(Vector2Int* playerPos)
@@ -111,7 +115,7 @@ void Selecter::SetMap(Map* map)
 
 Vector2Int Selecter::GetRoutePos(const int num)
 {
-	if (num <= 0 || chose.size() - 1 <= num) return Vector2Int(-1, -1);
+	if (num < 0 || chose.size() - 1 < num) return Vector2Int(-1, -1);
 	return chose[num];
 }
 
@@ -123,7 +127,7 @@ Vector2Int Selecter::GetRouteBack()
 
 void Selecter::EraseRoute(const int num)
 {
-	if (num <= 0 || chose.size() - 1 <= num) return;
+	if (num < 0 || chose.size() - 1 < num) return;
 	chose.erase(std::begin(chose) + num);
 }
 
