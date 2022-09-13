@@ -13,11 +13,12 @@
 #include <fstream>
 #include <algorithm>
 #include "Ranking.h"
+#include "UIDrawer.h"
 
 using namespace std;
 
 // ウィンドウのサイズ
-const Vector2Int WIN_SIZE = { 1280,1280 * 2 / 3 };
+const Vector2Int WIN_SIZE = { 1920,980 };
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	_In_ LPSTR lpCmdLine, _In_ int nCmdShow)
@@ -44,6 +45,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	int score = 0;
 	int scoreCoin = 0;
 
+	int currentCoin = 0;
+	int elderCoin = 0;
+	int crystalCounter = 0;
+
 	Camera camera;
 	camera.Initialize({});
 
@@ -57,6 +62,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 	map.SetOutSide(&camera, player.GetPosAdress());
 	map.Change(player.GetPos(), None);
+
+	UIDrawer ui;
+	ui.LoadAndSet(player.GetActionCountPointer(), &scoreCoin, &crystalCounter);
+	ui.Initialize();
 
 	Timer timer = { GetNowCount() ,100 };
 	Pad* pad = Pad::GetInstance();
@@ -113,16 +122,17 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			}
 
 			map.Update();
-			if (map.CountBlockNum(CrystalBlock) == 0)
+
+			if (map.GetStage() % 4 == 0) currentCoin = 26 - map.CountBlockNum(CoinBlock);
+			else currentCoin = 7 - map.CountBlockNum(CoinBlock);
+
+			if (currentCoin > elderCoin) scoreCoin += (currentCoin - elderCoin);
+			elderCoin = currentCoin;
+
+			crystalCounter = 3 - map.CountBlockNum(CrystalBlock);
+
+			if (crystalCounter == 3)
 			{
-				if (map.GetStage() % 4 == 0)
-				{
-					scoreCoin += 26 - map.CountBlockNum(CoinBlock);
-				}
-				else
-				{
-					scoreCoin += 7 - map.CountBlockNum(CoinBlock);
-				}
 				map.NextStage();
 				player.Reset({ rand() % 2 + 4,rand() % 2 + 4 }, Up);
 				map.Change(player.GetPos(), None);
@@ -130,18 +140,12 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			}
 
 			if (player.GetActionCount() <= 0 || timer.CountDown(player.GetDamageCount()))
-			{ 
-				if (map.GetStage() % 4 == 0)
-				{
-					scoreCoin += 26 - map.CountBlockNum(CoinBlock);
-				}
-				else
-				{
-					scoreCoin += 7 - map.CountBlockNum(CoinBlock);
-				}
+			{
 				score = (scoreCoin * 100) * (1 + (0.1 * map.GetStage())) + (map.GetBombBreakCount() * 50);
 				scene = Result; SetFontSize(96); 
 			}
+
+			ui.Update();
 			break;
 		case Result:
 			if (input->keys->IsTrigger(KEY_INPUT_SPACE))
@@ -176,6 +180,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		case Tutorial:
 			break;
 		case Play:
+			ui.Draw(camera.GetPos());
 			map.Draw(camera.GetPos());
 			player.Draw(camera.GetPos());
 			timer.Draw({ 0,32 });

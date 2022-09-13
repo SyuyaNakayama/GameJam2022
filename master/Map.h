@@ -17,7 +17,7 @@ class Map
 {
 private:
 	array<array<BlockName, 10>, 10>map;
-	Vector2Int	pos = { 500,200 };
+	Vector2Int	pos = { 672,300 };
 	int	chipRad = 32;
 	Color color;
 	vector<Bomb> bomb;

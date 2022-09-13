@@ -3,7 +3,7 @@
 #include "enum.h"
 
 MapChipDraw::MapChipDraw() :
-	goldG(0), oreG(0), bombG(0),
+	goldG(0), oreG(0), bombG(0), soilG(0),
 	leftTop(nullptr), brightness(20), playerPos(nullptr), pCamera(nullptr)
 {}
 
@@ -13,6 +13,7 @@ void MapChipDraw::Load()
 	goldG = LoadGraph("Resources/Block/gold.png");
 	oreG = LoadGraph("Resources/Block/ore.png");
 	bombG = LoadGraph("Resources/Block/bomb.png");
+	soilG = LoadGraph("Resources/soil.png");
 	dustE.Load();
 	breakE.Load();
 	arrowE.Load();
@@ -123,6 +124,10 @@ void MapChipDraw::Draw(const Vector2Int& camera)
 	{
 		for (size_t x = 0; x < 10; x++)
 		{
+			DrawGraph(
+				leftTop->x + (x * 64) - 32 + camera.x,
+				leftTop->y + (y * 64) - 32 + camera.y,
+				soilG, true);
 			blocks[y][x].Draw(camera);
 		}
 	}

@@ -49,6 +49,12 @@
     <Filter Include="ソース ファイル\Input">
       <UniqueIdentifier>{af2a7b3b-a59f-4ff3-9a83-777ac7be3fcf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Draw\UI">
+      <UniqueIdentifier>{6efbdfd4-c47a-4dc9-a898-a6626ac66398}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Draw\UI">
+      <UniqueIdentifier>{bb200ce5-0a05-454d-883b-287ec7346c55}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Bomb.cpp">
@@ -146,6 +152,18 @@
     </ClCompile>
     <ClCompile Include="Ranking.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="CashDraw.cpp">
+      <Filter>ソース ファイル\Draw\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="CrystalDraw.cpp">
+      <Filter>ソース ファイル\Draw\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="PickelDraw.cpp">
+      <Filter>ソース ファイル\Draw\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UIDrawer.cpp">
+      <Filter>ソース ファイル\Draw\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -247,6 +265,18 @@
     </ClInclude>
     <ClInclude Include="Ranking.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="CashDraw.h">
+      <Filter>ヘッダー ファイル\Draw\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="CrystalDraw.h">
+      <Filter>ヘッダー ファイル\Draw\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="PickelDraw.h">
+      <Filter>ヘッダー ファイル\Draw\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UIDrawer.h">
+      <Filter>ヘッダー ファイル\Draw\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

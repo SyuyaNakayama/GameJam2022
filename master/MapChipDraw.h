@@ -17,6 +17,7 @@ private:
 	int goldG;
 	int oreG;
 	int bombG;
+	int soilG;
 	Vector2Int* leftTop;
 	int brightness;
 	Vector2Int* playerPos;

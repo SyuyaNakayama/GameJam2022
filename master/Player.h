@@ -41,6 +41,7 @@ public:
 	int GetDirection() { return direction; }
 	void SetPos(const Vector2Int& pos) { this->pos = pos; }
 	int GetActionCount() { return actionNum; }
+	int* GetActionCountPointer() { return &actionNum; }
 	int GetDamageCount() { return damageCount; }
 	void DamageCountUp() { damageCount++; }
 };

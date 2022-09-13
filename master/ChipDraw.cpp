@@ -112,11 +112,7 @@ void ChipDraw::Draw(const Vector2Int& camera)
 	}
 
 	DrawShadow(camera);
-
-	if (!isDeath)
-	{
-		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-	}
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	//DrawFormatString(p.x, p.y, GetColor(0, 0, 255), "%d", type);
 }
