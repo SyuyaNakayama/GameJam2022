@@ -74,7 +74,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	int fontSize = 48;
 
 	RankingManager ranking;
-	ranking.Reset(); // デバッグ用
+	ranking.Reset(); // ***** デバッグ用(提出時はコメントアウトすること！！！) ***** //
 	ranking.Load();
 	vector<int> prologueFontColor(8, 0);
 	vector<string> prologueString =
@@ -147,6 +147,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			if (crystalCounter == 3 || input->keys->IsTrigger(KEY_INPUT_S))
 			{
 				scene = Play;
+				score = 0;
+				scoreCoin = 0;
 				map.Create();
 				player.Reset({ rand() % 2 + 4, rand() % 2 + 4 }, Up);
 				map.Change(player.GetPos(), None);
