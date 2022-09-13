@@ -16,6 +16,7 @@ private:
 	Vector2Int* leftTop;
 public:
 	void Load();
+	void Initialize();
 	void Emit(const Vector2Int& num, const int blockName);
 	void Update();
 	void Draw(const Vector2Int& camera);

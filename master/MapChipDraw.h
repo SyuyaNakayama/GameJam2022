@@ -30,10 +30,13 @@ private:
 public:
 	MapChipDraw();
 	void Load();
-	void Update();
+	void Reset();
+
 	void ChipInit(const Vector2Int& num, const int blockName);
 	void ChipBreak(const Vector2Int& num);
 	void ChipBright();
+
+	void Update();
 
 	void EraseArrowAndBright(const Vector2Int& num);
 	void ClearArrowAndBright();
@@ -48,6 +51,8 @@ public:
 	void ClearBright();
 
 	void Draw(const Vector2Int& camera);
+public:
+
 	void SetLeftTop(Vector2Int* leftTop);
 	void SetBrightness(const int brightness);
 	void SetPlayerPos(Vector2Int* playerPos);

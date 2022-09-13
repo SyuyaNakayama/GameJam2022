@@ -20,9 +20,10 @@ private:
 	Vector2Int* leftTop;
 public:
 	void Load();
+	void Initialize();
 	void Emit(const Vector2Int& num);
 	void Erase(const Vector2Int& num);
-	void Crear();
+	void Clear();
 	void Update();
 	void Bright();
 	void Draw(const Vector2Int& camera);

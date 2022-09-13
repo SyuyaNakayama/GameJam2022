@@ -16,21 +16,25 @@ class Player;
 class Map
 {
 private:
-	array<array<BlockName, 10>, 10>map;
+	array<array<BlockName, 10>, 10> map{ {} };
+	array<array<bool, 10>, 10> isBreak{ {} };
 	Vector2Int	pos = { 672,300 };
 	int	chipRad = 32;
 	Color color;
 	vector<Bomb> bomb;
-	int stage = 0;
+	int stage = 1;
 	bool isNext = false;
-	bool isChangeOk = false;
+	bool isChange = false;
 
 	bool countStartFlag = false;
 	int respawnTimer = 0;
-	int respawnTimerLimit = 120;
+	int respawnTimerLimit = 0;
+	const int LimitTime = 180;
 
 	int currentCoin = 0;
 	int elderCoin = 0;
+	const int COIN_NUM = 7;
+	const int BONUS_COIN_NUM = 26;
 
 	const vector<vector<Vector2Int>>crystalPos =
 	{
@@ -50,7 +54,7 @@ private:
 	//tutorial Block
 	const vector<Vector2Int>tB =
 	{
-		{4,1},{5,0},{6,1},{5,1},{4,2}
+		{4,1},{5,9},{9,1},{5,1},{4,2}
 	};
 
 	//ボーナスステージ用マップ(固定)
@@ -78,25 +82,26 @@ private:
 		{1,9},{2,9},{3,9},{6,9},{7,9},{8,9}
 	};
 
-	const int COIN_NUM = 7;
-	int crystalPattern;
 	Vector2Int* playerPos = nullptr;
 public:
 	MapChipDraw drawer;
 	BreakBlockList bbList;
 	int breakCount = 0;
+	int scoreCoin = 0;
+	int crystalCounter = 0;
 public:
 	void LoadAndSet();
 	void SetOutSide(Camera* camera, Vector2Int* playerPos);
 	void Initialize();
 	void Reset(); // マップをBlockで初期化
-	void Create();
+	void Create(const bool init = false);
 	void CreateTutorial();
 	void NextStage();
 
 	void Update();
 	void Change(Vector2Int num, BlockName blockName);
 	void Respawn();
+	void BreakBlock(const Vector2Int& num, const bool bomb = false);
 	void BombDestroy(int bombIndex, Player* player);
 	void EraseBomb(const int num);
 	void Draw(const Vector2Int& camera);
@@ -113,8 +118,9 @@ public:
 	vector<Bomb> GetBomb() { return bomb; }
 	int GetStage() { return stage; }
 	size_t CountBlockNum(BlockName blockName);
-	bool IsChangeOk() { return isChangeOk; }
+	bool IsChange() { return isChange; }
 
 	int CrystalRemain() { return 3 - CountBlockNum(CrystalBlock); }
 	int CoinUpdate();
+	bool IsFreeze();
 };

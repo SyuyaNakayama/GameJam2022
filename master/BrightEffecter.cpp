@@ -8,6 +8,14 @@ void BrightEffecter::Load()
 	whiteG = LoadGraph("Resources/Block/white.png");
 }
 
+void BrightEffecter::Initialize()
+{
+	Clear();
+	isDeath = false;
+	bright = false;
+	timer = 0;
+}
+
 void BrightEffecter::Emit(const Vector2Int& num)
 {
 	if (!leftTop) return;
@@ -30,7 +38,7 @@ void BrightEffecter::Erase(const Vector2Int& num)
 	}
 }
 
-void BrightEffecter::Crear()
+void BrightEffecter::Clear()
 {
 	effects.clear();
 }

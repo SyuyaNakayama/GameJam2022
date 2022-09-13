@@ -19,6 +19,8 @@ void Map::Initialize()
 {
 	Reset();
 	bbList.Initialize();
+	stage = 0;
+	scoreCoin = 0;
 }
 
 void Map::Reset()
@@ -28,28 +30,38 @@ void Map::Reset()
 		for (size_t x = 0; x < map[y].size(); x++)
 		{
 			map[y][x] = Block;
+			isBreak[y][x] = false;
 			drawer.ChipInit({ (int)x, (int)y }, Block);
 		}
 	}
 	bomb.clear();
 	breakCount = 0;
+
+	bbList.Reset();
+	drawer.Reset();
+
+	isNext = false;
+	isChange = false;
+
 	countStartFlag = false;
 	respawnTimer = 0;
-	respawnTimerLimit = 120;
-	bbList.Reset();
-	drawer.ClearArrowAndBright();
-	isNext = false;
-	isChangeOk = false;
+	respawnTimerLimit = LimitTime;
+
+	currentCoin = 0;
+	elderCoin = 0;
 }
 
-void Map::Create()
+void Map::Create(const bool init)
 {
-	Reset();
+	if (init) Initialize();
+	else Reset();
 	stage++;
+	//stage = 4;
 
 	// ノーマルステージ
 	if (stage % 4 != 0)
 	{
+		int crystalPattern = 0;
 		// クリスタル配置
 		crystalPattern = rand() % 9;
 		for (size_t i = 0; i < 3; i++)
@@ -144,14 +156,14 @@ void Map::Create()
 
 	}
 
-	if (GetStage() % 4 == 0) currentCoin = 26 - CountBlockNum(CoinBlock);
-	else currentCoin = 7 - CountBlockNum(CoinBlock);
+	if (GetStage() % 4 == 0) currentCoin = BONUS_COIN_NUM - CountBlockNum(CoinBlock);
+	else currentCoin = COIN_NUM - CountBlockNum(CoinBlock);
 	elderCoin = currentCoin;
 }
 
 void Map::CreateTutorial()
 {
-	Reset();
+	Initialize();
 
 	for (size_t i = 0; i < 5; i++)
 	{
@@ -184,6 +196,7 @@ void Map::CreateTutorial()
 void Map::NextStage()
 {
 	isNext = true;
+	isChange = false;
 }
 
 void Map::Update()
@@ -202,16 +215,24 @@ void Map::Update()
 			if (breakCount <= 0) breakCount = 0;
 			drawer.ChipBreak(n);
 			drawer.EraseArrowAndBright(n);
+			isBreak[n.y][n.x] = false;
 			Change(n, None);
 			countStartFlag = true;
 		}
 	}
 	RespawnTimerUpdate();
-	drawer.Update();
+
+	Change(*playerPos, None);
+
+	scoreCoin += CoinUpdate();
+	crystalCounter = CrystalRemain();
+	if (crystalCounter >= 3) NextStage();
+
 	for (size_t i = 0; i < bomb.size(); i++)
 	{
 		bomb[i].Rotate();
 	}
+	drawer.Update();
 	NextPreparation();
 }
 
@@ -238,8 +259,9 @@ void Map::RespawnTimerUpdate()
 int Map::CoinUpdate()
 {
 	int result = 0;
-	if (GetStage() % 4 == 0) currentCoin = 26 - CountBlockNum(CoinBlock);
-	else currentCoin = 7 - CountBlockNum(CoinBlock);
+	if (GetStage() % 4 == 0 && GetStage() > 0) currentCoin = 26 - CountBlockNum(CoinBlock);
+	else if(GetStage() > 0) currentCoin = 7 - CountBlockNum(CoinBlock);
+	else currentCoin = 1 - CountBlockNum(CoinBlock);
 
 	if (currentCoin > elderCoin) result += (currentCoin - elderCoin);
 	elderCoin = currentCoin;
@@ -251,12 +273,14 @@ void Map::NextPreparation()
 {
 	if (!isNext) return;
 	if (bbList.IsAct()) return;
-	isChangeOk = true;
+
+	isChange = true;
 }
 
 void Map::Respawn()
 {
-	for (size_t y = 0; y < map.size(); y++) {
+	for (size_t y = 0; y < map.size(); y++) 
+	{
 		for (size_t x = 0; x < map[y].size(); x++)
 		{
 			if (map[y][x] == None)
@@ -269,6 +293,14 @@ void Map::Respawn()
 	}
 }
 
+void Map::BreakBlock(const Vector2Int& num, const bool bomb)
+{
+	if (!bomb) breakCount++;
+	if (isBreak[num.y][num.x]) return;
+	isBreak[num.y][num.x] = true;
+	bbList.PushBuck(num, bomb);
+}
+
 void Map::BombDestroy(int bombIndex, Player* player)
 {
 	vector<Vector2Int>destroyPos = bomb[bombIndex].Explosion();
@@ -279,13 +311,13 @@ void Map::BombDestroy(int bombIndex, Player* player)
 		{
 			if (destroyPos[i] == bomb[j].GetPos() && !bomb[j].IsExplosion())
 			{
-				bbList.PushBuck(destroyPos[i], true);
+				BreakBlock(destroyPos[i], true);
 				EraseBomb(j);
 				BombDestroy(j, player);
 			}
 		}
 		if (destroyPos[i] == *playerPos) { player->DamageCountUp(); }
-		bbList.PushBuck(destroyPos[i], true);
+		BreakBlock(destroyPos[i], true);
 	}
 }
 
@@ -299,7 +331,17 @@ void Map::EraseBomb(const int num)
 void Map::Draw(const Vector2Int& camera)
 {
 	drawer.Draw(camera);
-	bbList.DrawDebug();
+	//bbList.DrawDebug();
+	//for (size_t y = 0; y < 10; y++)
+	//{
+	//	for (size_t x = 0; x < 10; x++)
+	//	{
+	//		DrawFormatString(
+	//			pos.x + (64 * x),
+	//			pos.y + (64 * y),
+	//			GetColor(255, 255, 255), "%d", isBreak[y][x]);
+	//	}
+	//}
 }
 
 size_t Map::CountBlockNum(BlockName blockName)
@@ -313,4 +355,16 @@ size_t Map::CountBlockNum(BlockName blockName)
 		}
 	}
 	return num;
+}
+
+bool Map::IsFreeze()
+{
+	for (size_t y = 0; y < isBreak.size(); y++)
+	{
+		for (size_t x = 0; x < isBreak[y].size(); x++)
+		{
+			if (isBreak[y][x]) return true;
+		}
+	}
+	return (isNext && !isChange);
 }

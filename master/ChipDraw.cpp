@@ -19,16 +19,20 @@ void ChipDraw::Initialze(const Vector2Int& leftTop, const Vector2Int& ary,
 {
 	pos = { leftTop.x + ary.x * 64, leftTop.y + ary.y * 64 };
 	number = ary;
-	height = 0;
-	ease.Initialize(1.0f / (float)DustStartTime);
 	this->type = type;
 	this->isDeath = isDeath;
+
+	height = 0;
+	ease.Initialize(1.0f / (float)DustStartTime);
 	isLanding = false;
 	isQuake = false;
+
 	shake.Initialize();
 	isBreak = false;
+
 	trans = 255;
 	shadow = 0;
+
 	this->blockG = blockG;
 }
 

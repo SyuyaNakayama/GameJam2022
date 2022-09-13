@@ -7,6 +7,12 @@ void DustEffecter::Load()
 	dustG = LoadGraph("Resources/Block/dust.png");
 }
 
+void DustEffecter::Initialize()
+{
+	effects.clear();
+	isDeath = false;
+}
+
 void DustEffecter::Emit(const Vector2Int& num, const int blockName)
 {
 	if (!leftTop) return;

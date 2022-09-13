@@ -10,6 +10,12 @@ DebriEmitter::~DebriEmitter()
 	debris.clear();
 }
 
+void DebriEmitter::Initialize()
+{
+	debris.clear();
+	isDeath = false;
+}
+
 void DebriEmitter::Emit(const Vector2Int& leftTop, const Vector2Int& rightBottom, const size_t num,
 	const Debri::Color color[2], const int graph)
 {

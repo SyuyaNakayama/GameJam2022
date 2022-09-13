@@ -25,9 +25,9 @@ void Selecter::Reset(const int direction)
 	drawer.Reset();
 }
 
-void Selecter::Update()
+void Selecter::Update(const bool isSelect)
 {
-	SummaryUpdate();
+	if (isSelect) SummaryUpdate();
 	drawer.Update();
 }
 
@@ -98,9 +98,9 @@ void Selecter::Draw(const Vector2Int& camera)
 	drawer.ChoseDraw(camera);
 	if (chose.size() < choseMax && !bomb) drawer.Draw(pos, camera);
 
-	int a = chose.size();
-	DrawFormatString(100, 400, GetColor(0, 255, 255), "%d", a);
-	DrawFormatString(100, 500, GetColor(0, 255, 255), "%d", decision);
+	//int a = chose.size();
+	//DrawFormatString(100, 400, GetColor(0, 255, 255), "%d", a);
+	//DrawFormatString(100, 500, GetColor(0, 255, 255), "%d", decision);
 }
 
 void Selecter::SetPlayerPos(Vector2Int* playerPos)

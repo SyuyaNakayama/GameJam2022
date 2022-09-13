@@ -22,28 +22,26 @@ void Player::Initialize(const Vector2Int& pos, const int direction)
 void Player::Reset(const Vector2Int& pos, const int direction)
 {
 	this->pos = pos;
-	mode = Mode::Select;
-	next = Mode::Select;
 	this->direction = direction;
+	ActionReset();
 	selecter.Reset(direction);
 	move = { -1, -1 };
+
+	mode = Mode::Select;
+	next = Mode::Select;
 	stopTimer = 0;
-	ActionReset();
 }
 
 void Player::ActionReset()
 {
-	damageCount = 0;
 	actionNum = 15;
+	damageCount = 0;
 }
 
 void Player::Update()
 {
-	selecter.Update();
-	Stop();
-	Select();
-	Destroy();
-	Move();
+	selecter.Update(mode == Mode::Select);
+	Action();
 	if (damageCount > 0)
 	{
 		actionNum -= damageCount;
@@ -51,6 +49,15 @@ void Player::Update()
 	}
 	pMap->drawer.SetBrightness(actionNum);
 	if ((actionNum - damageCount) == 5) pMap->drawer.ChipBright();
+}
+
+void Player::Action()
+{
+	if (pMap->IsFreeze()) return;
+	Stop();
+	Select();
+	Destroy();
+	Move();
 }
 
 void Player::Stop()
@@ -76,8 +83,7 @@ void Player::Destroy()
 	if (mode != Mode::Destroy) return;
 
 	move = selecter.GetRoutePos(0);
-	pMap->breakCount++;
-	pMap->bbList.PushBuck(move);
+	pMap->BreakBlock(move);
 
 	if (selecter.IsSelectBomb())
 	{

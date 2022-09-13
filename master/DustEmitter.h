@@ -10,6 +10,7 @@ private:
 public:
 	DustEmitter();
 	~DustEmitter();
+	void Initialize();
 	void Emit(const Vector2Int& leftTop, const Vector2Int& rightBottom, const size_t num,
 			const Particle::Color color, const int graph);
 	void Update();

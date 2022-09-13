@@ -38,7 +38,7 @@ void RankingManager::Update(int newScore)
 void RankingManager::Draw(Vector2Int pos,Font& font)
 {
 	Color color;
-	font.DrawUseFont(pos, color.White, str.c_str(), FontSize::LL);
+	font.DrawUseFont({ 750,300 }, color.White, str.c_str(), FontSize::LL);
 }
 
 void RankingManager::Reset()

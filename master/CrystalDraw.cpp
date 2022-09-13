@@ -16,7 +16,9 @@ void CrystalDraw::Initialize()
 {
 	for (size_t i = 0; i < 3; i++)
 	{
+		crsts[i].trans = 0;
 		crsts[i].ease.Initialize(0.1f, 0.1f);
+		crsts[i].light = false;
 	}
 }
 

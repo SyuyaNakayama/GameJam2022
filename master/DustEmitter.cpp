@@ -10,6 +10,12 @@ DustEmitter::~DustEmitter()
 	dusts.clear();
 }
 
+void DustEmitter::Initialize()
+{
+	dusts.clear();
+	isDeath = false;
+}
+
 void DustEmitter::Emit(const Vector2Int& leftTop, const Vector2Int& rightBottom, const size_t num,
 	const Particle::Color color, const int graph)
 {
