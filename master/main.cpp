@@ -48,17 +48,17 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	int score = 0;
 	int scoreCoin = 0;
 
-	int currentCoin = 0;
-	int elderCoin = 0;
 	int crystalCounter = 0;
 
 	Camera camera;
 	camera.Initialize({});
 
+
 	Map map;
 	map.LoadAndSet();
-	map.Create();
-	map.CreateTutorial();
+	map.Initialize();
+	if (scene == Play) map.Create();
+	if (scene == Tutorial) map.CreateTutorial();
 
 	Player player;
 	player.LoadAndSet(&map);
@@ -175,9 +175,15 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			scoreCoin = map.CoinUpdate();
 			crystalCounter = map.CrystalRemain();
 
-			if (crystalCounter == 3)
+			if (crystalCounter >= 3)
 			{
 				map.NextStage();
+			}
+
+			if (map.IsChangeOk())
+			{
+				map.Create();
+
 				if (map.GetStage() % 4 == 0)
 				{
 					player.Reset({ 4,4 }, Up);
