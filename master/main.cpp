@@ -46,9 +46,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	input->Load();
 
 	int score = 0;
-	int scoreCoin = 0;
-
-	int crystalCounter = 0;
 
 	Camera camera;
 	camera.Initialize({});
@@ -67,7 +64,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	map.Change(player.GetPos(), None);
 
 	UIDrawer ui;
-	ui.LoadAndSet(player.GetActionCountPointer(), &scoreCoin, &crystalCounter);
+	ui.LoadAndSet(player.GetActionCountPointer(), &map.scoreCoin, &map.crystalCounter);
 	ui.Initialize();
 
 	Timer timer = { GetNowCount() ,100 };
@@ -139,15 +136,13 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 			map.Update();
 
-			crystalCounter = map.CrystalRemain();
-
-			if (crystalCounter == 3 || input->keys->IsTrigger(KEY_INPUT_S))
+			if (map.IsChangeOk() || input->keys->IsTrigger(KEY_INPUT_S))
 			{
 				scene = Play;
 				score = 0;
-				scoreCoin = 0;
-				map.Create();
+				map.Create(true);
 				player.Reset({ rand() % 2 + 4, rand() % 2 + 4 }, Up);
+				ui.Initialize();
 				timer.Reset();
 				sound.StopBGM(2);
 			}
@@ -167,25 +162,18 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 			map.Update();
 
-			scoreCoin = map.CoinUpdate();
-			crystalCounter = map.CrystalRemain();
-
-			if (crystalCounter >= 3)
-			{
-				map.NextStage();
-			}
-
 			if (map.IsChangeOk())
 			{
 				map.Create();
 				if (map.GetStage() % 4 == 0) player.Reset({ 4,4 }, Up);
 				else player.Reset({ rand() % 2 + 4,rand() % 2 + 4 }, Up);
+				ui.Initialize();
 				timer.Reset();
 			}
 
 			if (player.GetActionCount() <= 0 || timer.CountDown(player.GetDamageCount()))
 			{
-				score = (scoreCoin * 100) * (1 + (0.1 * map.GetStage())) + (map.GetBombBreakCount() * 50);
+				score = (map.scoreCoin * 100) * (1 + (0.1 * map.GetStage())) + (map.GetBombBreakCount() * 50);
 				scene = Result;
 				sound.StopBGM(3);
 			}

@@ -49,9 +49,10 @@ void Map::Reset()
 	elderCoin = 0;
 }
 
-void Map::Create()
+void Map::Create(const bool init)
 {
-	Reset();
+	if (init) Initialize();
+	else Reset();
 	stage++;
 
 	// ノーマルステージ
@@ -218,11 +219,15 @@ void Map::Update()
 
 	Change(*playerPos, None);
 
-	drawer.Update();
+	scoreCoin = CoinUpdate();
+	crystalCounter = CrystalRemain();
+	if (crystalCounter >= 3) NextStage();
+
 	for (size_t i = 0; i < bomb.size(); i++)
 	{
 		bomb[i].Rotate();
 	}
+	drawer.Update();
 	NextPreparation();
 }
 

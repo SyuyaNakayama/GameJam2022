@@ -85,12 +85,14 @@ public:
 	MapChipDraw drawer;
 	BreakBlockList bbList;
 	int breakCount = 0;
+	int scoreCoin = 0;
+	int crystalCounter = 0;
 public:
 	void LoadAndSet();
 	void SetOutSide(Camera* camera, Vector2Int* playerPos);
 	void Initialize();
 	void Reset(); // ƒ}ƒbƒv‚ğBlock‚Å‰Šú‰»
-	void Create();
+	void Create(const bool init = false);
 	void CreateTutorial();
 	void NextStage();
 

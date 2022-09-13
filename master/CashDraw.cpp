@@ -33,7 +33,7 @@ void CashDraw::Emit()
 {
 	if (count > 0)
 	{
-		if (++timer < 5) return;
+		if (++timer < 10) return;
 		CoinCount c;
 		c.height = -96;
 		c.ease.Initialize(0.1f);
