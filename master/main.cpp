@@ -256,6 +256,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 		ScreenFlip();
 		// 20ƒ~ƒŠ•b‘Ò‹@(‹^—60FPS)
+		WaitTimer(20);
 #pragma endregion
 	}
 #pragma region I—¹ˆ—

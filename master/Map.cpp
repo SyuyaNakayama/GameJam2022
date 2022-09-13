@@ -64,7 +64,7 @@ void Map::Create()
 		}
 		// ƒ{ƒ€”z’u
 		int bombNum = stage / 4 + 1;
-		for (size_t i = 0; i < 90; i++)
+		for (size_t i = 0; i < 4; i++)
 		{
 			Vector2Int bombBlockPos;
 			while (true)
