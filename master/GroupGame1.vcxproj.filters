@@ -37,12 +37,6 @@
     <Filter Include="ヘッダー ファイル\Draw\Map">
       <UniqueIdentifier>{c4ccce35-bd83-450f-93cb-17ddc9288fdf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Draw\Effect">
-      <UniqueIdentifier>{759810d8-d952-41df-a2d6-af984f0fe007}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\Draw\Effect">
-      <UniqueIdentifier>{9f721099-83b0-4ed2-a453-07a437bd7544}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ヘッダー ファイル\Input">
       <UniqueIdentifier>{f7b4540c-751d-4e99-9653-fc764a15a4b3}</UniqueIdentifier>
     </Filter>
@@ -117,18 +111,6 @@
     <ClCompile Include="MapChipDraw.cpp">
       <Filter>ソース ファイル\Draw\Map</Filter>
     </ClCompile>
-    <ClCompile Include="BreakEffecter.cpp">
-      <Filter>ソース ファイル\Draw\Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="BrightEffecter.cpp">
-      <Filter>ソース ファイル\Draw\Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="DustEffecter.cpp">
-      <Filter>ソース ファイル\Draw\Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="ArrowEffecter.cpp">
-      <Filter>ソース ファイル\Draw\Effect</Filter>
-    </ClCompile>
     <ClCompile Include="BreakBlockList.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -165,14 +147,26 @@
     <ClCompile Include="UIDrawer.cpp">
       <Filter>ソース ファイル\Draw\UI</Filter>
     </ClCompile>
-    <ClCompile Include="CoinEffecter.cpp">
-      <Filter>ソース ファイル\Draw\Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="CrystalEffecter.cpp">
-      <Filter>ソース ファイル\Draw\Effect</Filter>
-    </ClCompile>
     <ClCompile Include="SoundManeger.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="DustEffecter.cpp">
+      <Filter>ソース ファイル\Draw\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="CrystalEffecter.cpp">
+      <Filter>ソース ファイル\Draw\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="CoinEffecter.cpp">
+      <Filter>ソース ファイル\Draw\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="BrightEffecter.cpp">
+      <Filter>ソース ファイル\Draw\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="BreakEffecter.cpp">
+      <Filter>ソース ファイル\Draw\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="ArrowEffecter.cpp">
+      <Filter>ソース ファイル\Draw\Map</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -236,20 +230,8 @@
     <ClInclude Include="BrightDraw.h">
       <Filter>ヘッダー ファイル\Draw\Map</Filter>
     </ClInclude>
-    <ClInclude Include="BreakEffecter.h">
-      <Filter>ヘッダー ファイル\Draw\Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="BrightEffecter.h">
-      <Filter>ヘッダー ファイル\Draw\Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="DustEffecter.h">
-      <Filter>ヘッダー ファイル\Draw\Effect</Filter>
-    </ClInclude>
     <ClInclude Include="DrawParameter.h">
       <Filter>ヘッダー ファイル\Draw</Filter>
-    </ClInclude>
-    <ClInclude Include="ArrowEffecter.h">
-      <Filter>ヘッダー ファイル\Draw\Effect</Filter>
     </ClInclude>
     <ClInclude Include="BreakBlockList.h">
       <Filter>ヘッダー ファイル</Filter>
@@ -287,14 +269,26 @@
     <ClInclude Include="UIDrawer.h">
       <Filter>ヘッダー ファイル\Draw\UI</Filter>
     </ClInclude>
-    <ClInclude Include="CoinEffecter.h">
-      <Filter>ヘッダー ファイル\Draw\Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="CrystalEffecter.h">
-      <Filter>ヘッダー ファイル\Draw\Effect</Filter>
-    </ClInclude>
     <ClInclude Include="SoundManeger.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DustEffecter.h">
+      <Filter>ヘッダー ファイル\Draw\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="CrystalEffecter.h">
+      <Filter>ヘッダー ファイル\Draw\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="CoinEffecter.h">
+      <Filter>ヘッダー ファイル\Draw\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="BrightEffecter.h">
+      <Filter>ヘッダー ファイル\Draw\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="BreakEffecter.h">
+      <Filter>ヘッダー ファイル\Draw\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="ArrowEffecter.h">
+      <Filter>ヘッダー ファイル\Draw\Map</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

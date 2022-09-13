@@ -7,6 +7,12 @@ void BreakEffecter::Load()
 	LoadDivGraph("Resources/Block/debri.png", 2, 2, 1, 8, 8, debriG);
 }
 
+void BreakEffecter::Initialize()
+{
+	effects.clear();
+	isDeath = false;
+}
+
 void BreakEffecter::Emit(const Vector2Int& num, const int blockName)
 {
 	if (!leftTop) return;

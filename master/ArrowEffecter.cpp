@@ -7,6 +7,12 @@ void ArrowEffecter::Load()
 	LoadDivGraph("Resources/Block/arrow.png", 2, 2, 1, 32, 32, arrowG);
 }
 
+void ArrowEffecter::Initialize()
+{
+	Clear();
+	isDeath = false;
+}
+
 void ArrowEffecter::Emit(const Vector2Int& num, const int direction, int* brightness, Vector2Int* playerPos)
 {
 	if (!leftTop) return;
@@ -31,7 +37,7 @@ void ArrowEffecter::Erase(const Vector2Int& num)
 	}
 }
 
-void ArrowEffecter::Crear()
+void ArrowEffecter::Clear()
 {
 	effects.clear();
 }
