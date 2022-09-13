@@ -1,10 +1,13 @@
 #include "Font.h"
+#include <cassert>
 
 Font::Font()
 {
+	assert(AddFontResourceEx(fontName.c_str(), FR_PRIVATE, NULL) > 0);
+	std::string f = "廻想体 ネクスト UP B";
 	for (size_t i = 0; i < fontSize.size(); i++)
 	{
-		fonts.push_back(CreateFontToHandle(fontName.c_str(), fontSize[i], 1));
+		fonts.push_back(CreateFontToHandle(f.c_str(), fontSize[i], 1));
 	}
 }
 

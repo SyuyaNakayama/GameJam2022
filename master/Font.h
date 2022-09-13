@@ -9,7 +9,7 @@ enum FontSize { M, L,LL };
 class Font
 {
 private:
-	std::string fontName = "廻想体 ネクスト UP B";
+	std::string fontName = "Resources/Font/Kaisotai-Next-UP-B.ttf";
 	std::vector<int>fontSize = { 32,48,96 };
 	std::vector<int>fonts;
 public:
