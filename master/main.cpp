@@ -26,7 +26,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	SetOutApplicationLogValidFlag(false);
 	ChangeWindowMode(TRUE);
 	SetWindowSizeChangeEnableFlag(FALSE, FALSE);
-	SetMainWindowText("GameJam2022_コノヒト、サイクツジョウニテ。");
+	SetMainWindowText("之の人、採掘場にて。\n　～アレッヒの地下奴隷～");
 	SetGraphMode(WIN_SIZE.x, WIN_SIZE.y, 32);
 	SetWindowSizeExtendRate(1.0);
 	SetDrawScreen(DX_SCREEN_BACK);
