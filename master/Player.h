@@ -12,7 +12,7 @@ private:
 
 	Vector2Int pos;
 	int direction = 0;
-	int actionNum = 20;
+	int actionNum = 15;
 	int damageCount = 0;
 	Selecter selecter;
 	Vector2Int move;

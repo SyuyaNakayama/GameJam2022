@@ -34,7 +34,7 @@ void Player::Reset(const Vector2Int& pos, const int direction)
 void Player::ActionReset()
 {
 	damageCount = 0;
-	actionNum = 20;
+	actionNum = 15;
 }
 
 void Player::Update()

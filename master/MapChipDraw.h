@@ -4,6 +4,8 @@
 #include "DustEffecter.h"
 #include "ArrowEffecter.h"
 #include "BrightEffecter.h"
+#include "CoinEffecter.h"
+#include "CrystalEffecter.h"
 
 class MapChipDraw
 {
@@ -13,6 +15,9 @@ private:
 	BreakEffecter breakE;
 	ArrowEffecter arrowE;
 	BrightEffecter brightE;
+	CoinEffecter coinE;
+	CrystalEffecter crystalE;
+
 	int planeG[3]{};
 	int goldG;
 	int oreG;
@@ -32,14 +37,15 @@ public:
 
 	void EraseArrowAndBright(const Vector2Int& num);
 	void ClearArrowAndBright();
+	void ClearArtifact();
 
 	void CreateArrow(const Vector2Int& num, const int direction);
 	void EraseArrow(const Vector2Int& num);
-	void CrearArrow();
+	void ClearArrow();
 
 	void CreateBright(const Vector2Int& num);
 	void EraseBright(const Vector2Int& num);
-	void CrearBright();
+	void ClearBright();
 
 	void Draw(const Vector2Int& camera);
 	void SetLeftTop(Vector2Int* leftTop);

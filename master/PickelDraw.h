@@ -1,5 +1,5 @@
 #pragma once
-#include "Vector2.h"
+#include "Shake.h"
 #include <vector>
 
 class PickelDraw
@@ -17,6 +17,7 @@ private:
 	std::vector<BrokenPickel> pickels;
 	int count = 0;
 	int timer = 0;
+	Shake shake;
 	int pickelG = 0;
 	int brokenG[2]{};
 public:
