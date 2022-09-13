@@ -64,7 +64,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	int fontSize = 48;
 
 	RankingManager ranking;
-
+	ranking.Reset(); // デバッグ用
+	ranking.Load();
 	vector<int> prologueFontColor(8, 0);
 	vector<string> prologueString =
 	{
@@ -128,7 +129,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			if (input->keys->IsTrigger(KEY_INPUT_SPACE))
 			{
 				scene = Ranking;
-				ranking.Update(score);
+				ranking.Update(66666);
 			}
 			break;
 		case Ranking:

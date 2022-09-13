@@ -14,7 +14,8 @@ private:
 	vector<int>scoreList;
 	string str;
 public:
-	RankingManager();
+	void Load();
 	void Update(int newScore);
 	void Draw(Font& font);
+	void Reset();
 };

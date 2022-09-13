@@ -3,7 +3,7 @@
 #include "function.h"
 #include "enum.h"
 
-RankingManager::RankingManager()
+void RankingManager::Load()
 {
 	ifstream ranking(fileName);
 	assert(!ranking.fail());
@@ -38,4 +38,11 @@ void RankingManager::Draw(Font& font)
 {
 	Color color;
 	font.DrawUseFont({ 400,250 }, color.White, str.c_str(), FontSize::LL);
+}
+
+void RankingManager::Reset()
+{
+	ofstream rankingCreate("Resources/Ranking/Ranking.txt");
+	string rStr = "1位 0点\n2位 0点\n3位 0点\n4位 0点\n5位 0点\n";
+	rankingCreate << rStr << flush;
 }
