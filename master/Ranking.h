@@ -16,6 +16,6 @@ private:
 public:
 	void Load();
 	void Update(int newScore);
-	void Draw(Font& font);
+	void Draw(Vector2Int pos,Font& font);
 	void Reset();
 };

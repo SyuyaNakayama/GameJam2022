@@ -35,6 +35,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 #pragma endregion
 	// 音
 	SoundManeger sound;
+	sound.SetVolume(BGM, 4, 60);
 
 	// ---定数の宣言と初期化---
 	Scene scene = Scene::Result;
@@ -89,6 +90,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		"\nSPACEで次へ→"
 	};
 	vector<int> prologueFontColor(prologueString.size(), 0);
+
+	int rankingStringOffset = WIN_SIZE.x;
+	int resultStringOffset = 0;
+	const int STRING_MOVE_SPD = rankingStringOffset / 30;
 
 	SetFontSize(48);
 
@@ -211,7 +216,20 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			break;
 
 		case Ranking:
-			if (input->keys->IsTrigger(KEY_INPUT_SPACE)) { scene = Title; sound.StopBGM(4); }
+			if (rankingStringOffset > 0)
+			{
+				rankingStringOffset -= STRING_MOVE_SPD;
+				resultStringOffset += STRING_MOVE_SPD;
+				Clamp(rankingStringOffset, WIN_SIZE.x);
+				Clamp(resultStringOffset, WIN_SIZE.x);
+			}
+			if (input->keys->IsTrigger(KEY_INPUT_SPACE))
+			{
+				scene = Title;
+				sound.StopBGM(4);
+				rankingStringOffset = WIN_SIZE.x;
+				resultStringOffset = 0;
+			}
 			break;
 		}
 		camera.Update();
@@ -258,11 +276,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 		case Result:
 		case Ranking:
-			font.DrawUseFont({ 400,150 }, color.White, "リザルト", FontSize::LL);
-			DrawFormatStringToHandle(400, 350, color.White, font.Use(FontSize::LL), "スコア:%d", score);
+			font.DrawUseFont({ 400 - resultStringOffset,150 }, color.White, "リザルト", FontSize::LL);
+			DrawFormatStringToHandle(400 - resultStringOffset, 350, color.White, font.Use(FontSize::LL), "スコア:%d", score);
 
-			DrawFormatStringToHandle(400, 100, color.White, font.Use(FontSize::LL), "スコア:%d", score);
-			ranking.Draw(font);
+			DrawFormatStringToHandle(400 + rankingStringOffset, 100, color.White, font.Use(FontSize::LL), "スコア:%d", score);
+			ranking.Draw({ 400 + rankingStringOffset,250 }, font);
 			break;
 		}
 
