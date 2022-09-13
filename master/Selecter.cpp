@@ -25,9 +25,9 @@ void Selecter::Reset(const int direction)
 	drawer.Reset();
 }
 
-void Selecter::Update()
+void Selecter::Update(const bool isSelect)
 {
-	SummaryUpdate();
+	if (isSelect) SummaryUpdate();
 	drawer.Update();
 }
 

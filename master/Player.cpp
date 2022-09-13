@@ -40,11 +40,8 @@ void Player::ActionReset()
 
 void Player::Update()
 {
-	selecter.Update();
-	Stop();
-	Select();
-	Destroy();
-	Move();
+	selecter.Update(mode == Mode::Select);
+	Action();
 	if (damageCount > 0)
 	{
 		actionNum -= damageCount;
@@ -52,6 +49,15 @@ void Player::Update()
 	}
 	pMap->drawer.SetBrightness(actionNum);
 	if ((actionNum - damageCount) == 5) pMap->drawer.ChipBright();
+}
+
+void Player::Action()
+{
+	if (pMap->IsFreeze()) return;
+	Stop();
+	Select();
+	Destroy();
+	Move();
 }
 
 void Player::Stop()

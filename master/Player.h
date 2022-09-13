@@ -30,11 +30,12 @@ public:
 	void Update();
 	void Draw(const Vector2Int& camera);
 private:
+	void ActionReset();
+	void Action();
 	void Stop();
 	void Select();
 	void Destroy();
 	void Move();
-	void ActionReset();
 public:
 	Vector2Int GetPos() { return pos; }
 	Vector2Int* GetPosAdress() { return &pos; }

@@ -20,6 +20,7 @@ void Map::Initialize()
 	Reset();
 	bbList.Initialize();
 	stage = 0;
+	scoreCoin = 0;
 }
 
 void Map::Reset()
@@ -40,11 +41,11 @@ void Map::Reset()
 	drawer.Reset();
 
 	isNext = false;
-	isChangeOk = false;
+	isChange = false;
 
 	countStartFlag = false;
 	respawnTimer = 0;
-	respawnTimerLimit = 120;
+	respawnTimerLimit = LimitTime;
 
 	currentCoin = 0;
 	elderCoin = 0;
@@ -55,6 +56,7 @@ void Map::Create(const bool init)
 	if (init) Initialize();
 	else Reset();
 	stage++;
+	stage = 4;
 
 	// ノーマルステージ
 	if (stage % 4 != 0)
@@ -161,7 +163,7 @@ void Map::Create(const bool init)
 
 void Map::CreateTutorial()
 {
-	Reset();
+	Initialize();
 
 	for (size_t i = 0; i < 5; i++)
 	{
@@ -194,6 +196,7 @@ void Map::CreateTutorial()
 void Map::NextStage()
 {
 	isNext = true;
+	isChange = false;
 }
 
 void Map::Update()
@@ -269,7 +272,8 @@ void Map::NextPreparation()
 {
 	if (!isNext) return;
 	if (bbList.IsAct()) return;
-	isChangeOk = true;
+
+	isChange = true;
 }
 
 void Map::Respawn()
@@ -350,4 +354,16 @@ size_t Map::CountBlockNum(BlockName blockName)
 		}
 	}
 	return num;
+}
+
+bool Map::IsFreeze()
+{
+	for (size_t y = 0; y < isBreak.size(); y++)
+	{
+		for (size_t x = 0; x < isBreak[y].size(); x++)
+		{
+			if (isBreak[y][x]) return true;
+		}
+	}
+	return (isNext && !isChange);
 }

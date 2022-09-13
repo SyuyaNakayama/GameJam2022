@@ -25,7 +25,7 @@ public:
 	void Load();
 	void Initialize(const int choseMax, const int direction);
 	void Reset(const int direction);
-	void Update();
+	void Update(const bool isSelect);
 	void Draw(const Vector2Int& camera);
 	void SetPlayerPos(Vector2Int* playerPos);
 	void SetMap(Map* map);

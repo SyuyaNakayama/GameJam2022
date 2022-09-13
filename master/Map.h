@@ -24,11 +24,12 @@ private:
 	vector<Bomb> bomb;
 	int stage = 0;
 	bool isNext = false;
-	bool isChangeOk = false;
+	bool isChange = false;
 
 	bool countStartFlag = false;
 	int respawnTimer = 0;
-	int respawnTimerLimit = 120;
+	int respawnTimerLimit = 0;
+	const int LimitTime = 180;
 
 	int currentCoin = 0;
 	int elderCoin = 0;
@@ -117,8 +118,9 @@ public:
 	vector<Bomb> GetBomb() { return bomb; }
 	int GetStage() { return stage; }
 	size_t CountBlockNum(BlockName blockName);
-	bool IsChangeOk() { return isChangeOk; }
+	bool IsChange() { return isChange; }
 
 	int CrystalRemain() { return 3 - CountBlockNum(CrystalBlock); }
 	int CoinUpdate();
+	bool IsFreeze();
 };

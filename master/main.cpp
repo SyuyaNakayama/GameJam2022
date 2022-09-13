@@ -40,7 +40,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 	// ƒV[ƒ“
 	SceneManager scene;
-	scene.Initialze(Scene::Play, WIN_SIZE);
+	scene.Initialze(Scene::Tutorial, WIN_SIZE);
 
 	// ---’è”‚ÌéŒ¾‚Æ‰Šú‰»---
 
@@ -150,7 +150,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 			map.Update();
 
-			if (map.IsChangeOk() || input->keys->IsTrigger(KEY_INPUT_S)) scene.Change(Play);
+			if (map.IsChange() || input->keys->IsTrigger(KEY_INPUT_S)) scene.Change(Play);
 			if (scene.IsChanged())
 			{
 				score = 0;
@@ -170,7 +170,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			player.Update();
 			map.Update();
 
-			if (map.IsChangeOk())
+			if (map.IsChange())
 			{
 				map.Create();
 				if (map.GetStage() % 4 == 0) player.Reset({ 4,4 }, Up);
