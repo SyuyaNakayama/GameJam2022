@@ -179,7 +179,14 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			if (crystalCounter == 3)
 			{
 				map.NextStage();
-				player.Reset({ rand() % 2 + 4,rand() % 2 + 4 }, Up);
+				if (map.GetStage() % 4 == 0)
+				{
+					player.Reset({ 4,4 }, Up);
+				}
+				else 
+				{
+					player.Reset({ rand() % 2 + 4,rand() % 2 + 4 }, Up);
+				}
 				map.Change(player.GetPos(), None);
 				timer = { GetNowCount() ,120 };
 			}
@@ -188,7 +195,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			{
 				score = (scoreCoin * 100) * (1 + (0.1 * map.GetStage())) + (map.GetBombBreakCount() * 50);
 				scene = Result; 
-				//SetFontSize(96); 
 			}
 
 			ui.Update();
@@ -216,6 +222,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			font.DrawUseFont({ 80,150 }, color.White, "îVÇÃêlÅAçÃå@èÍÇ…ÇƒÅB\nÅ@Å`ÉAÉåÉbÉqÇÃínâ∫ìzóÍÅ`", FontSize::LL);
 			font.DrawUseFont({ 370,450 }, color.White, "PRESS START", FontSize::LL);
 			break;
+
 		case Prologue:
 			for (int i = 0; i < prologueFontColor.size(); i++)
 			{
