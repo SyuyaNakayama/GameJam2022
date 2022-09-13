@@ -5,7 +5,14 @@
 SoundManeger::SoundManeger()
 {
 	// BGMì«Ç›çûÇ›
-	bgmHandle = {};
+	bgmHandle =
+	{ 
+		LoadSoundMem("Resources/Sound/BGM/Title.mp3"),
+		LoadSoundMem("Resources/Sound/BGM/Prologue.mp3"),
+		LoadSoundMem("Resources/Sound/BGM/Tutrial.mp3"),
+		LoadSoundMem("Resources/Sound/BGM/Play.mp3"), 
+		LoadSoundMem("Resources/Sound/BGM/Result.mp3"),
+	};
 
 	// SEì«Ç›çûÇ›
 	seHandle = {};
