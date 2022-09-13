@@ -104,8 +104,13 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			// --- タイトル --- //
 		case Title:
 			sound.PlayBGM(0);
-			if (input->IsSelect()) sceneM.Change(Prologue);
-			if (sceneM.IsChanged()) sound.StopBGM(0);
+			if (input->IsSelect()) {
+				sceneM.Change(Prologue);
+			}
+			if (sceneM.IsChanged())
+			{
+				sound.StopBGM(0);
+			}
 			break;
 
 			// --- プロローグ --- //

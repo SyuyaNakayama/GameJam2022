@@ -39,11 +39,11 @@ void SceneManager::Update()
 
 void SceneManager::Late()
 {
+	if (!isEase) scene = next;
 	if (isEase && trans >= 255)
 	{
 		isEase = false;
 		isChanged = true;
-		scene = next;
 	}
 }
 
