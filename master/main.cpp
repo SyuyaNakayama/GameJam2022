@@ -33,6 +33,15 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	SetDrawScreen(DX_SCREEN_BACK);
 	if (DxLib_Init() == -1) { return -1; }
 #pragma endregion
+	// BGM,SE読み込み
+	vector<int>bgm =
+	{
+		LoadSoundMem("Resources/Sound/BGM/Title.mp3"),
+		LoadSoundMem("Resources/Sound/BGM/Prologue.mp3"),
+		LoadSoundMem("Resources/Sound/BGM/Tutrial.mp3"),
+		LoadSoundMem("Resources/Sound/BGM/Play.mp3"),
+	}
+
 	// ---定数の宣言と初期化---
 	Scene scene = Scene::Title;
 	Color color;
@@ -74,7 +83,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	ranking.Reset(); // ***** デバッグ用(提出時はコメントアウトすること！！！) ***** //
 	ranking.Load();
 
-	vector<int> prologueFontColor(8, 0);
 	vector<string> prologueString =
 	{
 		"時は制暦2173年、",
@@ -86,6 +94,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		"そんな男の地下採掘場でのお話。",
 		"\nSPACEで次へ→"
 	};
+	vector<int> prologueFontColor(prologueString.size(), 0);
+
 	SetFontSize(48);
 
 	while (!(ProcessMessage() == -1 || CheckHitKey(KEY_INPUT_ESCAPE)))
