@@ -14,6 +14,7 @@
 #include "Ranking.h"
 #include "UIDrawer.h"
 #include "SoundManeger.h"
+#include "SceneManager.h"
 
 using namespace std;
 
@@ -36,8 +37,12 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	// 音
 	SoundManeger sound;
 
+	// シーン
+	SceneManager sceneM;
+	sceneM.Initialze(Scene::Title, WIN_SIZE);
+
 	// ---定数の宣言と初期化---
-	Scene scene = Scene::Play;
+
 	Color color;
 	// ---変数の宣言と初期化---
 	Font font;
@@ -53,8 +58,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	Map map;
 	map.LoadAndSet();
 	map.Initialize();
-	if (scene == Play) map.Create();
-	if (scene == Tutorial) map.CreateTutorial();
+	if (sceneM.GetScene() == Play) map.Create();
+	if (sceneM.GetScene() == Tutorial) map.CreateTutorial();
 
 	Player player;
 	player.LoadAndSet(&map);
@@ -94,33 +99,39 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		ClearDrawScreen();
 
 		input->Update();
-		switch (scene)
+		switch (sceneM.GetScene())
 		{
 			// --- タイトル --- //
 		case Title:
 			sound.PlayBGM(0);
-			if (input->keys->IsTrigger(KEY_INPUT_SPACE)) { scene = Prologue; sound.StopBGM(0); }
+			if (input->IsSelect()) sceneM.Change(Prologue);
+			if (sceneM.IsChanged()) sound.StopBGM(0);
 			break;
 
 			// --- プロローグ --- //
 		case Prologue:
 			sound.PlayBGM(1);
-			for (size_t i = 0; i < prologueFontColor.size(); i++)
+
+			if (!sceneM.IsProcessing())
 			{
-				const int INC_NUM = 4;
-				if (i == 0) { prologueFontColor[i] += INC_NUM; }
-				else if (prologueFontColor[i - 1] >= 200) { prologueFontColor[i] += INC_NUM; }
-				Clamp(prologueFontColor[i], 255);
+				for (size_t i = 0; i < prologueFontColor.size(); i++)
+				{
+					const int INC_NUM = 4;
+					if (i == 0) { prologueFontColor[i] += INC_NUM; }
+					else if (prologueFontColor[i - 1] >= 200) { prologueFontColor[i] += INC_NUM; }
+					Clamp(prologueFontColor[i], 255);
+				}
+
+				bool next = prologueFontColor.back() >= 150 && input->IsSelect() || input->IsCancel();
+				if (next) sceneM.Change(Tutorial);
 			}
-			if (prologueFontColor.back() >= 150 && input->keys->IsTrigger(KEY_INPUT_SPACE) ||
-				input->keys->IsTrigger(KEY_INPUT_S))
+
+			if (sceneM.IsChanged())
 			{
-				scene = Tutorial;
 				map.CreateTutorial();
 				player.Reset({ 4,4 }, Up);
 				sound.StopBGM(1);
 			}
-
 			break;
 
 			// --- チュートリアル --- //
@@ -136,9 +147,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 			map.Update();
 
-			if (map.IsChangeOk() || input->keys->IsTrigger(KEY_INPUT_S))
+			if (map.IsChangeOk() || input->keys->IsTrigger(KEY_INPUT_S)) sceneM.Change(Play);
+			if (sceneM.IsChanged())
 			{
-				scene = Play;
 				score = 0;
 				map.Create(true);
 				player.Reset({ rand() % 2 + 4, rand() % 2 + 4 }, Up);
@@ -154,12 +165,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			sound.PlayBGM(3);
 
 			player.Update();
-			if (input->keys->IsTrigger(KEY_INPUT_R))
-			{
-				map.Create();
-				player.Reset({ rand() % 2 + 4,rand() % 2 + 4 }, Up);
-			}
-
 			map.Update();
 
 			if (map.IsChangeOk())
@@ -171,10 +176,20 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 				timer.Reset();
 			}
 
-			if (player.GetActionCount() <= 0 || timer.CountDown(player.GetDamageCount()))
+			if (input->keys->IsTrigger(KEY_INPUT_R))
+			{
+				map.Create();
+				player.Reset({ rand() % 2 + 4,rand() % 2 + 4 }, Up);
+				ui.Initialize();
+				timer.Reset();
+			}
+
+			if (player.GetActionCount() <= 0 || timer.CountDown(player.GetDamageCount())) sceneM.Change(Result);
+			if (sceneM.IsChanged())
 			{
 				score = (map.scoreCoin * 100) * (1 + (0.1 * map.GetStage())) + (map.GetBombBreakCount() * 50);
-				scene = Result;
+				ui.Initialize();
+				timer.Reset();
 				sound.StopBGM(3);
 			}
 
@@ -184,21 +199,23 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			// --- リザルト --- //
 		case Result:
 			sound.PlayBGM(4);
-			if (input->keys->IsTrigger(KEY_INPUT_SPACE))
+			if (input->IsSelect())
 			{
-				scene = Ranking;
+				sceneM.SetScene(Ranking);
 				ranking.Update(score);
 			}
 			break;
 
 		case Ranking:
-			if (input->keys->IsTrigger(KEY_INPUT_SPACE)) { scene = Title; sound.StopBGM(4); }
+			if (input->IsSelect()) sceneM.Change(Title);
+			if (sceneM.IsChanged()) sound.StopBGM(4);
 			break;
 		}
 		camera.Update();
+		sceneM.Update();
 #pragma endregion
 #pragma region 描画処理
-		switch (scene)
+		switch (sceneM.GetScene())
 		{
 		case Title:
 			font.DrawUseFont({ 80,150 }, color.White, "之の人、採掘場にて。\n　～アレッヒの地下奴隷～", FontSize::LL);
@@ -246,11 +263,12 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			ranking.Draw(font);
 			break;
 		}
+		sceneM.DrawCurtain();
 
+#pragma endregion
 		ScreenFlip();
 		// 20ミリ秒待機(疑似60FPS)
 		WaitTimer(20);
-#pragma endregion
 	}
 #pragma region 終了処理
 	// 全リソースファイル削除
