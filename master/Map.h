@@ -16,7 +16,7 @@ class Player;
 class Map
 {
 private:
-	array<array<BlockName, 10>, 10>map;
+	array<array<BlockName, 10>, 10>map{ {} };
 	Vector2Int	pos = { 672,300 };
 	int	chipRad = 32;
 	Color color;

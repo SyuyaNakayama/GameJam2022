@@ -55,7 +55,7 @@
     <ClCompile Include="Selecter.cpp" />
     <ClCompile Include="SelectDraw.cpp" />
     <ClCompile Include="Shake.cpp" />
-    <ClCompile Include="SoundManeger.cpp" />
+    <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="UIDrawer.cpp" />
     <ClCompile Include="Vector2.cpp" />
@@ -98,7 +98,7 @@
     <ClInclude Include="Selecter.h" />
     <ClInclude Include="SelectDraw.h" />
     <ClInclude Include="Shake.h" />
-    <ClInclude Include="SoundManeger.h" />
+    <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="UIDrawer.h" />
     <ClInclude Include="Vector2.h" />
