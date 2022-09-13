@@ -147,7 +147,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			if (input->keys->IsTrigger(KEY_INPUT_SPACE))
 			{
 				scene = Ranking;
-				ranking.Update(66666);
+				ranking.Update(score);
 			}
 			break;
 		case Ranking:
@@ -198,10 +198,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		ScreenFlip();
 		// 20ミリ秒待機(疑似60FPS)
 		WaitTimer(20);
-		// Windowsシステムからくる情報を処理する
-		if (ProcessMessage() == -1) break;
-		if (CheckHitKey(KEY_INPUT_ESCAPE) == 1) break;
-
 #pragma endregion
 	}
 #pragma region 終了処理

@@ -228,36 +228,6 @@ void Map::EraseBomb(const int num)
 
 void Map::Draw(const Vector2Int& camera)
 {
-	//Vector2Int boxPos{};
-	//for (size_t y = 0; y < map.size(); y++) {
-	//	for (size_t x = 0; x < map[y].size(); x++)
-	//	{
-	//		boxPos = pos + Vector2Int(2 * chipRad * x, 2 * chipRad * y);
-	//		DrawBoxWithVectorInt(boxPos, { chipRad ,chipRad }, CHIP_COLOR[map[y][x]]);
-	//		if (map[y][x] != BombBlock) { continue; }
-	//		for (size_t i = 0; i < bomb.size(); i++)
-	//		{
-	//			if (!(bomb[i].GetPos().x == x && bomb[i].GetPos().y == y)) { continue; }
-	//			Vector2Int pos = GetChipPos(bomb[i].GetPos());
-	//			switch (bomb[i].GetDirection())
-	//			{
-	//			case Up:
-	//				DrawBox(pos.x, pos.y, pos.x + 32, pos.y - 32, color.Black, true);
-	//				break;
-	//			case Down:
-	//				DrawBox(pos.x, pos.y, pos.x - 32, pos.y + 32, color.Black, true);
-	//				break;
-	//			case Left:
-	//				DrawBox(pos.x, pos.y, pos.x - 32, pos.y - 32, color.Black, true);
-	//				break;
-	//			case Right:
-	//				DrawBox(pos.x, pos.y, pos.x + 32, pos.y + 32, color.Black, true);
-	//				break;
-	//			}
-	//			break;
-	//		}
-	//	}
-	//}
 	drawer.Draw(camera);
 	bbList.DrawDebug();
 }
