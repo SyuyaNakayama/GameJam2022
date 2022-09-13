@@ -24,3 +24,8 @@ void Timer::Draw(Vector2Int pos)
 		DrawFormatString(pos.x, pos.y, GetColor(255, 255, 255), "TIME:00:00");
 	}
 }
+
+void Timer::Reset()
+{
+	*this = Timer(GetNowCount(), maxTime);
+}

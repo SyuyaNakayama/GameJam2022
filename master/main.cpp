@@ -25,7 +25,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 {
 #pragma region 初期設定
 	SetOutApplicationLogValidFlag(false);
-	ChangeWindowMode(TRUE);
+	ChangeWindowMode(1);
 	SetWindowSizeChangeEnableFlag(FALSE, FALSE);
 	SetMainWindowText("之の人、採掘場にて。\n　～アレッヒの地下奴隷～");
 	SetGraphMode(WIN_SIZE.x, WIN_SIZE.y, 32);
@@ -70,11 +70,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 	Timer timer = { GetNowCount() ,100 };
 
-	int fontSize = 48;
-
 	RankingManager ranking;
 	ranking.Reset(); // ***** デバッグ用(提出時はコメントアウトすること！！！) ***** //
 	ranking.Load();
+
 	vector<int> prologueFontColor(8, 0);
 	vector<string> prologueString =
 	{
@@ -87,7 +86,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		"そんな男の地下採掘場でのお話。",
 		"\nSPACEで次へ→"
 	};
-	SetFontSize(fontSize);
+	SetFontSize(48);
+
 	while (!(ProcessMessage() == -1 || CheckHitKey(KEY_INPUT_ESCAPE)))
 	{
 #pragma region 更新処理
@@ -151,7 +151,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 				map.Create();
 				player.Reset({ rand() % 2 + 4, rand() % 2 + 4 }, Up);
 				map.Change(player.GetPos(), None);
-				timer = { GetNowCount() ,120 };
+				timer.Reset();
 			}
 
 			break;
@@ -188,7 +188,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 					player.Reset({ rand() % 2 + 4,rand() % 2 + 4 }, Up);
 				}
 				map.Change(player.GetPos(), None);
-				timer = { GetNowCount() ,120 };
+				timer.Reset();
 			}
 
 			if (player.GetActionCount() <= 0 || timer.CountDown(player.GetDamageCount()))
@@ -248,11 +248,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 
 			//デバッグ
-			DrawFormatString(0, 0, color.White, "コイン残り%d枚", map.CountBlockNum(CoinBlock));
-			DrawFormatString(400, 0, color.White, "行動回数:%d回", player.GetActionCount());
-			DrawFormatString(400, 50, color.White, "クリスタル:%d個", map.CountBlockNum(CrystalBlock));
-			DrawFormatString(400, 96, color.White, "ボムによる破壊:%d個", map.GetBombBreakCount());
-			DrawFormatString(800, 0, color.White, "ステージ:%d", map.GetStage());
+			DrawFormatStringToHandle(0, 0, color.White,font.Use(FontSize::L), "コイン残り%d枚", map.CountBlockNum(CoinBlock));
+			DrawFormatStringToHandle(400, 0, color.White,font.Use(FontSize::L), "行動回数:%d回", player.GetActionCount());
+			DrawFormatStringToHandle(400, 50, color.White,font.Use(FontSize::L), "クリスタル:%d個", map.CountBlockNum(CrystalBlock));
+			DrawFormatStringToHandle(400, 96, color.White,font.Use(FontSize::L), "ボムによる破壊:%d個", map.GetBombBreakCount());
+			DrawFormatStringToHandle(800, 0, color.White,font.Use(FontSize::L), "ステージ:%d", map.GetStage());
 			break;
 
 		case Result:
