@@ -1,4 +1,3 @@
-#include "DxLib.h"
 #include "Vector2.h"
 #include "Input.h"
 #include "function.h"
@@ -143,7 +142,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 			map.Update();
 
-			crystalCounter = 3 - map.CountBlockNum(CrystalBlock);
+			crystalCounter = map.CrystalRemain();
 
 			if (crystalCounter == 3 || input->keys->IsTrigger(KEY_INPUT_S))
 			{
@@ -173,13 +172,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 			map.Update();
 
-			if (map.GetStage() % 4 == 0) currentCoin = 26 - map.CountBlockNum(CoinBlock);
-			else currentCoin = 7 - map.CountBlockNum(CoinBlock);
-
-			if (currentCoin > elderCoin) scoreCoin += (currentCoin - elderCoin);
-			elderCoin = currentCoin;
-
-			crystalCounter = 3 - map.CountBlockNum(CrystalBlock);
+			scoreCoin = map.CoinUpdate();
+			crystalCounter = map.CrystalRemain();
 
 			if (crystalCounter == 3)
 			{

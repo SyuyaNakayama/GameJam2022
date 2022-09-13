@@ -21,11 +21,16 @@ private:
 	int	chipRad = 32;
 	Color color;
 	vector<Bomb> bomb;
-	int stage = 1;
+	int stage = 0;
+	bool isNext = false;
+	bool isChangeOk = false;
 
 	bool countStartFlag = false;
 	int respawnTimer = 0;
 	int respawnTimerLimit = 120;
+
+	int currentCoin = 0;
+	int elderCoin = 0;
 
 	const vector<vector<Vector2Int>>crystalPos =
 	{
@@ -83,9 +88,11 @@ public:
 public:
 	void LoadAndSet();
 	void SetOutSide(Camera* camera, Vector2Int* playerPos);
-	void Init(); // マップをBlockで初期化
+	void Initialize();
+	void Reset(); // マップをBlockで初期化
 	void Create();
 	void CreateTutorial();
+	void NextStage();
 
 	void Update();
 	void Change(Vector2Int num, BlockName blockName);
@@ -95,6 +102,7 @@ public:
 	void Draw(const Vector2Int& camera);
 private:
 	void RespawnTimerUpdate();
+	void NextPreparation();
 public:
 	Vector2Int GetMapPos() { return pos; }
 	Vector2Int GetChipPos(Vector2Int chipNum) { return pos + 2 * chipRad * chipNum; }
@@ -105,5 +113,8 @@ public:
 	vector<Bomb> GetBomb() { return bomb; }
 	int GetStage() { return stage; }
 	size_t CountBlockNum(BlockName blockName);
-	void NextStage() { stage++; Create(); }
+	bool IsChangeOk() { return isChangeOk; }
+
+	int CrystalRemain() { return 3 - CountBlockNum(CrystalBlock); }
+	int CoinUpdate();
 };

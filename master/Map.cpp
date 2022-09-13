@@ -15,7 +15,13 @@ void Map::SetOutSide(Camera* camera, Vector2Int* playerPos)
 	this->playerPos = playerPos;
 }
 
-void Map::Init()
+void Map::Initialize()
+{
+	Reset();
+	bbList.Initialize();
+}
+
+void Map::Reset()
 {
 	for (size_t y = 0; y < map.size(); y++)
 	{
@@ -32,11 +38,14 @@ void Map::Init()
 	respawnTimerLimit = 120;
 	bbList.Reset();
 	drawer.ClearArrowAndBright();
+	isNext = false;
+	isChangeOk = false;
 }
 
 void Map::Create()
 {
-	Init();
+	Reset();
+	stage++;
 
 	// ノーマルステージ
 	if (stage % 4 != 0)
@@ -134,11 +143,15 @@ void Map::Create()
 		}
 
 	}
+
+	if (GetStage() % 4 == 0) currentCoin = 26 - CountBlockNum(CoinBlock);
+	else currentCoin = 7 - CountBlockNum(CoinBlock);
+	elderCoin = currentCoin;
 }
 
 void Map::CreateTutorial()
 {
-	Init();
+	Reset();
 
 	for (size_t i = 0; i < 5; i++)
 	{
@@ -168,6 +181,11 @@ void Map::CreateTutorial()
 
 }
 
+void Map::NextStage()
+{
+	isNext = true;
+}
+
 void Map::Update()
 {
 	bbList.Update();
@@ -194,6 +212,7 @@ void Map::Update()
 	{
 		bomb[i].Rotate();
 	}
+	NextPreparation();
 }
 
 void Map::Change(Vector2Int num, BlockName blockName)
@@ -214,6 +233,25 @@ void Map::RespawnTimerUpdate()
 	Change(*playerPos, None);
 	respawnTimer = 0;
 	countStartFlag = false;
+}
+
+int Map::CoinUpdate()
+{
+	int result = 0;
+	if (GetStage() % 4 == 0) currentCoin = 26 - CountBlockNum(CoinBlock);
+	else currentCoin = 7 - CountBlockNum(CoinBlock);
+
+	if (currentCoin > elderCoin) result += (currentCoin - elderCoin);
+	elderCoin = currentCoin;
+
+	return result;
+}
+
+void Map::NextPreparation()
+{
+	if (!isNext) return;
+	if (bbList.IsAct()) return;
+	isChangeOk = true;
 }
 
 void Map::Respawn()
