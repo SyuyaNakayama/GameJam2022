@@ -22,7 +22,7 @@ private:
 	int	chipRad = 32;
 	Color color;
 	vector<Bomb> bomb;
-	int stage = 0;
+	int stage = 1;
 	bool isNext = false;
 	bool isChange = false;
 
@@ -54,7 +54,7 @@ private:
 	//tutorial Block
 	const vector<Vector2Int>tB =
 	{
-		{4,1},{5,0},{6,1},{5,1},{4,2}
+		{4,1},{5,9},{9,1},{5,1},{4,2}
 	};
 
 	//ボーナスステージ用マップ(固定)

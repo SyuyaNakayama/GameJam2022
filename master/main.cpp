@@ -40,7 +40,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 	// シーン
 	SceneManager scene;
-	scene.Initialze(Scene::Tutorial, WIN_SIZE);
+	scene.Initialze(Scene::Title, WIN_SIZE);
 
 	// ---定数の宣言と初期化---
 
@@ -124,7 +124,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 					Clamp(prologueFontColor[i], 255);
 				}
 
-				bool next = prologueFontColor.back() >= 150 && input->IsSelect() || input->IsCancel();
+				bool next = prologueFontColor.back() >= 150 && input->IsSelect() || input->keys->IsTrigger(KEY_INPUT_S);
 				if (next) scene.Change(Tutorial);
 			}
 
@@ -232,38 +232,46 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 					GetColor(prologueFontColor[i], prologueFontColor[i], prologueFontColor[i]),
 					prologueString[i], FontSize::L);
 			}
-			font->DrawUseFont({ 1050,50 }, color.White, "S:Skip", FontSize::L);
+			font->DrawUseFont({ 1350,40 }, color.White, "S：Skip", FontSize::L);
 			break;
 
 		case Tutorial:
 			ui.Draw(camera.GetPos());
 			map.Draw(camera.GetPos());
 			player.Draw(camera.GetPos());
-			font->DrawUseFont({ 750,50 }, color.White, "S：チュートリアルSkip", FontSize::L);
+			font->DrawUseFont({ 1350,40 }, color.White, "S：チュートリアルSkip", FontSize::L);
+			DrawFormatStringToHandle(1500, 690, color.White, font->Use(FontSize::L), "：%d枚", map.scoreCoin);
+			DrawFormatStringToHandle(820, 170, color.White, font->Use(FontSize::L), "：%d回", player.GetActionCount());
+			DrawFormatStringToHandle(1350, 170, color.White, font->Use(FontSize::L), "ボムによる破壊：%d個", map.GetBombBreakCount());
+
+			DrawFormatStringToHandle(600, 70, color.White, font->Use(FontSize::L), "上のブロック３つ壊してみよう！", map.GetBombBreakCount());
 			break;
 
 		case Play:
 			ui.Draw(camera.GetPos());
 			map.Draw(camera.GetPos());
 			player.Draw(camera.GetPos());
-			timer.Draw({ 0,32 });
+			timer.Draw({ 650,70 });
 
 
 			//デバッグ
-			DrawFormatStringToHandle(0, 0, color.White, font->Use(FontSize::L), "コイン残り%d枚", map.CountBlockNum(CoinBlock));
-			DrawFormatStringToHandle(400, 0, color.White, font->Use(FontSize::L), "行動回数:%d回", player.GetActionCount());
-			DrawFormatStringToHandle(400, 50, color.White, font->Use(FontSize::L), "クリスタル:%d個", map.CountBlockNum(CrystalBlock));
-			DrawFormatStringToHandle(400, 96, color.White, font->Use(FontSize::L), "ボムによる破壊:%d個", map.GetBombBreakCount());
-			DrawFormatStringToHandle(800, 0, color.White, font->Use(FontSize::L), "ステージ:%d", map.GetStage());
+			DrawFormatStringToHandle(1500, 690, color.White, font->Use(FontSize::L), "：%d枚", map.scoreCoin);
+			DrawFormatStringToHandle(820, 170, color.White, font->Use(FontSize::L), "：%d回", player.GetActionCount());
+			DrawFormatStringToHandle(1350, 170, color.White, font->Use(FontSize::L), "ボムによる破壊：%d個", map.GetBombBreakCount());
+			DrawFormatStringToHandle(950, 70, color.White, font->Use(FontSize::L), "ステージ：%d", map.GetStage());
 			break;
 
 		case Result:
-		case Ranking:
-			font->DrawUseFont({ 400,150 }, color.White, "リザルト", FontSize::LL);
-			DrawFormatStringToHandle(400, 350, color.White, font->Use(FontSize::LL), "スコア:%d", score);
+			font->DrawUseFont({ 750,150 }, color.White, "リザルト", FontSize::LL);
+			DrawFormatStringToHandle(750, 350, color.White, font->Use(FontSize::LL), "スコア:%d", score);
+			font->DrawUseFont({ 800,900 }, color.White, "SPACEで次へ", FontSize::L);
+			break;
 
-			DrawFormatStringToHandle(400, 100, color.White, font->Use(FontSize::LL), "スコア:%d", score);
+		case Ranking:
+
+			font->DrawUseFont({ 650,150 }, color.White, "ランキング", FontSize::LL);
 			ranking.Draw(*font);
+			font->DrawUseFont({ 700,900 }, color.White, "SPACEでタイトルへ", FontSize::L);
 			break;
 		}
 		scene.DrawCurtain();

@@ -56,7 +56,7 @@ void Map::Create(const bool init)
 	if (init) Initialize();
 	else Reset();
 	stage++;
-	stage = 4;
+	//stage = 4;
 
 	// ノーマルステージ
 	if (stage % 4 != 0)
