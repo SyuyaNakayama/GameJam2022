@@ -142,13 +142,15 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 			map.Update();
 
-			if (input->keys->IsTrigger(KEY_INPUT_S))
+			crystalCounter = 3 - map.CountBlockNum(CrystalBlock);
+
+			if (crystalCounter == 3 || input->keys->IsTrigger(KEY_INPUT_S))
 			{
 				scene = Play;
 				map.Create();
 				player.Reset({ rand() % 2 + 4, rand() % 2 + 4 }, Up);
 				map.Change(player.GetPos(), None);
-
+				timer = { GetNowCount() ,120 };
 			}
 
 			break;
@@ -184,7 +186,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			if (player.GetActionCount() <= 0 || timer.CountDown(player.GetDamageCount()))
 			{
 				score = (scoreCoin * 100) * (1 + (0.1 * map.GetStage())) + (map.GetBombBreakCount() * 50);
-				scene = Result; SetFontSize(96); 
+				scene = Result; 
+				//SetFontSize(96); 
 			}
 
 			ui.Update();
@@ -198,6 +201,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 				ranking.Update(score);
 			}
 			break;
+
 		case Ranking:
 			if (input->keys->IsTrigger(KEY_INPUT_SPACE)) { scene = Title; }
 			break;
