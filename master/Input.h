@@ -15,6 +15,9 @@ public:
 	bool IsUp();
 	bool IsDown();
 	bool IsMove();
+	bool IsSelect(); // B SPACE
+	bool IsDone();   // Y ENTER
+	bool IsCancel(); // A SHIFT
 public:
 	static Input* GetInstance();
 private:
