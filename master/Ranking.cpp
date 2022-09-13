@@ -26,6 +26,7 @@ void RankingManager::Update(int newScore)
 	sort(scoreList.begin(), scoreList.end());
 	reverse(scoreList.begin(), scoreList.end());
 	scoreList.pop_back();
+	str.clear();
 	for (size_t i = 0; i < scoreList.size(); i++)
 	{
 		str += rankStr[i] + to_string(scoreList[i]) + "“_\n";
