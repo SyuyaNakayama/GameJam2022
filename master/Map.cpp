@@ -29,6 +29,7 @@ void Map::Reset()
 		for (size_t x = 0; x < map[y].size(); x++)
 		{
 			map[y][x] = Block;
+			isBreak[y][x] = false;
 			drawer.ChipInit({ (int)x, (int)y }, Block);
 		}
 	}
@@ -211,6 +212,7 @@ void Map::Update()
 			if (breakCount <= 0) breakCount = 0;
 			drawer.ChipBreak(n);
 			drawer.EraseArrowAndBright(n);
+			isBreak[n.y][n.x] = false;
 			Change(n, None);
 			countStartFlag = true;
 		}
@@ -219,7 +221,7 @@ void Map::Update()
 
 	Change(*playerPos, None);
 
-	scoreCoin = CoinUpdate();
+	scoreCoin += CoinUpdate();
 	crystalCounter = CrystalRemain();
 	if (crystalCounter >= 3) NextStage();
 
@@ -286,6 +288,14 @@ void Map::Respawn()
 	}
 }
 
+void Map::BreakBlock(const Vector2Int& num, const bool bomb)
+{
+	if (!bomb) breakCount++;
+	if (isBreak[num.y][num.x]) return;
+	isBreak[num.y][num.x] = true;
+	bbList.PushBuck(num, bomb);
+}
+
 void Map::BombDestroy(int bombIndex, Player* player)
 {
 	vector<Vector2Int>destroyPos = bomb[bombIndex].Explosion();
@@ -296,13 +306,13 @@ void Map::BombDestroy(int bombIndex, Player* player)
 		{
 			if (destroyPos[i] == bomb[j].GetPos() && !bomb[j].IsExplosion())
 			{
-				bbList.PushBuck(destroyPos[i], true);
+				BreakBlock(destroyPos[i], true);
 				EraseBomb(j);
 				BombDestroy(j, player);
 			}
 		}
 		if (destroyPos[i] == *playerPos) { player->DamageCountUp(); }
-		bbList.PushBuck(destroyPos[i], true);
+		BreakBlock(destroyPos[i], true);
 	}
 }
 
@@ -316,7 +326,17 @@ void Map::EraseBomb(const int num)
 void Map::Draw(const Vector2Int& camera)
 {
 	drawer.Draw(camera);
-	bbList.DrawDebug();
+	//bbList.DrawDebug();
+	//for (size_t y = 0; y < 10; y++)
+	//{
+	//	for (size_t x = 0; x < 10; x++)
+	//	{
+	//		DrawFormatString(
+	//			pos.x + (64 * x),
+	//			pos.y + (64 * y),
+	//			GetColor(255, 255, 255), "%d", isBreak[y][x]);
+	//	}
+	//}
 }
 
 size_t Map::CountBlockNum(BlockName blockName)

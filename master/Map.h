@@ -16,7 +16,8 @@ class Player;
 class Map
 {
 private:
-	array<array<BlockName, 10>, 10>map{ {} };
+	array<array<BlockName, 10>, 10> map{ {} };
+	array<array<bool, 10>, 10> isBreak{ {} };
 	Vector2Int	pos = { 672,300 };
 	int	chipRad = 32;
 	Color color;
@@ -99,6 +100,7 @@ public:
 	void Update();
 	void Change(Vector2Int num, BlockName blockName);
 	void Respawn();
+	void BreakBlock(const Vector2Int& num, const bool bomb = false);
 	void BombDestroy(int bombIndex, Player* player);
 	void EraseBomb(const int num);
 	void Draw(const Vector2Int& camera);

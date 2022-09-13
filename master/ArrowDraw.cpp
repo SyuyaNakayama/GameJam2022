@@ -110,6 +110,7 @@ void ArrowDraw::Draw(const Vector2Int& camera)
 
 void ArrowDraw::DrawRange(const Vector2Int& camera)
 {
+	if (shadow >= 255) return;
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 120);
 	Vector2Int p;
 	int x = 0, y = 0;

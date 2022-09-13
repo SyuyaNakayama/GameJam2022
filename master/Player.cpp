@@ -77,8 +77,7 @@ void Player::Destroy()
 	if (mode != Mode::Destroy) return;
 
 	move = selecter.GetRoutePos(0);
-	pMap->breakCount++;
-	pMap->bbList.PushBuck(move);
+	pMap->BreakBlock(move);
 
 	if (selecter.IsSelectBomb())
 	{

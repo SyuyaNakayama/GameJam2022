@@ -40,7 +40,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 	// ƒV[ƒ“
 	SceneManager scene;
-	scene.Initialze(Scene::Title, WIN_SIZE);
+	scene.Initialze(Scene::Play, WIN_SIZE);
 
 	// ---’è”‚ÌéŒ¾‚Æ‰Šú‰»---
 
@@ -130,6 +130,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 			if (scene.IsChanged())
 			{
+				score = 0;
 				map.CreateTutorial();
 				player.Reset({ 4,4 }, Up);
 				sound->StopBGM(1);
