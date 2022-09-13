@@ -4,7 +4,7 @@
 
 MapChipDraw::MapChipDraw() :
 	goldG(0), oreG(0), bombG(0), soilG(0),
-	leftTop(nullptr), brightness(20), playerPos(nullptr), pCamera(nullptr)
+	leftTop(nullptr), brightness(0), playerPos(nullptr), pCamera(nullptr)
 {}
 
 void MapChipDraw::Load()
@@ -28,6 +28,16 @@ void MapChipDraw::Load()
 			blocks[y][x].SetBrightness(&brightness);
 		}
 	}
+}
+
+void MapChipDraw::Reset()
+{
+	dustE.Initialize();
+	breakE.Initialize();
+	arrowE.Initialize();
+	brightE.Initialize();
+	coinE.Clear();
+	crystalE.Clear();
 }
 
 void MapChipDraw::Update()
@@ -115,7 +125,7 @@ void MapChipDraw::EraseArrow(const Vector2Int& num)
 }
 void MapChipDraw::ClearArrow()
 {
-	arrowE.Crear();
+	arrowE.Clear();
 }
 
 void MapChipDraw::CreateBright(const Vector2Int& num)
@@ -128,7 +138,7 @@ void MapChipDraw::EraseBright(const Vector2Int& num)
 }
 void MapChipDraw::ClearBright()
 {
-	brightE.Crear();
+	brightE.Clear();
 }
 
 void MapChipDraw::Draw(const Vector2Int& camera)

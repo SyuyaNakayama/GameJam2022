@@ -11,6 +11,7 @@ private:
 	Vector2Int pos;
 	Vector2Int number;
 	int type;
+	bool isDeath;
 
 	// íÖínââèo
 	int height;
@@ -22,14 +23,12 @@ private:
 	Shake shake;
 	bool isBreak;
 
-	bool isDeath;
-
 	int trans;
 	int shadow;
-	int* brightness;
 
 	int blockG;
 
+	int* brightness;
 	Vector2Int* playerPos;
 	Camera* pCamera;
 public:
@@ -39,13 +38,14 @@ public:
 	void Update();
 	void Break();
 	void Draw(const Vector2Int& camera);
+private:
+	void Landing();
+	void UpdateShadow();
+	void DrawShadow(const Vector2Int& camera);
+public:
 	void SetBrightness(int* brightness);
 	void SetPlayerPos(Vector2Int* playerPos);
 	void SetCamera(Camera* pCamera);
 	int GetType() { return type; }
 	bool GetIsDeath() { return isDeath; }
-private:
-	void Landing();
-	void UpdateShadow();
-	void DrawShadow(const Vector2Int& camera);
 };
