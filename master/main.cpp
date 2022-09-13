@@ -69,7 +69,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	ui.Initialize();
 
 	Timer timer = { GetNowCount() ,100 };
-	Pad* pad = Pad::GetInstance();
 
 	int fontSize = 48;
 
@@ -209,7 +208,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			break;
 		}
 		camera.Update();
-		pad->Update();
 #pragma endregion
 #pragma region 描画処理
 		switch (scene)
@@ -229,6 +227,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			break;
 
 		case Tutorial:
+			ui.Draw(camera.GetPos());
 			map.Draw(camera.GetPos());
 			player.Draw(camera.GetPos());
 			font.DrawUseFont({ 750,50 }, color.White, "S：チュートリアルSkip", FontSize::L);
