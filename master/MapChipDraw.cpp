@@ -36,8 +36,7 @@ void MapChipDraw::Reset()
 	breakE.Initialize();
 	arrowE.Initialize();
 	brightE.Initialize();
-	coinE.Clear();
-	crystalE.Clear();
+	ClearArtifact();
 }
 
 void MapChipDraw::Update()

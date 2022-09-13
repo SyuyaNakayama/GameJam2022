@@ -22,19 +22,20 @@ void Player::Initialize(const Vector2Int& pos, const int direction)
 void Player::Reset(const Vector2Int& pos, const int direction)
 {
 	this->pos = pos;
-	mode = Mode::Select;
-	next = Mode::Select;
 	this->direction = direction;
+	ActionReset();
 	selecter.Reset(direction);
 	move = { -1, -1 };
+
+	mode = Mode::Select;
+	next = Mode::Select;
 	stopTimer = 0;
-	ActionReset();
 }
 
 void Player::ActionReset()
 {
-	damageCount = 0;
 	actionNum = 15;
+	damageCount = 0;
 }
 
 void Player::Update()

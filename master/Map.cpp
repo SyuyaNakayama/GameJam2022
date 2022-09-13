@@ -19,6 +19,7 @@ void Map::Initialize()
 {
 	Reset();
 	bbList.Initialize();
+	stage = 0;
 }
 
 void Map::Reset()
@@ -33,13 +34,19 @@ void Map::Reset()
 	}
 	bomb.clear();
 	breakCount = 0;
+
+	bbList.Reset();
+	drawer.Reset();
+
+	isNext = false;
+	isChangeOk = false;
+
 	countStartFlag = false;
 	respawnTimer = 0;
 	respawnTimerLimit = 120;
-	bbList.Reset();
-	drawer.ClearArrowAndBright();
-	isNext = false;
-	isChangeOk = false;
+
+	currentCoin = 0;
+	elderCoin = 0;
 }
 
 void Map::Create()
@@ -50,6 +57,7 @@ void Map::Create()
 	// ノーマルステージ
 	if (stage % 4 != 0)
 	{
+		int crystalPattern = 0;
 		// クリスタル配置
 		crystalPattern = rand() % 9;
 		for (size_t i = 0; i < 3; i++)
@@ -144,8 +152,8 @@ void Map::Create()
 
 	}
 
-	if (GetStage() % 4 == 0) currentCoin = 26 - CountBlockNum(CoinBlock);
-	else currentCoin = 7 - CountBlockNum(CoinBlock);
+	if (GetStage() % 4 == 0) currentCoin = BONUS_COIN_NUM - CountBlockNum(CoinBlock);
+	else currentCoin = COIN_NUM - CountBlockNum(CoinBlock);
 	elderCoin = currentCoin;
 }
 
@@ -207,6 +215,9 @@ void Map::Update()
 		}
 	}
 	RespawnTimerUpdate();
+
+	Change(*playerPos, None);
+
 	drawer.Update();
 	for (size_t i = 0; i < bomb.size(); i++)
 	{
@@ -256,7 +267,8 @@ void Map::NextPreparation()
 
 void Map::Respawn()
 {
-	for (size_t y = 0; y < map.size(); y++) {
+	for (size_t y = 0; y < map.size(); y++) 
+	{
 		for (size_t x = 0; x < map[y].size(); x++)
 		{
 			if (map[y][x] == None)

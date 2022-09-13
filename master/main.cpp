@@ -37,7 +37,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	SoundManeger sound;
 
 	// ---íËêîÇÃêÈåæÇ∆èâä˙âª---
-	Scene scene = Scene::Result;
+	Scene scene = Scene::Play;
 	Color color;
 	// ---ïœêîÇÃêÈåæÇ∆èâä˙âª---
 	Font font;
@@ -52,7 +52,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 	Camera camera;
 	camera.Initialize({});
-
 
 	Map map;
 	map.LoadAndSet();
@@ -122,7 +121,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 				scene = Tutorial;
 				map.CreateTutorial();
 				player.Reset({ 4,4 }, Up);
-				map.Change(player.GetPos(), None);
 				sound.StopBGM(1);
 			}
 
@@ -137,7 +135,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			{
 				map.CreateTutorial();
 				player.Reset({ 4,4 }, Up);
-				map.Change(player.GetPos(), None);
 			}
 
 			map.Update();
@@ -151,7 +148,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 				scoreCoin = 0;
 				map.Create();
 				player.Reset({ rand() % 2 + 4, rand() % 2 + 4 }, Up);
-				map.Change(player.GetPos(), None);
 				timer.Reset();
 				sound.StopBGM(2);
 			}
@@ -167,7 +163,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			{
 				map.Create();
 				player.Reset({ rand() % 2 + 4,rand() % 2 + 4 }, Up);
-				map.Change(player.GetPos(), None);
 			}
 
 			map.Update();
@@ -183,16 +178,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			if (map.IsChangeOk())
 			{
 				map.Create();
-
-				if (map.GetStage() % 4 == 0)
-				{
-					player.Reset({ 4,4 }, Up);
-				}
-				else
-				{
-					player.Reset({ rand() % 2 + 4,rand() % 2 + 4 }, Up);
-				}
-				map.Change(player.GetPos(), None);
+				if (map.GetStage() % 4 == 0) player.Reset({ 4,4 }, Up);
+				else player.Reset({ rand() % 2 + 4,rand() % 2 + 4 }, Up);
 				timer.Reset();
 			}
 

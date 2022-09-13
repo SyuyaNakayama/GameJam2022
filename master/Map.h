@@ -31,6 +31,8 @@ private:
 
 	int currentCoin = 0;
 	int elderCoin = 0;
+	const int COIN_NUM = 7;
+	const int BONUS_COIN_NUM = 26;
 
 	const vector<vector<Vector2Int>>crystalPos =
 	{
@@ -78,8 +80,6 @@ private:
 		{1,9},{2,9},{3,9},{6,9},{7,9},{8,9}
 	};
 
-	const int COIN_NUM = 7;
-	int crystalPattern;
 	Vector2Int* playerPos = nullptr;
 public:
 	MapChipDraw drawer;
