@@ -23,14 +23,17 @@ private:
 	Vector2Int* playerPos;
 public:
 	ArrowDraw();
-	void Initialize(const Vector2Int& leftTop, const Vector2Int& num, const int direction, const int arrowG[2]);
+	void Initialize(const Vector2Int& leftTop, const Vector2Int& num, const int direction,
+		const int arrowG[2]);
 	void Update();
 	void Draw(const Vector2Int& camera);
 	void SetBrightness(int* brightness);
 	void SetPlayerPos(Vector2Int* playerPos);
 	Vector2Int GetNumber() { return number; }
+	int GetDirection() { return direction; }
 private:
 	void ChangeDirection(const int direction);
 	void UpdateShadow();
+	void DrawRange(const Vector2Int& camera);
 };
 

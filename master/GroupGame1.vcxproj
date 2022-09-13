@@ -29,7 +29,9 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CashDraw.cpp" />
     <ClCompile Include="ChipDraw.cpp" />
+    <ClCompile Include="CoinEffecter.cpp" />
     <ClCompile Include="CrystalDraw.cpp" />
+    <ClCompile Include="CrystalEffecter.cpp" />
     <ClCompile Include="Debri.cpp" />
     <ClCompile Include="DebriEmitter.cpp" />
     <ClCompile Include="Dust.cpp" />
@@ -67,7 +69,9 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CashDraw.h" />
     <ClInclude Include="ChipDraw.h" />
+    <ClInclude Include="CoinEffecter.h" />
     <ClInclude Include="CrystalDraw.h" />
+    <ClInclude Include="CrystalEffecter.h" />
     <ClInclude Include="Debri.h" />
     <ClInclude Include="DebriEmitter.h" />
     <ClInclude Include="Dust.h" />

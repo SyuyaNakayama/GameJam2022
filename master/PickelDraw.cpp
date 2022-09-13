@@ -19,6 +19,7 @@ void PickelDraw::Initialize()
 	pickels.clear();
 	count = 0;
 	timer = 0;
+	shake.Initialize();
 }
 
 void PickelDraw::Update()
@@ -27,6 +28,7 @@ void PickelDraw::Update()
 	if (*pActNum < elderNum) count = elderNum - *pActNum;
 	Emit();
 	Move();
+	shake.Update();
 	elderNum = *pActNum;
 }
 
@@ -41,6 +43,7 @@ void PickelDraw::Emit()
 		timer = 0;
 		count--;
 		if (count <= 0) count = 0;
+		shake.Shaking(20, 2);
 	}
 }
 
@@ -60,7 +63,7 @@ void PickelDraw::Move()
 
 void PickelDraw::Draw(const Vector2Int& pos, const Vector2Int& camera)
 {
-	DrawGraph(pos.x, pos.y, pickelG, true);
+	DrawGraph(pos.x + shake.GetValue().x, pos.y + shake.GetValue().y, pickelG, true);
 
 	if (pickels.empty()) return;
 	Vector2Int center = { pos.x + 32, pos.y + 32 };
@@ -72,8 +75,8 @@ void PickelDraw::Draw(const Vector2Int& pos, const Vector2Int& camera)
 			int a = 1;
 			if (j) a = -1;
 			DrawRotaGraph(
-				center.x + (pickels[i].pos.x * a),
-				center.y + pickels[i].pos.y + (32 * j), 1.0f,
+				center.x + (pickels[i].pos.x * a) + shake.GetValue().x,
+				center.y + pickels[i].pos.y + (32 * j) + shake.GetValue().y, 1.0f,
 				(pickels[i].rota * a), brokenG[j], true);
 		}
 	}

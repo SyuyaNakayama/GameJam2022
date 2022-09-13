@@ -5,11 +5,12 @@
 ArrowDraw::ArrowDraw() :
 	pos(), scale(1.0f), rota(0.0f), direction(Up),
 	ease(), timer(0), change(false),
-	trans(255), shadow(0), brightness(nullptr), 
+	trans(255), shadow(0), brightness(nullptr),
 	playerPos(nullptr)
 {}
 
-void ArrowDraw::Initialize(const Vector2Int& leftTop, const Vector2Int& num, const int direction, const int arrowG[2])
+void ArrowDraw::Initialize(const Vector2Int& leftTop, const Vector2Int& num, const int direction,
+	const int arrowG[2])
 {
 	this->number = num;
 	pos = { leftTop.x + num.x * 64, leftTop.y + num.y * 64 };
@@ -101,9 +102,46 @@ void ArrowDraw::Draw(const Vector2Int& camera)
 {
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, trans);
 	DrawRotaGraph(pos.x + camera.x, pos.y - 8 + camera.y, scale, rota, arrowG[0], true);
+	DrawRange(camera);
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, shadow);
 	DrawRotaGraph(pos.x + camera.x, pos.y - 8 + camera.y, scale, rota, arrowG[1], true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+}
+
+void ArrowDraw::DrawRange(const Vector2Int& camera)
+{
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 120);
+	Vector2Int p;
+	int x = 0, y = 0;
+	for (size_t i = 0; i < 5; i++)
+	{
+		switch (direction)
+		{
+		case Up:
+			x = 0;
+			y = (i * -1) - 1;
+			break;
+		case Down:
+			x = 0;
+			y = i + 1;
+			break;
+		case Left:
+			x = (i * -1) - 1;
+			y = 0;
+			break;
+		case Right:
+			x = i + 1;
+			y = 0;
+			break;
+		}
+		int xN = number.x + x;
+		if (xN < 0 || 9 < xN) continue;
+		int yN = number.y + y;
+		if (yN < 0 || 9 < yN) continue;
+
+		p = { pos.x + (64 * x), pos.y + (64 * y) };
+		DrawRotaGraph(p.x + camera.x, p.y + camera.y, scale, rota, arrowG[0], true);
+	}
 }
 
 void ArrowDraw::SetBrightness(int* brightness)

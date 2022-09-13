@@ -18,6 +18,8 @@ void MapChipDraw::Load()
 	breakE.Load();
 	arrowE.Load();
 	brightE.Load();
+	coinE.Load();
+	crystalE.Load();
 
 	for (size_t y = 0; y < 10; y++)
 	{
@@ -41,6 +43,8 @@ void MapChipDraw::Update()
 	breakE.Update();
 	arrowE.Update();
 	brightE.Update();
+	coinE.Update();
+	crystalE.Update();
 }
 
 void MapChipDraw::ChipInit(const Vector2Int& num, const int blockName)
@@ -73,7 +77,10 @@ void MapChipDraw::ChipInit(const Vector2Int& num, const int blockName)
 void MapChipDraw::ChipBreak(const Vector2Int& num)
 {
 	blocks[num.y][num.x].Break();
-	breakE.Emit(num, blocks[num.y][num.x].GetType());
+	int t = blocks[num.y][num.x].GetType();
+	breakE.Emit(num, t);
+	if (t == CoinBlock) coinE.Emit(num);
+	if (t == CrystalBlock) crystalE.Emit(num);
 }
 
 void MapChipDraw::ChipBright()
@@ -88,8 +95,14 @@ void MapChipDraw::EraseArrowAndBright(const Vector2Int& num)
 }
 void MapChipDraw::ClearArrowAndBright()
 {
-	CrearArrow();
-	CrearBright();
+	ClearArrow();
+	ClearBright();
+}
+
+void MapChipDraw::ClearArtifact()
+{
+	coinE.Clear();
+	crystalE.Clear();
 }
 
 void MapChipDraw::CreateArrow(const Vector2Int& num, const int direction)
@@ -100,7 +113,7 @@ void MapChipDraw::EraseArrow(const Vector2Int& num)
 {
 	if (blocks[num.y][num.x].GetType() == BombBlock) arrowE.Erase(num);
 }
-void MapChipDraw::CrearArrow()
+void MapChipDraw::ClearArrow()
 {
 	arrowE.Crear();
 }
@@ -113,7 +126,7 @@ void MapChipDraw::EraseBright(const Vector2Int& num)
 {
 	if (blocks[num.y][num.x].GetType() == CrystalBlock) brightE.Erase(num);
 }
-void MapChipDraw::CrearBright()
+void MapChipDraw::ClearBright()
 {
 	brightE.Crear();
 }
@@ -131,6 +144,8 @@ void MapChipDraw::Draw(const Vector2Int& camera)
 			blocks[y][x].Draw(camera);
 		}
 	}
+	coinE.Draw(camera);
+	crystalE.Draw(camera);
 	dustE.Draw(camera);
 	breakE.Draw(camera);
 	arrowE.Draw(camera);
@@ -145,6 +160,8 @@ void MapChipDraw::SetLeftTop(Vector2Int* leftTop)
 	breakE.SetLeftTop(leftTop);
 	arrowE.SetLeftTop(leftTop);
 	brightE.SetLeftTop(leftTop);
+	coinE.SetLeftTop(leftTop);
+	crystalE.SetLeftTop(leftTop);
 }
 
 void MapChipDraw::SetBrightness(const int brightness)
