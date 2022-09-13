@@ -54,6 +54,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 	int score = 0;
 
+	int tutorialMessage = 0;
+
 	Camera camera;
 	camera.Initialize({});
 
@@ -150,6 +152,15 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 			map.Update();
 
+			if (map.CountBlockNum(CoinBlock) == 0 && map.CountBlockNum(CrystalBlock) == 2)
+			{
+				tutorialMessage = 1;
+				if (map.CountBlockNum(BombBlock) == 0)
+				{
+					tutorialMessage = 2;
+				}
+			}
+
 			if (map.IsChange() || input->keys->IsTrigger(KEY_INPUT_S)) scene.Change(Play);
 			if (scene.IsChanged())
 			{
@@ -160,6 +171,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 				timer.Reset();
 				sound->StopBGM(2);
 			}
+
+			ui.Update();
 
 			break;
 
@@ -239,12 +252,24 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			ui.Draw(camera.GetPos());
 			map.Draw(camera.GetPos());
 			player.Draw(camera.GetPos());
+
 			font->DrawUseFont({ 1350,40 }, color.White, "S：チュートリアルSkip", FontSize::L);
 			DrawFormatStringToHandle(1500, 690, color.White, font->Use(FontSize::L), "：%d枚", map.scoreCoin);
 			DrawFormatStringToHandle(820, 170, color.White, font->Use(FontSize::L), "：%d回", player.GetActionCount());
-			DrawFormatStringToHandle(1350, 170, color.White, font->Use(FontSize::L), "ボムによる破壊：%d個", map.GetBombBreakCount());
-
-			DrawFormatStringToHandle(600, 70, color.White, font->Use(FontSize::L), "上のブロック３つ壊してみよう！", map.GetBombBreakCount());
+			DrawFormatStringToHandle(1350, 770, color.White, font->Use(FontSize::L), "ボムによる破壊：%d個", map.GetBombBreakCount());
+			if (tutorialMessage == 0)
+			{
+				font->DrawUseFont({ 600, 70 }, color.White, "上のブロック３つ壊してみよう！", FontSize::L);
+			}
+			else if(tutorialMessage == 1)
+			{
+				font->DrawUseFont({ 600, 70 }, color.White, "ボムブロックを壊してみよう！", FontSize::L);
+			}
+			else if (tutorialMessage == 2)
+			{
+				font->DrawUseFont({ 600, 70 }, color.White, "クリスタルをあつめよう！", FontSize::L);
+			}
+			
 			break;
 
 		case Play:
@@ -257,7 +282,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			//デバッグ
 			DrawFormatStringToHandle(1500, 690, color.White, font->Use(FontSize::L), "：%d枚", map.scoreCoin);
 			DrawFormatStringToHandle(820, 170, color.White, font->Use(FontSize::L), "：%d回", player.GetActionCount());
-			DrawFormatStringToHandle(1350, 170, color.White, font->Use(FontSize::L), "ボムによる破壊：%d個", map.GetBombBreakCount());
+			DrawFormatStringToHandle(1350, 770, color.White, font->Use(FontSize::L), "ボムによる破壊：%d個", map.GetBombBreakCount());
 			DrawFormatStringToHandle(950, 70, color.White, font->Use(FontSize::L), "ステージ：%d", map.GetStage());
 			break;
 

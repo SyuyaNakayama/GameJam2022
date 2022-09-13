@@ -259,8 +259,9 @@ void Map::RespawnTimerUpdate()
 int Map::CoinUpdate()
 {
 	int result = 0;
-	if (GetStage() % 4 == 0) currentCoin = 26 - CountBlockNum(CoinBlock);
-	else currentCoin = 7 - CountBlockNum(CoinBlock);
+	if (GetStage() % 4 == 0 && GetStage() > 0) currentCoin = 26 - CountBlockNum(CoinBlock);
+	else if(GetStage() > 0) currentCoin = 7 - CountBlockNum(CoinBlock);
+	else currentCoin = 1 - CountBlockNum(CoinBlock);
 
 	if (currentCoin > elderCoin) result += (currentCoin - elderCoin);
 	elderCoin = currentCoin;
