@@ -136,6 +136,38 @@ void Map::Create()
 	}
 }
 
+void Map::CreateTutorial()
+{
+	Init();
+
+	for (size_t i = 0; i < 5; i++)
+	{
+		if (i == 0 || i == 1 || i == 2)
+		{
+			//ƒNƒŠƒXƒ^ƒ‹
+			Change(tB[i], CrystalBlock);
+			drawer.CreateBright(tB[i]);
+		}
+
+		if (i == 3)
+		{
+			Change(tB[i], BombBlock);
+			Bomb b;
+			drawer.CreateArrow(tB[i], Up);
+			b.Initialize(tB[i], Up);
+			bomb.push_back(b);
+		}
+
+		if (i == 4)
+		{
+			Change(tB[i], CoinBlock);
+			drawer.CreateBright(tB[i]);
+		}
+
+	}
+
+}
+
 void Map::Update()
 {
 	bbList.Update();

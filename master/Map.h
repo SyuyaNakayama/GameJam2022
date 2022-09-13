@@ -21,7 +21,7 @@ private:
 	int	chipRad = 32;
 	Color color;
 	vector<Bomb> bomb;
-	int stage = 4;
+	int stage = 1;
 
 	bool countStartFlag = false;
 	int respawnTimer = 0;
@@ -38,6 +38,14 @@ private:
 		{{0,7},{6,2},{9,8}},
 		{{1,2},{8,9},{9,2}},
 		{{1,8},{2,9},{8,1}}
+	};
+
+	// --- チュートリアル --- //
+
+	//tutorial Block
+	const vector<Vector2Int>tB =
+	{
+		{4,1},{5,0},{6,1},{5,1},{4,2}
 	};
 
 	//ボーナスステージ用マップ(固定)
@@ -78,6 +86,7 @@ public:
 	void SetOutSide(Camera* camera, Vector2Int* playerPos);
 	void Init(); // マップをBlockで初期化
 	void Create();
+	void CreateTutorial();
 
 	void Update();
 	void Change(Vector2Int num, BlockName blockName);

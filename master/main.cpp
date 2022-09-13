@@ -34,7 +34,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	if (DxLib_Init() == -1) { return -1; }
 #pragma endregion
 	// ---定数の宣言と初期化---
-	Scene scene = Scene::Play;
+	Scene scene = Scene::Title;
 	Color color;
 	// ---変数の宣言と初期化---
 	Font font;
@@ -55,6 +55,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	Map map;
 	map.LoadAndSet();
 	map.Create();
+	map.CreateTutorial();
 
 	Player player;
 	player.LoadAndSet(&map);
@@ -96,9 +97,12 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		input->Update();
 		switch (scene)
 		{
+		// --- タイトル --- //
 		case Title:
 			if (input->keys->IsTrigger(KEY_INPUT_SPACE)) { scene = Prologue; }
 			break;
+
+		// --- プロローグ --- //
 		case Prologue:
 			for (size_t i = 0; i < prologueFontColor.size(); i++)
 			{
@@ -107,11 +111,49 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 				else { if (prologueFontColor[i - 1] >= 200) { prologueFontColor[i] += INC_NUM; } }
 				Clamp(prologueFontColor[i], 255);
 			}
-			if (prologueFontColor.back() >= 150 && input->keys->IsTrigger(KEY_INPUT_SPACE)) { scene = Tutorial; }
-			if (input->keys->IsTrigger(KEY_INPUT_S)) { scene = Tutorial; }
+			if (prologueFontColor.back() >= 150 && input->keys->IsTrigger(KEY_INPUT_SPACE))
+			{
+				scene = Tutorial;
+				map.CreateTutorial();
+				player.Reset({ 4,4 }, Up);
+				map.Change(player.GetPos(), None);
+			}
+
+			if (input->keys->IsTrigger(KEY_INPUT_S))
+			{
+				scene = Tutorial;
+				map.CreateTutorial();
+				player.Reset({ 4,4 }, Up);
+				map.Change(player.GetPos(), None);
+			}
+
 			break;
+
+		// --- チュートリアル --- //
 		case Tutorial:
+
+			player.Update();
+			if (input->keys->IsTrigger(KEY_INPUT_R))
+			{
+				map.CreateTutorial();
+				player.Reset({ 4,4 }, Up);
+				map.Change(player.GetPos(), None);
+			}
+
+			map.Update();
+
+			if (input->keys->IsTrigger(KEY_INPUT_S))
+			{
+				scene = Play;
+				map.Create();
+				player.Reset({ rand() % 2 + 4, rand() % 2 + 4 }, Up);
+				map.Change(player.GetPos(), None);
+
+			}
+
 			break;
+
+		// --- ゲーム --- //
 		case Play:
 			player.Update();
 			if (input->keys->IsTrigger(KEY_INPUT_R))
@@ -147,6 +189,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 			ui.Update();
 			break;
+
+		// --- リザルト --- //
 		case Result:
 			if (input->keys->IsTrigger(KEY_INPUT_SPACE))
 			{
@@ -177,23 +221,33 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			}
 			font.DrawUseFont({ 1050,50 }, color.White, "S:Skip", FontSize::L);
 			break;
+
 		case Tutorial:
+			map.Draw(camera.GetPos());
+			player.Draw(camera.GetPos());
+			font.DrawUseFont({ 750,50 }, color.White, "S：チュートリアルSkip", FontSize::L);
 			break;
+
 		case Play:
 			ui.Draw(camera.GetPos());
 			map.Draw(camera.GetPos());
 			player.Draw(camera.GetPos());
 			timer.Draw({ 0,32 });
+
+
+			//デバッグ
 			DrawFormatString(0, 0, color.White, "コイン残り%d枚", map.CountBlockNum(CoinBlock));
 			DrawFormatString(400, 0, color.White, "行動回数:%d回", player.GetActionCount());
 			DrawFormatString(400, 50, color.White, "クリスタル:%d個", map.CountBlockNum(CrystalBlock));
 			DrawFormatString(400, 96, color.White, "ボムによる破壊:%d個", map.GetBombBreakCount());
 			DrawFormatString(800, 0, color.White, "ステージ:%d", map.GetStage());
 			break;
+
 		case Result:
 			font.DrawUseFont({ 400,150 }, color.White, "リザルト", FontSize::LL);
 			DrawFormatStringToHandle(400, 350, color.White, font.Use(FontSize::LL), "スコア:%d", score);
 			break;
+
 		case Ranking:
 			DrawFormatStringToHandle(400, 100, color.White, font.Use(FontSize::LL), "スコア:%d", score);
 			ranking.Draw(font);
