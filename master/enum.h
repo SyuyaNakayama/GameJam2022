@@ -1,5 +1,6 @@
 #pragma once
 #include "DxLib.h"
+#include "Vector2.h"
 
 enum BlockName { None, Block, CoinBlock, CrystalBlock, BombBlock };
 enum Direction { Up, Down, Left, Right };

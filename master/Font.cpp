@@ -1,6 +1,7 @@
 #include "Font.h"
 #include "DxLib.h"
 #include <cassert>
+#include "WindowSize.h"
 
 void Font::Load()
 {
@@ -15,6 +16,13 @@ void Font::Load()
 void Font::DrawUseFont(Vector2Int pos, int color, std::string str, FontSize fontSize)
 {
 	DrawStringToHandle(pos.x, pos.y, str.c_str(), color, fonts[fontSize]);
+}
+
+void Font::DrawCenterXLine(int yPos, int color, std::string str, FontSize fontSize)
+{
+	int fontlen = GetDrawStringWidthToHandle(str.c_str(), str.size(), fonts[fontSize]);
+	int xPos = (WIN_SIZE.x - fontlen) / 2;
+	DrawUseFont({ xPos,yPos }, color, str, fontSize);
 }
 
 Font* Font::GetInstance()

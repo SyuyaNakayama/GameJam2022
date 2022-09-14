@@ -15,11 +15,9 @@
 #include "UIDrawer.h"
 #include "SoundManager.h"
 #include "SceneManager.h"
+#include "WindowSize.h"
 
 using namespace std;
-
-// ウィンドウのサイズ
-const Vector2Int WIN_SIZE = { 1920,980 };
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	_In_ LPSTR lpCmdLine, _In_ int nCmdShow)
@@ -79,7 +77,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	Timer timer = { GetNowCount() ,100 };
 
 	RankingManager ranking;
-	ranking.Reset(); // ***** デバッグ用(提出時はコメントアウトすること！！！) ***** //
 	ranking.Load();
 
 	vector<string> prologueString =
@@ -238,18 +235,19 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		switch (scene.GetScene())
 		{
 		case Title:
-			font->DrawUseFont({ 80,150 }, color.White, "之の人、採掘場にて。\n　～アレッヒの地下奴隷～", FontSize::LL);
-			font->DrawUseFont({ 370,450 }, color.White, "PRESS START", FontSize::LL);
+			font->DrawCenterXLine(150, color.White, "之の人、採掘場にて。", FontSize::LL);
+			font->DrawCenterXLine(150+ font->GetFontSize(FontSize::LL) + 10, color.White, "～アレッヒの地下奴隷～", FontSize::LL);
+			font->DrawCenterXLine(650, color.White, "PRESS START", FontSize::L);
 			break;
 
 		case Prologue:
 			for (int i = 0; i < prologueFontColor.size(); i++)
 			{
-				font->DrawUseFont({ 200,200 + (font->GetFontSize(FontSize::L) + 5) * i },
+				font->DrawCenterXLine(200 + (font->GetFontSize(FontSize::M) + 5) * i,
 					GetColor(prologueFontColor[i], prologueFontColor[i], prologueFontColor[i]),
-					prologueString[i], FontSize::L);
+					prologueString[i], FontSize::M);
 			}
-			font->DrawUseFont({ 1350,40 }, color.White, "S：Skip", FontSize::L);
+			font->DrawUseFont({ 1750,40 }, color.White, "S：Skip", FontSize::M);
 			break;
 
 		case Tutorial:
@@ -257,21 +255,21 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			map.Draw(camera.GetPos());
 			player.Draw(camera.GetPos());
 
-			font->DrawUseFont({ 1350,40 }, color.White, "S：チュートリアルSkip", FontSize::L);
-			DrawFormatStringToHandle(1500, 690, color.White, font->Use(FontSize::L), "：%d枚", map.scoreCoin);
-			DrawFormatStringToHandle(820, 170, color.White, font->Use(FontSize::L), "：%d回", player.GetActionCount());
-			DrawFormatStringToHandle(1350, 770, color.White, font->Use(FontSize::L), "ボムによる破壊：%d個", map.GetBombBreakCount());
+			font->DrawUseFont({ 1350,40 }, color.White, "S：チュートリアルSkip", FontSize::M);
+			DrawFormatStringToHandle(1500, 690, color.White, font->Use(FontSize::M), "：%d枚", map.scoreCoin);
+			DrawFormatStringToHandle(820, 170, color.White, font->Use(FontSize::M), "：%d回", player.GetActionCount());
+			DrawFormatStringToHandle(1350, 770, color.White, font->Use(FontSize::M), "ボムによる破壊：%d個", map.GetBombBreakCount());
 			if (tutorialMessage == 0)
 			{
-				font->DrawUseFont({ 600, 70 }, color.White, "上のブロック３つ壊してみよう！", FontSize::L);
+				font->DrawUseFont({ 600, 70 }, color.White, "上のブロック３つ壊してみよう！", FontSize::M);
 			}
 			else if(tutorialMessage == 1)
 			{
-				font->DrawUseFont({ 600, 70 }, color.White, "ボムブロックを壊してみよう！", FontSize::L);
+				font->DrawUseFont({ 600, 70 }, color.White, "ボムブロックを壊してみよう！", FontSize::M);
 			}
 			else if (tutorialMessage == 2)
 			{
-				font->DrawUseFont({ 600, 70 }, color.White, "クリスタルをあつめよう！", FontSize::L);
+				font->DrawUseFont({ 600, 70 }, color.White, "クリスタルをあつめよう！", FontSize::M);
 			}
 			
 			break;
@@ -282,25 +280,24 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			player.Draw(camera.GetPos());
 			timer.Draw({ 650,70 });
 
-
 			//デバッグ
-			DrawFormatStringToHandle(1500, 690, color.White, font->Use(FontSize::L), "：%d枚", map.scoreCoin);
-			DrawFormatStringToHandle(820, 170, color.White, font->Use(FontSize::L), "：%d回", player.GetActionCount());
-			DrawFormatStringToHandle(1350, 770, color.White, font->Use(FontSize::L), "ボムによる破壊：%d個", map.GetBombBreakCount());
-			DrawFormatStringToHandle(950, 70, color.White, font->Use(FontSize::L), "ステージ：%d", map.GetStage());
+			DrawFormatStringToHandle(1500, 690, color.White, font->Use(FontSize::M), "：%d枚", map.scoreCoin);
+			DrawFormatStringToHandle(820, 170, color.White, font->Use(FontSize::M), "：%d回", player.GetActionCount());
+			DrawFormatStringToHandle(1350, 770, color.White, font->Use(FontSize::M), "ボムによる破壊：%d個", map.GetBombBreakCount());
+			DrawFormatStringToHandle(950, 70, color.White, font->Use(FontSize::M), "ステージ：%d", map.GetStage());
 			break;
 
 		case Result:
-			font->DrawUseFont({ 750,150 }, color.White, "リザルト", FontSize::LL);
-			DrawFormatStringToHandle(750, 350, color.White, font->Use(FontSize::LL), "スコア:%d", score);
-			font->DrawUseFont({ 800,900 }, color.White, "SPACEで次へ", FontSize::L);
+			font->DrawUseFont({ 750,150 }, color.White, "リザルト", FontSize::L);
+			DrawFormatStringToHandle(750, 350, color.White, font->Use(FontSize::L), "スコア:%d", score);
+			font->DrawUseFont({ 800,900 }, color.White, "SPACEで次へ", FontSize::M);
 			break;
 
 		case Ranking:
 
-			font->DrawUseFont({ 650,150 }, color.White, "ランキング", FontSize::LL);
+			font->DrawUseFont({ 650,150 }, color.White, "ランキング", FontSize::L);
 			ranking.Draw({}, *font);
-			font->DrawUseFont({ 700,900 }, color.White, "SPACEでタイトルへ", FontSize::L);
+			font->DrawUseFont({ 700,900 }, color.White, "SPACEでタイトルへ", FontSize::M);
 			break;
 		}
 		scene.DrawCurtain();
