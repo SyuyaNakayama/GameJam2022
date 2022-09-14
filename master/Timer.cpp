@@ -19,11 +19,11 @@ void Timer::Draw(Vector2Int pos, Font& font)
 	Color color;
 	if (time > 0)
 	{
-		DrawFormatStringToHandle(pos.x, pos.y, color.White, font.Use(FontSize::M), "TIME：%02d.%02d", s, cs);
+		DrawFormatStringToHandle(pos.x, pos.y, color.White, font.Use(FontSize::M), "：%02d.%02d", s, cs);
 	}
 	else
 	{
-		DrawStringToHandle(pos.x, pos.y, "TIME：00.00", color.White, font.Use(FontSize::M));
+		DrawStringToHandle(pos.x, pos.y, "：00.00", color.White, font.Use(FontSize::M));
 	}
 }
 
