@@ -79,6 +79,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	ui.Initialize();
 
 	Timer timer = { GetNowCount() ,100 };
+	int clockTex = LoadGraph("Resources/clock.png");
 
 	RankingManager ranking;
 	ranking.Load();
@@ -344,6 +345,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			ui.DrawPlay(camera.GetPos(), map.GetBombBreakCount(), map.GetStage());
 			map.Draw(camera.GetPos());
 			player.Draw(camera.GetPos());
+
+			DrawGraph(580, 60, clockTex, true);
 			timer.Draw({ 650,70 });
 
 			//デバッグ
