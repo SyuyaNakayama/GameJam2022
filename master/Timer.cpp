@@ -1,6 +1,7 @@
 #include "Timer.h"
 #include "DxLib.h"
 #include "function.h"
+#include "enum.h"
 
 bool Timer::CountDown(int playerDamageCount)
 {
@@ -13,15 +14,16 @@ bool Timer::CountDown(int playerDamageCount)
 	return time <= 0;
 }
 
-void Timer::Draw(Vector2Int pos)
+void Timer::Draw(Vector2Int pos, Font& font)
 {
+	Color color;
 	if (time > 0)
 	{
-		DrawFormatString(pos.x, pos.y, GetColor(255, 255, 255), "TIME:%02d.%02d", s, cs);
+		DrawFormatStringToHandle(pos.x, pos.y, color.White, font.Use(FontSize::M), "TIMEÅF%02d.%02d", s, cs);
 	}
 	else
 	{
-		DrawFormatString(pos.x, pos.y, GetColor(255, 255, 255), "TIME:00:00");
+		DrawStringToHandle(pos.x, pos.y, "TIMEÅF00.00", color.White, font.Use(FontSize::M));
 	}
 }
 
