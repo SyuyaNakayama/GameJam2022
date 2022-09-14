@@ -15,6 +15,7 @@ private:
 	bool downArrow[4] = { false, false, false, false };
 	bool downShift = false;
 	bool downSpace = false;
+	bool downS = false;
 public:
 	void Load();
 	void Update();
@@ -30,6 +31,8 @@ public:
 	void DrawDown(const Vector2Int& pos);
 	void DrawLeft(const Vector2Int& pos);
 	void DrawRight(const Vector2Int& pos);
+
+	void DrawKey(const Vector2Int& pos);
 
 	void DrawSpace(const Vector2Int& pos);
 	void DrawShift(const Vector2Int& pos);

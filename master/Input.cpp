@@ -15,6 +15,13 @@ void Input::Load()
 	pad->Load();
 }
 
+void Input::ReSetup()
+{
+	ReSetupJoypad();
+	if (GetJoypadNum() > 0) connect = Connect::JoyPad;
+	else connect = Connect::Keyboard;
+}
+
 void Input::Update()
 {
 	keys->Update();

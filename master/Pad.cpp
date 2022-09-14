@@ -107,7 +107,7 @@ void Pad::StopViblation()
 
 void Pad::DrawStick(const Vector2Int& pos)
 {
-	DrawGraph(pos.x, pos.y, stickG, true);
+	DrawExtendGraph(pos.x, pos.y, pos.x + 128, pos.y + 128, stickG, true);
 }
 void Pad::DrawButton(const Vector2Int& pos)
 {

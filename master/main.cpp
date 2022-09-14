@@ -110,7 +110,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		case Title:
 			sound->PlayBGM(0);
 			if (input->IsSelect()) scene.Change(Prologue);
-			if (scene.IsChanged()) sound->StopBGM(0);
+			if (scene.IsChanged())
+			{
+				sound->StopBGM(0);
+				input->ReSetup();
+			}
 			break;
 
 			// --- ƒvƒƒ[ƒO --- //
@@ -137,6 +141,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 				map.CreateTutorial();
 				player.Reset({ 4,4 }, Up);
 				sound->StopBGM(1);
+				input->ReSetup();
 			}
 			break;
 
@@ -171,6 +176,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 				ui.Initialize();
 				timer.Reset();
 				sound->StopBGM(2);
+				input->ReSetup();
 			}
 
 			ui.Update();
@@ -208,6 +214,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 				ui.Initialize();
 				timer.Reset();
 				sound->StopBGM(3);
+				input->ReSetup();
 			}
 
 			ui.Update();
@@ -225,7 +232,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 		case Ranking:
 			if (input->IsSelect()) scene.Change(Title);
-			if (scene.IsChanged()) sound->StopBGM(4);
+			if (scene.IsChanged()) 
+			{
+				sound->StopBGM(4);
+				input->ReSetup();
+			}
 			break;
 		}
 		camera.Update();
@@ -251,7 +262,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			break;
 
 		case Tutorial:
-			ui.Draw(camera.GetPos());
+			ui.DrawTutorial(camera.GetPos());
 			map.Draw(camera.GetPos());
 			player.Draw(camera.GetPos());
 
@@ -275,7 +286,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			break;
 
 		case Play:
-			ui.Draw(camera.GetPos());
+			ui.DrawPlay(camera.GetPos());
 			map.Draw(camera.GetPos());
 			player.Draw(camera.GetPos());
 			timer.Draw({ 650,70 });

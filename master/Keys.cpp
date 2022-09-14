@@ -55,6 +55,7 @@ void Keys::Update()
 
 	downShift = IsDown(KEY_INPUT_LSHIFT) || IsDown(KEY_INPUT_RSHIFT);
 	downSpace = IsDown(KEY_INPUT_SPACE);
+	downS = IsDown(KEY_INPUT_S);
 }
 
 bool Keys::IsDown(const int key)
@@ -108,6 +109,11 @@ void Keys::DrawLeft(const Vector2Int& pos)
 void Keys::DrawRight(const Vector2Int& pos)
 {
 	DrawGraph(pos.x, pos.y, directionKeyG[Right][downArrow[Right]], true);
+}
+
+void Keys::DrawKey(const Vector2Int& pos)
+{
+	DrawGraph(pos.x, pos.y, keyG[downS], true);
 }
 
 void Keys::DrawShift(const Vector2Int& pos)

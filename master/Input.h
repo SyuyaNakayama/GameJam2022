@@ -7,8 +7,15 @@ class Input
 public:
 	Pad* pad = nullptr;
 	Keys* keys = nullptr;
+	enum Connect
+	{
+		Keyboard,
+		JoyPad,
+	};
+	int connect = 0;
 public:
 	void Load();
+	void ReSetup();
 	void Update();
 	bool IsRight();
 	bool IsLeft();
@@ -19,6 +26,7 @@ public:
 	bool IsDone();   // Y ENTER
 	bool IsCancel(); // A SHIFT
 	bool IsSkip();   // X S
+	int GetConnect() { return connect; }
 public:
 	static Input* GetInstance();
 private:

@@ -9,6 +9,9 @@ void UIDrawer::LoadAndSet(int* actionNum, int* coinCount, int* crystalNum)
 	pickel.SetActNum(actionNum);
 	cash.SetCoinCount(coinCount);
 	crystal.SetCrystalNum(crystalNum);
+
+	input = Input::GetInstance();
+	font = Font::GetInstance();
 }
 
 void UIDrawer::Initialize()
@@ -25,9 +28,35 @@ void UIDrawer::Update()
 	crystal.Update();
 }
 
-void UIDrawer::Draw(const Vector2Int& camera)
+void UIDrawer::DrawTutorial(const Vector2Int& camera) 
 {
-	pickel.Draw({ 740, 150 }, camera);
-	cash.Draw({ 1440, 680 }, camera);
+	pickel.Draw({ 680, 150 }, camera);
+	cash.Draw({ 920, 150 }, camera);
 	crystal.Draw({ 1320, 470 }, camera);
+	DrawInput();
+}
+void UIDrawer::DrawPlay(const Vector2Int& camera)
+{
+	pickel.Draw({ 680, 150 }, camera);
+	cash.Draw({ 920, 150 }, camera);
+	crystal.Draw({ 1320, 470 }, camera);
+	DrawInput();
+}
+
+void UIDrawer::DrawInput()
+{
+	if (input->GetConnect() == Input::Connect::JoyPad)
+	{
+		input->pad->DrawButton({ 1500, 500 });
+		input->pad->DrawStick({ 200,500 });
+	}
+	else if (input->GetConnect() == Input::Connect::Keyboard)
+	{
+		//input->keys->DrawArrow();
+		//input->keys->DrawSpace();
+		//input->keys->DrawShift();
+		//input->keys->DrawKey();
+		//input->keys->DrawShift();
+		//input->keys->DrawSpace();
+	}
 }
