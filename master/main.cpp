@@ -38,7 +38,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 	// シーン
 	SceneManager scene;
-	scene.Initialze(Scene::Play, WIN_SIZE);
+	scene.Initialze(Scene::Result, WIN_SIZE);
 
 	// ---定数の宣言と初期化---
 
@@ -225,7 +225,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 				ui.Update();
 
-				if (input->keys->IsTrigger(KEY_INPUT_S))
+				if (input->IsSkip())
 				{
 					menu = true;
 				}
@@ -241,7 +241,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 					sound->StopBGM(3);
 				}
 
-				if (input->keys->IsTrigger(KEY_INPUT_S))
+				if (input->IsSkip())
 				{
 					menu = false;
 				}
@@ -286,7 +286,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		case Title:
 			font->DrawCenterXLine(150, color.White, "之の人、採掘場にて。", FontSize::LL);
 			font->DrawCenterXLine(150 + font->GetFontSize(FontSize::LL) + 10, color.White, "～アレッヒの地下奴隷～", FontSize::LL);
-			font->DrawCenterXLine(650, color.White, "PRESS START", FontSize::L);
+			ui.DrawTitle();
 			break;
 
 		case Prologue:
@@ -296,7 +296,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 					GetColor(prologueFontColor[i], prologueFontColor[i], prologueFontColor[i]),
 					prologueString[i], FontSize::M);
 			}
-			font->DrawUseFont({ 1750,40 }, color.White, "S：Skip", FontSize::M);
+			ui.DrawPro(camera.GetPos());
 			break;
 
 		case Tutorial:
@@ -319,35 +319,32 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			break;
 
 		case Play:
-			if (menu == false)
-			{
-				ui.DrawPlay(camera.GetPos(), map.GetBombBreakCount(), map.GetStage());
-				map.Draw(camera.GetPos());
-				player.Draw(camera.GetPos());
-				timer.Draw({ 650,70 });
+			ui.DrawPlay(camera.GetPos(), map.GetBombBreakCount(), map.GetStage());
+			map.Draw(camera.GetPos());
+			player.Draw(camera.GetPos());
+			timer.Draw({ 650,70 });
 
-				//デバッグ
-				font->DrawUseFont({ 1700,40 }, color.White, "S：MENU", FontSize::M);
-			}
-			else if (menu == true)
+			//デバッグ
+			if (menu == true)
 			{
-				font->DrawUseFont({ 850, 150 }, color.White, "MENU", FontSize::LL);
-				font->DrawUseFont({ 550, 350 }, color.White, "SPACE：リザルトへ", FontSize::LL);
-				font->DrawUseFont({ 600, 650 }, color.White, "S：ゲームに戻る", FontSize::LL);
+				SetDrawBlendMode(DX_BLENDMODE_ALPHA, 150);
+				DrawBox(0, 0, WIN_SIZE.x, WIN_SIZE.y, GetColor(0, 0, 0), true);
+				SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+				ui.DrawMenu();
 			}
 
 			break;
 
 		case Result:
 		case Ranking:
-
+			ui.DrawResult(rankingStringOffset);
 			font->DrawCenterXLine(120, color.White, "リザルト", FontSize::L, -resultStringOffset);
-			font->DrawCenterXLine(830, color.White, "SPACEで次へ", FontSize::M, -resultStringOffset);
+			font->DrawCenterXLine(880, color.White, "で次へ", FontSize::M, -resultStringOffset);
 			font->DrawFormatCenterXLine(350, color.White, "スコア:%d", FontSize::L, score, -resultStringOffset);
 
 			font->DrawCenterXLine(120, color.White, "ランキング", FontSize::L, rankingStringOffset);
 			ranking.Draw({ rankingStringOffset,300 }, *font);
-			font->DrawCenterXLine(830, color.White, "SPACEでタイトルへ", FontSize::M, rankingStringOffset);
+			font->DrawCenterXLine(880, color.White, "でタイトルへ", FontSize::M, rankingStringOffset);
 			break;
 		}
 		scene.DrawCurtain();

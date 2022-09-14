@@ -120,13 +120,13 @@ void Pad::DrawA(const Vector2Int& pos)
 {
 	DrawGraph(pos.x, pos.y, buttonG[A][downButton[A]], true);
 }
-void Pad::DrawB(const Vector2Int& pos)
+void Pad::DrawB(const Vector2Int& pos, const int scale)
 {
-	DrawGraph(pos.x, pos.y, buttonG[B][downButton[B]], true);
+	DrawExtendGraph(pos.x, pos.y, pos.x + (64 * scale), pos.y + (64 * scale), buttonG[B][downButton[B]], true);
 }
-void Pad::DrawX(const Vector2Int& pos)
+void Pad::DrawX(const Vector2Int& pos, const int scale)
 {
-	DrawGraph(pos.x, pos.y, buttonG[X][downButton[X]], true);
+	DrawExtendGraph(pos.x, pos.y, pos.x + (64 * scale), pos.y + (64 * scale), buttonG[X][downButton[X]], true);
 }
 void Pad::DrawY(const Vector2Int& pos)
 {

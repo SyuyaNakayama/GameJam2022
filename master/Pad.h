@@ -50,8 +50,8 @@ public:
 	void DrawStick(const Vector2Int& pos);
 	void DrawButton(const Vector2Int& pos);
 	void DrawA(const Vector2Int& pos);
-	void DrawB(const Vector2Int& pos);
-	void DrawX(const Vector2Int& pos);
+	void DrawB(const Vector2Int& pos, const int scale = 1);
+	void DrawX(const Vector2Int& pos, const int scale = 1);
 	void DrawY(const Vector2Int& pos);
 
 public:

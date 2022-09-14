@@ -113,18 +113,18 @@ void Keys::DrawRight(const Vector2Int& pos)
 	DrawGraph(pos.x, pos.y, directionKeyG[Right][downArrow[Right]], true);
 }
 
-void Keys::DrawKey(const Vector2Int& pos)
+void Keys::DrawKey(const Vector2Int& pos, const int scale)
 {
-	DrawGraph(pos.x, pos.y, keyG[downS], true);
+	DrawExtendGraph(pos.x, pos.y, pos.x + (64 * scale), pos.y + (64 * scale), keyG[downS], true);
 }
 
 void Keys::DrawShift(const Vector2Int& pos)
 {
 	DrawGraph(pos.x, pos.y, shiftKeyG[downShift], true);
 }
-void Keys::DrawSpace(const Vector2Int& pos)
+void Keys::DrawSpace(const Vector2Int& pos, const int scale)
 {
-	DrawGraph(pos.x, pos.y, spaceKeyG[downSpace], true);
+	DrawExtendGraph(pos.x, pos.y, pos.x + (128 * scale), pos.y + (64 * scale), spaceKeyG[downSpace], true);
 }
 void Keys::DrawEnter(const Vector2Int& pos)
 {

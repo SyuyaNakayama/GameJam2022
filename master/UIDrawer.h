@@ -20,7 +20,11 @@ public:
 	void LoadAndSet(int* actionNum, int* coinCount, int* crystalNum);
 	void Initialize();
 	void Update();
+	void DrawTitle();
+	void DrawPro(const Vector2Int& camera);
 	void DrawTutorial(const Vector2Int& camera, const int bombCount);
 	void DrawPlay(const Vector2Int& camera, const int bombCount, const int stage);
+	void DrawMenu();
+	void DrawResult(const int offset);
 };
 

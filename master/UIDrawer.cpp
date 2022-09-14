@@ -31,6 +31,34 @@ void UIDrawer::Update()
 	crystal.Update();
 }
 
+void UIDrawer::DrawTitle()
+{
+	DrawFormatStringToHandle(600, 700, GetColor(255, 255, 255), font->Use(FontSize::L), "PRESS");
+	DrawFormatStringToHandle(1100, 700, GetColor(255, 255, 255), font->Use(FontSize::L), "START");
+	if (input->GetConnect() == Input::Connect::JoyPad)
+	{
+		input->pad->DrawB({ 900, 690 }, 2);
+	}
+	else if (input->GetConnect() == Input::Connect::Keyboard)
+	{
+		input->keys->DrawSpace({ 825, 690 }, 2);
+	}
+}
+
+void UIDrawer::DrawPro(const Vector2Int& camera)
+{
+	if (input->GetConnect() == Input::Connect::JoyPad)
+	{
+		input->pad->DrawX({ 1640,70 });
+	}
+	else if (input->GetConnect() == Input::Connect::Keyboard)
+	{
+		input->keys->DrawKey({ 1640,70 });
+		DrawFormatStringToHandle(1665, 75, GetColor(100, 200, 235), font->Use(FontSize::S), "S");
+	}
+	font->DrawUseFont({ 1700,80 }, GetColor(255, 255, 255), "：SKIP", FontSize::M);
+}
+
 void UIDrawer::DrawTutorial(const Vector2Int& camera, const int bombCount)
 {
 	pickel.Draw({ 700, 160 }, camera);
@@ -81,7 +109,7 @@ void UIDrawer::DrawTutorial(const Vector2Int& camera, const int bombCount)
 			"S", bombCount);
 	}
 
-	font->DrawUseFont({ 1700,80 }, GetColor(255, 255, 255), "：Skip", FontSize::M);
+	font->DrawUseFont({ 1700,80 }, GetColor(255, 255, 255), "：SKIP", FontSize::M);
 
 	DrawFormatStringToHandle(1350, 770, GetColor(255, 255, 255), font->Use(FontSize::M),
 		"ボムによる破壊：%d個", bombCount);
@@ -133,14 +161,48 @@ void UIDrawer::DrawPlay(const Vector2Int& camera, const int bombCount, const int
 			"カーソル移動", bombCount);
 
 		input->keys->DrawKey({ 1640,70 });
-		DrawFormatStringToHandle(1665, 75, GetColor(100, 200, 235), font->Use(FontSize::S),
-			"S", bombCount);
+		DrawFormatStringToHandle(1665, 75, GetColor(100, 200, 235), font->Use(FontSize::S), "S");
 	}
 
-	font->DrawUseFont({ 1700,80 }, GetColor(255, 255, 255), "：Skip", FontSize::M);
+	font->DrawUseFont({ 1700,80 }, GetColor(255, 255, 255), "：MENU", FontSize::M);
 
 	DrawFormatStringToHandle(1350, 770, GetColor(255, 255, 255), font->Use(FontSize::M),
 		"ボムによる破壊：%d個", bombCount);
 
 	DrawFormatStringToHandle(950, 70, GetColor(255, 255, 255), font->Use(FontSize::M), "ステージ：%d", stage);
+}
+
+void UIDrawer::DrawMenu()
+{
+	font->DrawUseFont({ 820, 150 }, GetColor(255, 255, 255), "MENU", FontSize::LL);
+	if (input->GetConnect() == Input::Connect::JoyPad)
+	{
+		input->pad->DrawX({ 450, 400 }, 2);
+		font->DrawUseFont({ 600, 400 }, GetColor(255, 255, 255), "：リザルトへ", FontSize::LL);
+		input->pad->DrawB({ 450, 600 }, 2);
+		font->DrawUseFont({ 600, 600 }, GetColor(255, 255, 255), "：ゲームに戻る", FontSize::LL);
+	}
+	else if (input->GetConnect() == Input::Connect::Keyboard)
+	{
+		input->keys->DrawSpace({ 420, 400 }, 2);
+		font->DrawUseFont({ 650, 400 }, GetColor(255, 255, 255), "：リザルトへ", FontSize::LL);
+		input->keys->DrawKey({ 430, 580 }, 3);
+		DrawFormatStringToHandle(505, 610, GetColor(100, 200, 235), font->Use(FontSize::L), "S");
+		font->DrawUseFont({ 600, 600 }, GetColor(255, 255, 255), "：ゲームに戻る", FontSize::LL);
+
+	}
+}
+
+void UIDrawer::DrawResult(const int offset)
+{
+	if (input->GetConnect() == Input::Connect::JoyPad)
+	{
+		input->pad->DrawB({ 730 + offset, 870 });
+		input->pad->DrawB({ 730 + offset - 1880, 870 });
+	}
+	else if (input->GetConnect() == Input::Connect::Keyboard)
+	{
+		input->keys->DrawSpace({ 680 + offset, 870 });
+		input->keys->DrawSpace({ 680 + offset - 1880, 870 });
+	}
 }

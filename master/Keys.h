@@ -34,9 +34,9 @@ public:
 	void DrawLeft(const Vector2Int& pos);
 	void DrawRight(const Vector2Int& pos);
 
-	void DrawKey(const Vector2Int& pos);
+	void DrawKey(const Vector2Int& pos, const int scale = 1);
 
-	void DrawSpace(const Vector2Int& pos);
+	void DrawSpace(const Vector2Int& pos, const int scale = 1);
 	void DrawShift(const Vector2Int& pos);
 	void DrawEnter(const Vector2Int& pos);
 public:
