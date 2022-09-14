@@ -38,7 +38,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 	// シーン
 	SceneManager scene;
-	scene.Initialze(Scene::Tutorial, WIN_SIZE);
+	scene.Initialze(Scene::Title, WIN_SIZE);
 
 	// ---定数の宣言と初期化---
 	int bgG = LoadGraph("Resources/backGround.png");
@@ -312,26 +312,27 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			if (tutorialMessage == 0)
 			{
 				font->DrawUseFont({ 600, 70 }, color.White, "上のブロック３つ壊してみよう！", FontSize::M);
-				font->DrawUseFont({ 1575, 250 }, color.White, "ヒント！", FontSize::M);
-				font->DrawUseFont({ 1460, 310 }, color.White, "つるはし1個につき", FontSize::M);
-				font->DrawUseFont({ 1460, 370 }, color.White, "３マス壊せる", FontSize::M);
+				font->DrawUseFont({ 1570, 240 }, color.White, "ヒント！", FontSize::M);
+				font->DrawUseFont({ 1450, 310 }, color.White, "つるはし1個につき", FontSize::M);
+				font->DrawUseFont({ 1450, 370 }, color.White, "３マス壊せて、", FontSize::M);
+				font->DrawUseFont({ 1450, 430 }, color.White, "減ると暗くなる", FontSize::M);
 
 			}
 			else if (tutorialMessage == 1)
 			{
 				font->DrawUseFont({ 600, 70 }, color.White, "ボムブロックを壊してみよう！", FontSize::M);
-				font->DrawUseFont({ 1575, 250 }, color.White, "ヒント！", FontSize::M);
-				font->DrawUseFont({ 1460, 310 }, color.White, "ボムを選択すると", FontSize::M);
-				font->DrawUseFont({ 1460, 370 }, color.White, "他のマスを", FontSize::M);
-				font->DrawUseFont({ 1460, 430 }, color.White, "選択できない", FontSize::M);
+				font->DrawUseFont({ 1570, 240 }, color.White, "ヒント！", FontSize::M);
+				font->DrawUseFont({ 1450, 310 }, color.White, "ボムを選択すると", FontSize::M);
+				font->DrawUseFont({ 1450, 370 }, color.White, "他のマスを", FontSize::M);
+				font->DrawUseFont({ 1450, 430 }, color.White, "選択できない", FontSize::M);
 			}
 			else if (tutorialMessage == 2)
 			{
 				font->DrawUseFont({ 600, 70 }, color.White, "クリスタルをあつめよう！", FontSize::M);
-				font->DrawUseFont({ 1575, 250 }, color.White, "ヒント！", FontSize::M);
-				font->DrawUseFont({ 1460, 310 }, color.White, "クリスタルを", FontSize::M);
-				font->DrawUseFont({ 1460, 370 }, color.White, "３つ集めると自動で", FontSize::M);
-				font->DrawUseFont({ 1460, 430 }, color.White, "次のステージへ", FontSize::M);
+				font->DrawUseFont({ 1570, 240 }, color.White, "ヒント！", FontSize::M);
+				font->DrawUseFont({ 1450, 310 }, color.White, "クリスタルを", FontSize::M);
+				font->DrawUseFont({ 1450, 370 }, color.White, "３つ集めると自動で", FontSize::M);
+				font->DrawUseFont({ 1450, 430 }, color.White, "次のステージへ", FontSize::M);
 			}
 			break;
 
