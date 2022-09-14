@@ -64,22 +64,31 @@ void UIDrawer::DrawPro(const Vector2Int& camera)
 
 void UIDrawer::DrawTutorial(const Vector2Int& camera, const int bombCount)
 {
+	//チュートリアルフレーム
 	DrawFrame({ 500, 30 }, { 1400, 150 });
 
+	//ゲームフィールドフレーム
 	DrawFrame({ 625,255 }, { 1300,925 });
 
+	//クリスタルフレーム１，２，３
 	DrawFrame({ 1300, 258 }, { 1400, 356 });
 	DrawFrame({ 1300, 356 }, { 1400, 454 });
 	DrawFrame({ 1300, 454 }, { 1400, 552 });
 
+	//コイン＆ボム破壊数フレーム
 	DrawFrame({ 1320,620 }, { 1840,850 });
 
+	//つるはしフレーム
 	DrawFrame({ 625, 150 }, { 900, 255 });
 
-	DrawFrame({ 1610, 60 }, { 1850, 140 });
+	//skipフレーム
+	DrawFrame({ 1610, 60 }, { 1880, 140 });
+
+	//ヒントフレーム
+	DrawFrame({ 1425, 200 }, { 1900, 500 });
 
 	pickel.Draw({ 665, 170 }, camera);
-	DrawFormatStringToHandle(725, 180, GetColor(255, 255, 255), font->Use(FontSize::M),
+	DrawFormatStringToHandle(730, 180, GetColor(255, 255, 255), font->Use(FontSize::M),
 		"：%d回", *pActNum);
 
 	cash.Draw({ 1420, 660 }, camera);
@@ -90,8 +99,10 @@ void UIDrawer::DrawTutorial(const Vector2Int& camera, const int bombCount)
 
 	if (input->GetConnect() == Input::Connect::JoyPad)
 	{
+		//コントローラーフレーム
 		DrawFrame({ 100,220 }, { 580,580 });
 		DrawFrame({ 100,580 }, { 420,830 });
+
 		input->pad->DrawButton({ 160, 300 });
 		DrawFormatStringToHandle(400, 360, GetColor(220, 270, 30), font->Use(FontSize::M),
 			"選択");
@@ -108,6 +119,10 @@ void UIDrawer::DrawTutorial(const Vector2Int& camera, const int bombCount)
 	}
 	else if (input->GetConnect() == Input::Connect::Keyboard)
 	{
+		//キーボードフレーム
+		DrawFrame({ 20,190 }, { 520,540 });
+		DrawFrame({ 80,540 }, { 440,830 });
+
 		input->keys->DrawSpace({ 220, 400 });
 		DrawFormatStringToHandle(235, 480, GetColor(220, 270, 30), font->Use(FontSize::M),
 			"選択");
@@ -136,18 +151,28 @@ void UIDrawer::DrawTutorial(const Vector2Int& camera, const int bombCount)
 
 void UIDrawer::DrawPlay(const Vector2Int& camera, const int bombCount, const int stage)
 {
+	//チュートリアルフレーム
 	DrawFrame({ 500, 30 }, { 1400, 150 });
+
+	//ゲームフィールドフレーム
 	DrawFrame({ 625,255 }, { 1300,925 });
+
+	//クリスタルフレーム１，２，３
 	DrawFrame({ 1300, 258 }, { 1400, 356 });
 	DrawFrame({ 1300, 356 }, { 1400, 454 });
 	DrawFrame({ 1300, 454 }, { 1400, 552 });
+
+	//コイン＆ボム破壊数フレーム
 	DrawFrame({ 1320,620 }, { 1840,850 });
+
+	//つるはしフレーム
 	DrawFrame({ 625, 150 }, { 900, 255 });
 
-	DrawFrame({ 1610, 60 }, { 1850, 140 });
+	//skipフレーム
+	DrawFrame({ 1610, 60 }, { 1880, 140 });
 
-	pickel.Draw({ 700, 160 }, camera);
-	DrawFormatStringToHandle(760, 170, GetColor(255, 255, 255), font->Use(FontSize::M),
+	pickel.Draw({ 665, 170 }, camera);
+	DrawFormatStringToHandle(730, 180, GetColor(255, 255, 255), font->Use(FontSize::M),
 		"：%d回", *pActNum);
 
 	cash.Draw({ 1420, 660 }, camera);
@@ -158,6 +183,7 @@ void UIDrawer::DrawPlay(const Vector2Int& camera, const int bombCount, const int
 
 	if (input->GetConnect() == Input::Connect::JoyPad)
 	{
+		//コントローラーフレーム
 		DrawFrame({ 100,220 }, { 580,580 });
 		DrawFrame({ 100,580 }, { 420,830 });
 
@@ -177,6 +203,10 @@ void UIDrawer::DrawPlay(const Vector2Int& camera, const int bombCount, const int
 	}
 	else if (input->GetConnect() == Input::Connect::Keyboard)
 	{
+		//キーボードフレーム
+		DrawFrame({ 20,190 }, { 540,540 });
+		DrawFrame({ 80,540 }, { 440,830 });
+
 		input->keys->DrawSpace({ 220, 400 });
 		DrawFormatStringToHandle(235, 480, GetColor(220, 270, 30), font->Use(FontSize::M),
 			"選択");
@@ -227,15 +257,29 @@ void UIDrawer::DrawMenu()
 
 void UIDrawer::DrawResult(const int offset)
 {
+	//リザルトフレーム
+	DrawFrame({ 520 + offset - 1880,40 }, { 1350 + offset - 1880,510 });
+
+	//ランキングフレーム
+	DrawFrame({ 520 + offset,40 }, { 1350 + offset,840 });
+	
 	if (input->GetConnect() == Input::Connect::JoyPad)
 	{
+		//コントローラーフレーム
+		DrawFrame({ 620 + offset - 1880,850 }, { 1100 + offset - 1880,950 });
+		DrawFrame({ 620 + offset,850 }, { 1200 + offset,950 });
+
 		input->pad->DrawB({ 730 + offset, 870 });
 		input->pad->DrawB({ 730 + offset - 1880, 870 });
 	}
 	else if (input->GetConnect() == Input::Connect::Keyboard)
 	{
-		input->keys->DrawSpace({ 680 + offset, 870 });
+		//キーボードフレーム
+		DrawFrame({ 620 + offset - 1880,850 }, { 1100 + offset - 1880,950 });
+		DrawFrame({ 620 + offset,850 }, { 1200 + offset,950 });
+
 		input->keys->DrawSpace({ 680 + offset - 1880, 870 });
+		input->keys->DrawSpace({ 680 + offset, 870 });
 	}
 }
 
