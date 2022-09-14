@@ -299,7 +299,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		case Ranking:
 
 			font->DrawUseFont({ 650,150 }, color.White, "ランキング", FontSize::LL);
-			ranking.Draw(*font);
+			ranking.Draw({}, *font);
 			font->DrawUseFont({ 700,900 }, color.White, "SPACEでタイトルへ", FontSize::L);
 			break;
 		}
