@@ -10,6 +10,7 @@ void Player::LoadAndSet(Map* pMap)
 	selecter.Load();
 	selecter.SetMap(pMap);
 	input = Input::GetInstance();
+	sound = SoundManager::GetInstance();
 }
 
 void Player::Initialize(const Vector2Int& pos, const int direction)
@@ -97,6 +98,7 @@ void Player::Destroy()
 				pMap->BombDestroy(i, this);
 			}
 		}
+		sound->PlaySE(0);
 	}
 
 	selecter.EraseRoute(0);

@@ -6,6 +6,7 @@
 #include "BrightEffecter.h"
 #include "CoinEffecter.h"
 #include "CrystalEffecter.h"
+#include "SoundManager.h"
 
 class MapChipDraw
 {
@@ -28,6 +29,7 @@ private:
 	Vector2Int* playerPos;
 	Camera* pCamera;
 public:
+	SoundManager* sound = nullptr;
 	MapChipDraw();
 	void Load();
 	void Reset();

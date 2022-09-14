@@ -312,6 +312,7 @@ void Map::BombDestroy(int bombIndex, Player* player)
 			if (destroyPos[i] == bomb[j].GetPos() && !bomb[j].IsExplosion())
 			{
 				BreakBlock(destroyPos[i], true);
+				drawer.sound->PlaySE(0);
 				EraseBomb(j);
 				BombDestroy(j, player);
 			}

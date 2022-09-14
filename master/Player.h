@@ -2,6 +2,7 @@
 #include "Selecter.h"
 #include "Input.h"
 #include <vector>
+#include "SoundManager.h"
 
 class Map;
 
@@ -21,8 +22,11 @@ private:
 	int next = 0;
 	int stopTimer = 0;
 
-	Map* pMap = nullptr;
-	Input* input;
+	Input* input = nullptr;
+	SoundManager* sound = nullptr;
+
+	int idleG[4][4]{ {} };
+	int attack[4]{};
 public:
 	void LoadAndSet(Map* pMap);
 	void Initialize(const Vector2Int& pos, const int direction);

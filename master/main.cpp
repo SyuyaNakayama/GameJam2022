@@ -183,7 +183,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 				ui.Initialize();
 				timer.Reset();
 				sound->StopBGM(2);
-				sound->PlaySE(4);
 				input->ReSetup();
 			}
 

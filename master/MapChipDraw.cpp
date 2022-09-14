@@ -20,7 +20,7 @@ void MapChipDraw::Load()
 	brightE.Load();
 	coinE.Load();
 	crystalE.Load();
-
+	sound = SoundManager::GetInstance();
 	for (size_t y = 0; y < 10; y++)
 	{
 		for (size_t x = 0; x < 10; x++)
@@ -32,8 +32,8 @@ void MapChipDraw::Load()
 
 void MapChipDraw::Reset()
 {
-	dustE.Initialize();
-	breakE.Initialize();
+	//dustE.Initialize();
+	//breakE.Initialize();
 	arrowE.Initialize();
 	brightE.Initialize();
 	ClearArtifact();
@@ -64,14 +64,18 @@ void MapChipDraw::ChipInit(const Vector2Int& num, const int blockName)
 	{
 	case Block:
 		g = planeG[GetRand(0, 2)];
+		sound->PlaySE(4);
 		break;
 	case CoinBlock:
+		sound->PlaySE(4);
 		g = goldG;
 		break;
 	case CrystalBlock:
+		sound->PlaySE(4);
 		g = oreG;
 		break;
 	case BombBlock:
+		sound->PlaySE(4);
 		g = bombG;
 		break;
 	case None:
@@ -88,8 +92,19 @@ void MapChipDraw::ChipBreak(const Vector2Int& num)
 	blocks[num.y][num.x].Break();
 	int t = blocks[num.y][num.x].GetType();
 	breakE.Emit(num, t);
-	if (t == CoinBlock) coinE.Emit(num);
-	if (t == CrystalBlock) crystalE.Emit(num);
+	sound->PlaySE(0);
+	if (t == CoinBlock)
+	{
+		sound->PlaySE(2);
+		sound->PlaySE(3);
+		coinE.Emit(num);
+	}
+	if (t == CrystalBlock)
+	{
+		sound->PlaySE(2);
+		sound->PlaySE(3);
+		crystalE.Emit(num);
+	}
 }
 
 void MapChipDraw::ChipBright()
