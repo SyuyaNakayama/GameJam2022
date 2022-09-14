@@ -38,7 +38,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 	// シーン
 	SceneManager scene;
-	scene.Initialze(Scene::Result, WIN_SIZE);
+	scene.Initialze(Scene::Play, WIN_SIZE);
 
 	// ---定数の宣言と初期化---
 
@@ -266,11 +266,13 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 				Clamp(rankingStringOffset, WIN_SIZE.x);
 				Clamp(resultStringOffset, WIN_SIZE.x);
 			}
-			if (input->IsSelect()) scene.Change(Title);
-			if (scene.IsChanged()) 
+			if (input->IsSelect()) { scene.Change(Title); }
+			if (scene.IsChanged())
 			{
 				sound->StopBGM(4);
 				input->ReSetup();
+				rankingStringOffset = WIN_SIZE.x;
+				resultStringOffset = 0;
 			}
 			break;
 		}
@@ -347,17 +349,17 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		case Result:
 		case Ranking:
 
-			font->DrawCenterXLine(120, color.White, "リザルト", FontSize::L,-resultStringOffset);
+			font->DrawCenterXLine(120, color.White, "リザルト", FontSize::L, -resultStringOffset);
 			font->DrawCenterXLine(830, color.White, "SPACEで次へ", FontSize::M, -resultStringOffset);
 			font->DrawFormatCenterXLine(350, color.White, "スコア:%d", FontSize::L, score, -resultStringOffset);
 
 			font->DrawCenterXLine(120, color.White, "ランキング", FontSize::L, rankingStringOffset);
-			ranking.Draw({ rankingStringOffset,300 }, * font);
+			ranking.Draw({ rankingStringOffset,300 }, *font);
 			font->DrawCenterXLine(830, color.White, "SPACEでタイトルへ", FontSize::M, rankingStringOffset);
 			break;
 		}
 		scene.DrawCurtain();
-
+		DrawFormatStringToHandle(0, 900, color.White, font->Use(FontSize::M), "%d", resultStringOffset);
 #pragma endregion
 		ScreenFlip();
 		// 20ミリ秒待機(疑似60FPS)
