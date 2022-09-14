@@ -13,13 +13,14 @@ private:
 	CrystalDraw crystal;
 	Input* input = nullptr;
 	Font* font = nullptr;
+
+	int* pActNum = nullptr;
+	int* pCoinCount = nullptr;
 public:
 	void LoadAndSet(int* actionNum, int* coinCount, int* crystalNum);
 	void Initialize();
 	void Update();
-	void DrawTutorial(const Vector2Int& camera);
-	void DrawPlay(const Vector2Int& camera);
-private:
-	void DrawInput();
+	void DrawTutorial(const Vector2Int& camera, const int bombCount);
+	void DrawPlay(const Vector2Int& camera, const int bombCount, const int stage);
 };
 

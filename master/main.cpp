@@ -49,6 +49,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 	Input* input = Input::GetInstance();
 	input->Load();
+	input->ReSetup();
 
 	int score = 0;
 
@@ -299,14 +300,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			break;
 
 		case Tutorial:
-			ui.DrawTutorial(camera.GetPos());
+			ui.DrawTutorial(camera.GetPos(), map.GetBombBreakCount());
 			map.Draw(camera.GetPos());
 			player.Draw(camera.GetPos());
 
-			font->DrawUseFont({ 1400,40 }, color.White, "S：チュートリアルSkip", FontSize::M);
-			DrawFormatStringToHandle(1000, 160, color.White, font->Use(FontSize::M), "：%d枚", map.scoreCoin);
-			DrawFormatStringToHandle(750, 160, color.White, font->Use(FontSize::M), "：%d回", player.GetActionCount());
-			DrawFormatStringToHandle(1350, 770, color.White, font->Use(FontSize::M), "ボムによる破壊：%d個", map.GetBombBreakCount());
 			if (tutorialMessage == 0)
 			{
 				font->DrawUseFont({ 600, 70 }, color.White, "上のブロック３つ壊してみよう！", FontSize::M);
@@ -319,22 +316,17 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			{
 				font->DrawUseFont({ 600, 70 }, color.White, "クリスタルをあつめよう！", FontSize::M);
 			}
-
 			break;
 
 		case Play:
 			if (menu == false)
 			{
-				ui.DrawPlay(camera.GetPos());
+				ui.DrawPlay(camera.GetPos(), map.GetBombBreakCount(), map.GetStage());
 				map.Draw(camera.GetPos());
 				player.Draw(camera.GetPos());
 				timer.Draw({ 650,70 });
 
 				//デバッグ
-				DrawFormatStringToHandle(1000, 160, color.White, font->Use(FontSize::M), "：%d枚", map.scoreCoin);
-				DrawFormatStringToHandle(750, 160, color.White, font->Use(FontSize::M), "：%d回", player.GetActionCount());
-				DrawFormatStringToHandle(1350, 770, color.White, font->Use(FontSize::M), "ボムによる破壊：%d個", map.GetBombBreakCount());
-				DrawFormatStringToHandle(950, 70, color.White, font->Use(FontSize::M), "ステージ：%d", map.GetStage());
 				font->DrawUseFont({ 1700,40 }, color.White, "S：MENU", FontSize::M);
 			}
 			else if (menu == true)

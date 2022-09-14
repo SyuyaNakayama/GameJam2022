@@ -36,6 +36,7 @@ void Keys::Load()
 
 	LoadDivGraph("Resources/UI/key_SPACE.png", 2, 2, 1, 128, 64, spaceKeyG);
 	LoadDivGraph("Resources/UI/key_SHIFT.png", 2, 2, 1, 96, 64, shiftKeyG);
+	LoadDivGraph("Resources/UI/key_ENTER.png", 2, 2, 1, 96, 96, enterKeyG);
 }
 
 void Keys::Update()
@@ -53,9 +54,10 @@ void Keys::Update()
 	downArrow[Left] = IsDown(KEY_INPUT_LEFT);
 	downArrow[Right] = IsDown(KEY_INPUT_RIGHT);
 
+	downS = IsDown(KEY_INPUT_S);
 	downShift = IsDown(KEY_INPUT_LSHIFT) || IsDown(KEY_INPUT_RSHIFT);
 	downSpace = IsDown(KEY_INPUT_SPACE);
-	downS = IsDown(KEY_INPUT_S);
+	downEnter = IsDown(KEY_INPUT_RETURN);
 }
 
 bool Keys::IsDown(const int key)
@@ -123,4 +125,8 @@ void Keys::DrawShift(const Vector2Int& pos)
 void Keys::DrawSpace(const Vector2Int& pos)
 {
 	DrawGraph(pos.x, pos.y, spaceKeyG[downSpace], true);
+}
+void Keys::DrawEnter(const Vector2Int& pos)
+{
+	DrawGraph(pos.x, pos.y, enterKeyG[downEnter], true);
 }
