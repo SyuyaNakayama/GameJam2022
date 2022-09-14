@@ -38,7 +38,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 	// シーン
 	SceneManager scene;
-	scene.Initialze(Scene::Title, WIN_SIZE);
+	scene.Initialze(Scene::Result, WIN_SIZE);
 
 	// ---定数の宣言と初期化---
 
@@ -224,6 +224,13 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			break;
 
 		case Ranking:
+			if (rankingStringOffset > 0)
+			{
+				rankingStringOffset -= STRING_MOVE_SPD;
+				resultStringOffset += STRING_MOVE_SPD;
+				Clamp(rankingStringOffset, WIN_SIZE.x);
+				Clamp(resultStringOffset, WIN_SIZE.x);
+			}
 			if (input->IsSelect()) scene.Change(Title);
 			if (scene.IsChanged()) sound->StopBGM(4);
 			break;
@@ -236,7 +243,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		{
 		case Title:
 			font->DrawCenterXLine(150, color.White, "之の人、採掘場にて。", FontSize::LL);
-			font->DrawCenterXLine(150+ font->GetFontSize(FontSize::LL) + 10, color.White, "～アレッヒの地下奴隷～", FontSize::LL);
+			font->DrawCenterXLine(150 + font->GetFontSize(FontSize::LL) + 10, color.White, "～アレッヒの地下奴隷～", FontSize::LL);
 			font->DrawCenterXLine(650, color.White, "PRESS START", FontSize::L);
 			break;
 
@@ -263,7 +270,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			{
 				font->DrawUseFont({ 600, 70 }, color.White, "上のブロック３つ壊してみよう！", FontSize::M);
 			}
-			else if(tutorialMessage == 1)
+			else if (tutorialMessage == 1)
 			{
 				font->DrawUseFont({ 600, 70 }, color.White, "ボムブロックを壊してみよう！", FontSize::M);
 			}
@@ -271,7 +278,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			{
 				font->DrawUseFont({ 600, 70 }, color.White, "クリスタルをあつめよう！", FontSize::M);
 			}
-			
+
 			break;
 
 		case Play:
@@ -288,16 +295,15 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			break;
 
 		case Result:
-			font->DrawUseFont({ 750,150 }, color.White, "リザルト", FontSize::L);
-			DrawFormatStringToHandle(750, 350, color.White, font->Use(FontSize::L), "スコア:%d", score);
-			font->DrawUseFont({ 800,900 }, color.White, "SPACEで次へ", FontSize::M);
-			break;
-
 		case Ranking:
 
-			font->DrawUseFont({ 650,150 }, color.White, "ランキング", FontSize::L);
-			ranking.Draw({}, *font);
-			font->DrawUseFont({ 700,900 }, color.White, "SPACEでタイトルへ", FontSize::M);
+			font->DrawCenterXLine(120, color.White, "リザルト", FontSize::L,-resultStringOffset);
+			font->DrawCenterXLine(830, color.White, "SPACEで次へ", FontSize::M, -resultStringOffset);
+			font->DrawFormatCenterXLine(350, color.White, "スコア:%d", FontSize::L, score, -resultStringOffset);
+
+			font->DrawCenterXLine(120, color.White, "ランキング", FontSize::L, rankingStringOffset);
+			ranking.Draw({ rankingStringOffset,300 }, * font);
+			font->DrawCenterXLine(830, color.White, "SPACEでタイトルへ", FontSize::M, rankingStringOffset);
 			break;
 		}
 		scene.DrawCurtain();

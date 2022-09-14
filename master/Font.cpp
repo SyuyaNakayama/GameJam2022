@@ -18,11 +18,25 @@ void Font::DrawUseFont(Vector2Int pos, int color, std::string str, FontSize font
 	DrawStringToHandle(pos.x, pos.y, str.c_str(), color, fonts[fontSize]);
 }
 
-void Font::DrawCenterXLine(int yPos, int color, std::string str, FontSize fontSize)
+void Font::DrawUseFontWithFormat(Vector2Int pos, int color, std::string str, FontSize fontSize, int num)
+{
+	DrawFormatStringToHandle(pos.x, pos.y, color, fonts[fontSize], str.c_str(), num);
+}
+
+void Font::DrawCenterXLine(int yPos, int color, std::string str, FontSize fontSize, int xOffset)
 {
 	int fontlen = GetDrawStringWidthToHandle(str.c_str(), str.size(), fonts[fontSize]);
 	int xPos = (WIN_SIZE.x - fontlen) / 2;
-	DrawUseFont({ xPos,yPos }, color, str, fontSize);
+	DrawUseFont({ xPos + xOffset,yPos }, color, str, fontSize);
+}
+
+void Font::DrawFormatCenterXLine(int yPos, int color, std::string str, FontSize fontSize, int num,int xOffset)
+{
+	
+	str.pop_back();	str.pop_back(); str += std::to_string(num);
+	int fontlen = GetDrawStringWidthToHandle(str.c_str(), str.size(), fonts[fontSize]);
+	int xPos = (WIN_SIZE.x - fontlen) / 2;
+	DrawUseFont({ xPos + xOffset,yPos }, color, str, fontSize);
 }
 
 Font* Font::GetInstance()

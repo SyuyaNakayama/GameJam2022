@@ -35,10 +35,10 @@ void RankingManager::Update(int newScore)
 	rankingOut << str << flush;
 }
 
-void RankingManager::Draw(Vector2Int pos,Font& font)
+void RankingManager::Draw(Vector2Int pos, Font& font)
 {
 	Color color;
-	font.DrawUseFont({ 750,300 }, color.White, str.c_str(), FontSize::L);
+	font.DrawCenterXLine(pos.y, color.White, str.c_str(), FontSize::L, pos.x);
 }
 
 void RankingManager::Reset()

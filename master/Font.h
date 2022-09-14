@@ -16,7 +16,9 @@ public:
 	int GetFontSize(FontSize fontSize_) { return fontSize[fontSize_]; }
 	int Use(FontSize fontSize_) { return fonts[fontSize_]; }
 	void DrawUseFont(Vector2Int pos, int color, std::string str, FontSize fontSize);
-	void DrawCenterXLine(int yPos, int color, std::string str, FontSize fontSize); // 左右の中心に描画される
+	void DrawUseFontWithFormat(Vector2Int pos, int color, std::string str, FontSize fontSize, int num);
+	void DrawCenterXLine(int yPos, int color, std::string str, FontSize fontSize, int xOffset = 0); // 左右の中心に描画される
+	void DrawFormatCenterXLine(int yPos, int color, std::string str, FontSize fontSize, int num, int xOffset = 0);
 public:
 	static Font* GetInstance();
 private:
