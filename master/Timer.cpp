@@ -17,11 +17,11 @@ void Timer::Draw(Vector2Int pos)
 {
 	if (time > 0)
 	{
-		DrawFormatString(pos.x, pos.y, GetColor(255, 255, 255), "TIME:%02d.%02d", s, cs);
+		DrawFormatString(pos.x, pos.y, GetColor(255, 255, 255), ":%02d.%02d", s, cs);
 	}
 	else
 	{
-		DrawFormatString(pos.x, pos.y, GetColor(255, 255, 255), "TIME:00:00");
+		DrawFormatString(pos.x, pos.y, GetColor(255, 255, 255), ":00:00");
 	}
 }
 
