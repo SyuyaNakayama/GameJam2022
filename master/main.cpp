@@ -278,6 +278,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 				input->ReSetup();
 				rankingStringOffset = WIN_SIZE.x;
 				resultStringOffset = 0;
+				for (size_t i = 0; i < prologueFontColor.size(); i++)
+				{
+					//prologueFontColor[i] = 0;
+				}
 			}
 			break;
 		}
