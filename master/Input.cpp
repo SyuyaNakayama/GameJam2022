@@ -58,3 +58,8 @@ bool Input::IsCancel()
 			keys->IsTrigger(KEY_INPUT_RSHIFT) || 
 			pad->IsTrigger(Pad::A);
 }
+
+bool Input::IsSkip()
+{
+	return keys->IsTrigger(KEY_INPUT_S) || pad->IsTrigger(Pad::X);
+}

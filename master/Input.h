@@ -18,6 +18,7 @@ public:
 	bool IsSelect(); // B SPACE
 	bool IsDone();   // Y ENTER
 	bool IsCancel(); // A SHIFT
+	bool IsSkip();   // X S
 public:
 	static Input* GetInstance();
 private:

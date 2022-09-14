@@ -130,7 +130,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 					Clamp(prologueFontColor[i], 255);
 				}
 
-				bool next = prologueFontColor.back() >= 150 && input->IsSelect() || input->keys->IsTrigger(KEY_INPUT_S);
+				bool next = prologueFontColor.back() >= 150 && input->IsSelect() || input->IsSkip();
 				if (next) scene.Change(Tutorial);
 			}
 
@@ -165,7 +165,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 				}
 			}
 
-			if (map.IsChange() || input->keys->IsTrigger(KEY_INPUT_S)) scene.Change(Play);
+			if (map.IsChange() || input->IsSkip()) scene.Change(Play);
 			if (scene.IsChanged())
 			{
 				score = 0;
