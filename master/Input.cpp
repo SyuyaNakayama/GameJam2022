@@ -46,19 +46,16 @@ bool Input::IsSelect()
 {
 	return keys->IsTrigger(KEY_INPUT_SPACE) || pad->IsTrigger(Pad::B);
 }
-
 bool Input::IsDone()
 {
 	return keys->IsTrigger(KEY_INPUT_RETURN) || pad->IsTrigger(Pad::Y);
 }
-
 bool Input::IsCancel()
 {
 	return	keys->IsTrigger(KEY_INPUT_LSHIFT) || 
 			keys->IsTrigger(KEY_INPUT_RSHIFT) || 
 			pad->IsTrigger(Pad::A);
 }
-
 bool Input::IsSkip()
 {
 	return keys->IsTrigger(KEY_INPUT_S) || pad->IsTrigger(Pad::X);

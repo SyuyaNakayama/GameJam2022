@@ -113,7 +113,7 @@ void Pad::DrawButton(const Vector2Int& pos)
 {
 	DrawA({ pos.x + 64, pos.y + 96 });
 	DrawB({ pos.x + 128, pos.y + 48 });
-	DrawX({ pos.x      , pos.y + 48 });
+	DrawX({ pos.x, pos.y + 48 });
 	DrawY({ pos.x + 64, pos.y });
 }
 void Pad::DrawA(const Vector2Int& pos)
