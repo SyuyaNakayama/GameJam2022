@@ -15,7 +15,14 @@ void SoundManager::Load()
 	};
 
 	// SEì«Ç›çûÇ›
-	seHandle = {};
+	seHandle =
+	{
+		LoadSoundMem("Resources/Sound/SE/bomb.mp3"),
+		LoadSoundMem("Resources/Sound/SE/break.mp3"),
+		LoadSoundMem("Resources/Sound/SE/coin.mp3"),
+		LoadSoundMem("Resources/Sound/SE/crystal.mp3"),
+		LoadSoundMem("Resources/Sound/SE/fall.mp3")
+	};
 }
 
 void SoundManager::PlayBGM(int index, bool loopFlag)

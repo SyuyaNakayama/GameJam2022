@@ -80,6 +80,7 @@ void Player::Select()
 
 void Player::Destroy()
 {
+	
 	if (mode != Mode::Destroy) return;
 
 	move = selecter.GetRoutePos(0);

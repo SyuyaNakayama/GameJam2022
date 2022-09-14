@@ -8,6 +8,7 @@
 #include "Bomb.h"
 #include "BreakBlockList.h"
 #include "MapChipDraw.h"
+#include "SoundManager.h"
 
 using namespace std;
 
@@ -123,4 +124,5 @@ public:
 	int CrystalRemain() { return 3 - CountBlockNum(CrystalBlock); }
 	int CoinUpdate();
 	bool IsFreeze();
+
 };

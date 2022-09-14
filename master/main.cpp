@@ -38,7 +38,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 	// シーン
 	SceneManager scene;
-	scene.Initialze(Scene::Play, WIN_SIZE);
+	scene.Initialze(Scene::Title, WIN_SIZE);
 
 	// ---定数の宣言と初期化---
 	int bgG = LoadGraph("Resources/backGround.png");
@@ -142,6 +142,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			if (scene.IsChanged())
 			{
 				score = 0;
+				tutorialMessage = 0;
 				map.CreateTutorial();
 				player.Reset({ 4,4 }, Up);
 				sound->StopBGM(1);
@@ -181,6 +182,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 				ui.Initialize();
 				timer.Reset();
 				sound->StopBGM(2);
+				sound->PlaySE(4);
 				input->ReSetup();
 			}
 
@@ -190,10 +192,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 			// --- ゲーム --- //
 		case Play:
-			sound->PlayBGM(3);
 
 			if (menu == false)
 			{
+				sound->PlayBGM(3);
 				player.Update();
 				map.Update();
 
@@ -204,6 +206,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 					else player.Reset({ rand() % 2 + 4,rand() % 2 + 4 }, Up);
 					ui.Initialize();
 					timer.Reset();
+					sound->PlaySE(4);
 				}
 
 				if (input->keys->IsTrigger(KEY_INPUT_R))
@@ -312,10 +315,17 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			if (tutorialMessage == 0)
 			{
 				font->DrawUseFont({ 600, 70 }, color.White, "上のブロック３つ壊してみよう！", FontSize::M);
+				font->DrawUseFont({ 1550, 200 }, color.White, "ヒント！", FontSize::M);
+				font->DrawUseFont({ 1400, 260 }, color.White, "つるはし1個につき", FontSize::M);
+				font->DrawUseFont({ 1400, 320 }, color.White, "３マス壊せる", FontSize::M);
+
 			}
 			else if (tutorialMessage == 1)
 			{
 				font->DrawUseFont({ 600, 70 }, color.White, "ボムブロックを壊してみよう！", FontSize::M);
+				font->DrawUseFont({ 1550, 200 }, color.White, "ヒント！", FontSize::M);
+				font->DrawUseFont({ 1400, 260 }, color.White, "ボムを選択すると", FontSize::M);
+				font->DrawUseFont({ 1400, 320 }, color.White, "他のマスを選択できない", FontSize::M);
 			}
 			else if (tutorialMessage == 2)
 			{
