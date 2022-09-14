@@ -38,9 +38,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 	// ƒV[ƒ“
 	SceneManager scene;
-	scene.Initialze(Scene::Result, WIN_SIZE);
+	scene.Initialze(Scene::Play, WIN_SIZE);
 
 	// ---’è”‚ÌéŒ¾‚Æ‰Šú‰»---
+	int bgG = LoadGraph("Resources/backGround.png");
 
 	Color color;
 	// ---•Ï”‚ÌéŒ¾‚Æ‰Šú‰»---
@@ -281,6 +282,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		scene.Update();
 #pragma endregion
 #pragma region •`‰æˆ—
+		DrawExtendGraph(camera.GetPos().x - 64,
+						camera.GetPos().y - 64,
+						WIN_SIZE.x + camera.GetPos().x + 64, 
+						WIN_SIZE.y + camera.GetPos().y + 64, bgG, true);
 		switch (scene.GetScene())
 		{
 		case Title:

@@ -177,9 +177,9 @@ void UIDrawer::DrawMenu()
 	font->DrawUseFont({ 820, 150 }, GetColor(255, 255, 255), "MENU", FontSize::LL);
 	if (input->GetConnect() == Input::Connect::JoyPad)
 	{
-		input->pad->DrawX({ 450, 400 }, 2);
+		input->pad->DrawB({ 450, 400 }, 2);
 		font->DrawUseFont({ 600, 400 }, GetColor(255, 255, 255), "：リザルトへ", FontSize::LL);
-		input->pad->DrawB({ 450, 600 }, 2);
+		input->pad->DrawX({ 450, 600 }, 2);
 		font->DrawUseFont({ 600, 600 }, GetColor(255, 255, 255), "：ゲームに戻る", FontSize::LL);
 	}
 	else if (input->GetConnect() == Input::Connect::Keyboard)
