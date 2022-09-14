@@ -54,6 +54,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 	int tutorialMessage = 0;
 
+	bool menu = false;
+
 	Camera camera;
 	camera.Initialize({});
 
@@ -110,7 +112,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		case Title:
 			sound->PlayBGM(0);
 			if (input->IsSelect()) scene.Change(Prologue);
-			if (scene.IsChanged()) sound->StopBGM(0);
+			if (scene.IsChanged())
+			{
+				sound->StopBGM(0);
+				input->ReSetup();
+			}
 			break;
 
 			// --- プロローグ --- //
@@ -137,6 +143,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 				map.CreateTutorial();
 				player.Reset({ 4,4 }, Up);
 				sound->StopBGM(1);
+				input->ReSetup();
 			}
 			break;
 
@@ -166,11 +173,13 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			if (scene.IsChanged())
 			{
 				score = 0;
+				menu = false;
 				map.Create(true);
 				player.Reset({ rand() % 2 + 4, rand() % 2 + 4 }, Up);
 				ui.Initialize();
 				timer.Reset();
 				sound->StopBGM(2);
+				input->ReSetup();
 			}
 
 			ui.Update();
@@ -181,36 +190,62 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		case Play:
 			sound->PlayBGM(3);
 
-			player.Update();
-			map.Update();
-
-			if (map.IsChange())
+			if (menu == false)
 			{
-				map.Create();
-				if (map.GetStage() % 4 == 0) player.Reset({ 4,4 }, Up);
-				else player.Reset({ rand() % 2 + 4,rand() % 2 + 4 }, Up);
-				ui.Initialize();
-				timer.Reset();
+				player.Update();
+				map.Update();
+
+				if (map.IsChange())
+				{
+					map.Create();
+					if (map.GetStage() % 4 == 0) player.Reset({ 4,4 }, Up);
+					else player.Reset({ rand() % 2 + 4,rand() % 2 + 4 }, Up);
+					ui.Initialize();
+					timer.Reset();
+				}
+
+				if (input->keys->IsTrigger(KEY_INPUT_R))
+				{
+					map.Create();
+					player.Reset({ rand() % 2 + 4,rand() % 2 + 4 }, Up);
+					ui.Initialize();
+					timer.Reset();
+				}
+
+				if (player.GetActionCount() <= 0 || timer.CountDown(player.GetDamageCount())) scene.Change(Result);
+				if (scene.IsChanged())
+				{
+					score = (map.scoreCoin * 100) * (1 + (0.1 * map.GetStage())) + (map.GetBombBreakCount() * 50);
+					ui.Initialize();
+					timer.Reset();
+					sound->StopBGM(3);
+					input->ReSetup();
+				}
+
+				ui.Update();
+
+				if (input->keys->IsTrigger(KEY_INPUT_S))
+				{
+					menu = true;
+				}
+			}
+			else if (menu == true)
+			{
+				if (input->IsSelect())
+				{
+					scene.Change(Result);
+					score = (map.scoreCoin * 100) * (1 + (0.1 * map.GetStage())) + (map.GetBombBreakCount() * 50);
+					ui.Initialize();
+					timer.Reset();
+					sound->StopBGM(3);
+				}
+
+				if (input->keys->IsTrigger(KEY_INPUT_S))
+				{
+					menu = false;
+				}
 			}
 
-			if (input->keys->IsTrigger(KEY_INPUT_R))
-			{
-				map.Create();
-				player.Reset({ rand() % 2 + 4,rand() % 2 + 4 }, Up);
-				ui.Initialize();
-				timer.Reset();
-			}
-
-			if (player.GetActionCount() <= 0 || timer.CountDown(player.GetDamageCount())) scene.Change(Result);
-			if (scene.IsChanged())
-			{
-				score = (map.scoreCoin * 100) * (1 + (0.1 * map.GetStage())) + (map.GetBombBreakCount() * 50);
-				ui.Initialize();
-				timer.Reset();
-				sound->StopBGM(3);
-			}
-
-			ui.Update();
 			break;
 
 			// --- リザルト --- //
@@ -232,7 +267,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 				Clamp(resultStringOffset, WIN_SIZE.x);
 			}
 			if (input->IsSelect()) scene.Change(Title);
-			if (scene.IsChanged()) sound->StopBGM(4);
+			if (scene.IsChanged()) 
+			{
+				sound->StopBGM(4);
+				input->ReSetup();
+			}
 			break;
 		}
 		camera.Update();
@@ -258,13 +297,13 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			break;
 
 		case Tutorial:
-			ui.Draw(camera.GetPos());
+			ui.DrawTutorial(camera.GetPos());
 			map.Draw(camera.GetPos());
 			player.Draw(camera.GetPos());
 
-			font->DrawUseFont({ 1350,40 }, color.White, "S：チュートリアルSkip", FontSize::M);
-			DrawFormatStringToHandle(1500, 690, color.White, font->Use(FontSize::M), "：%d枚", map.scoreCoin);
-			DrawFormatStringToHandle(820, 170, color.White, font->Use(FontSize::M), "：%d回", player.GetActionCount());
+			font->DrawUseFont({ 1400,40 }, color.White, "S：チュートリアルSkip", FontSize::M);
+			DrawFormatStringToHandle(1000, 160, color.White, font->Use(FontSize::M), "：%d枚", map.scoreCoin);
+			DrawFormatStringToHandle(750, 160, color.White, font->Use(FontSize::M), "：%d回", player.GetActionCount());
 			DrawFormatStringToHandle(1350, 770, color.White, font->Use(FontSize::M), "ボムによる破壊：%d個", map.GetBombBreakCount());
 			if (tutorialMessage == 0)
 			{
@@ -282,16 +321,27 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			break;
 
 		case Play:
-			ui.Draw(camera.GetPos());
-			map.Draw(camera.GetPos());
-			player.Draw(camera.GetPos());
-			timer.Draw({ 650,70 });
+			if (menu == false)
+			{
+				ui.DrawPlay(camera.GetPos());
+				map.Draw(camera.GetPos());
+				player.Draw(camera.GetPos());
+				timer.Draw({ 650,70 });
 
-			//デバッグ
-			DrawFormatStringToHandle(1500, 690, color.White, font->Use(FontSize::M), "：%d枚", map.scoreCoin);
-			DrawFormatStringToHandle(820, 170, color.White, font->Use(FontSize::M), "：%d回", player.GetActionCount());
-			DrawFormatStringToHandle(1350, 770, color.White, font->Use(FontSize::M), "ボムによる破壊：%d個", map.GetBombBreakCount());
-			DrawFormatStringToHandle(950, 70, color.White, font->Use(FontSize::M), "ステージ：%d", map.GetStage());
+				//デバッグ
+				DrawFormatStringToHandle(1000, 160, color.White, font->Use(FontSize::M), "：%d枚", map.scoreCoin);
+				DrawFormatStringToHandle(750, 160, color.White, font->Use(FontSize::M), "：%d回", player.GetActionCount());
+				DrawFormatStringToHandle(1350, 770, color.White, font->Use(FontSize::M), "ボムによる破壊：%d個", map.GetBombBreakCount());
+				DrawFormatStringToHandle(950, 70, color.White, font->Use(FontSize::M), "ステージ：%d", map.GetStage());
+				font->DrawUseFont({ 1700,40 }, color.White, "S：MENU", FontSize::M);
+			}
+			else if (menu == true)
+			{
+				font->DrawUseFont({ 850, 150 }, color.White, "MENU", FontSize::LL);
+				font->DrawUseFont({ 550, 350 }, color.White, "SPACE：リザルトへ", FontSize::LL);
+				font->DrawUseFont({ 600, 650 }, color.White, "S：ゲームに戻る", FontSize::LL);
+			}
+
 			break;
 
 		case Result:
