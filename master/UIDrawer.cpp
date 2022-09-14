@@ -15,6 +15,8 @@ void UIDrawer::LoadAndSet(int* actionNum, int* coinCount, int* crystalNum)
 
 	input = Input::GetInstance();
 	font = Font::GetInstance();
+
+	uiBack = LoadGraph("Resources/UI/uiFrame.png");
 }
 
 void UIDrawer::Initialize()
@@ -47,6 +49,7 @@ void UIDrawer::DrawTitle()
 
 void UIDrawer::DrawPro(const Vector2Int& camera)
 {
+	DrawFrame({ 300, 100 }, { 1600, 800 });
 	if (input->GetConnect() == Input::Connect::JoyPad)
 	{
 		input->pad->DrawX({ 1640,70 });
@@ -61,8 +64,22 @@ void UIDrawer::DrawPro(const Vector2Int& camera)
 
 void UIDrawer::DrawTutorial(const Vector2Int& camera, const int bombCount)
 {
-	pickel.Draw({ 700, 160 }, camera);
-	DrawFormatStringToHandle(760, 170, GetColor(255, 255, 255), font->Use(FontSize::M),
+	DrawFrame({ 500, 30 }, { 1400, 150 });
+
+	DrawFrame({ 625,255 }, { 1300,925 });
+
+	DrawFrame({ 1300, 258 }, { 1400, 356 });
+	DrawFrame({ 1300, 356 }, { 1400, 454 });
+	DrawFrame({ 1300, 454 }, { 1400, 552 });
+
+	DrawFrame({ 1320,620 }, { 1840,850 });
+
+	DrawFrame({ 625, 150 }, { 900, 255 });
+
+	DrawFrame({ 1610, 60 }, { 1850, 140 });
+
+	pickel.Draw({ 665, 170 }, camera);
+	DrawFormatStringToHandle(725, 180, GetColor(255, 255, 255), font->Use(FontSize::M),
 		"：%d回", *pActNum);
 
 	cash.Draw({ 1420, 660 }, camera);
@@ -73,6 +90,8 @@ void UIDrawer::DrawTutorial(const Vector2Int& camera, const int bombCount)
 
 	if (input->GetConnect() == Input::Connect::JoyPad)
 	{
+		DrawFrame({ 100,220 }, { 580,580 });
+		DrawFrame({ 100,580 }, { 420,830 });
 		input->pad->DrawButton({ 160, 300 });
 		DrawFormatStringToHandle(400, 360, GetColor(220, 270, 30), font->Use(FontSize::M),
 			"選択");
@@ -117,6 +136,16 @@ void UIDrawer::DrawTutorial(const Vector2Int& camera, const int bombCount)
 
 void UIDrawer::DrawPlay(const Vector2Int& camera, const int bombCount, const int stage)
 {
+	DrawFrame({ 500, 30 }, { 1400, 150 });
+	DrawFrame({ 625,255 }, { 1300,925 });
+	DrawFrame({ 1300, 258 }, { 1400, 356 });
+	DrawFrame({ 1300, 356 }, { 1400, 454 });
+	DrawFrame({ 1300, 454 }, { 1400, 552 });
+	DrawFrame({ 1320,620 }, { 1840,850 });
+	DrawFrame({ 625, 150 }, { 900, 255 });
+
+	DrawFrame({ 1610, 60 }, { 1850, 140 });
+
 	pickel.Draw({ 700, 160 }, camera);
 	DrawFormatStringToHandle(760, 170, GetColor(255, 255, 255), font->Use(FontSize::M),
 		"：%d回", *pActNum);
@@ -129,6 +158,9 @@ void UIDrawer::DrawPlay(const Vector2Int& camera, const int bombCount, const int
 
 	if (input->GetConnect() == Input::Connect::JoyPad)
 	{
+		DrawFrame({ 100,220 }, { 580,580 });
+		DrawFrame({ 100,580 }, { 420,830 });
+
 		input->pad->DrawButton({ 160, 300 });
 		DrawFormatStringToHandle(400, 360, GetColor(220, 270, 30), font->Use(FontSize::M),
 			"選択");
@@ -205,4 +237,14 @@ void UIDrawer::DrawResult(const int offset)
 		input->keys->DrawSpace({ 680 + offset, 870 });
 		input->keys->DrawSpace({ 680 + offset - 1880, 870 });
 	}
+}
+
+void UIDrawer::DrawFrame(const Vector2Int& leftTop, const Vector2Int& rightBottom)
+{
+	SetDrawBright(70,70,70);
+	DrawExtendGraph(
+		leftTop.x, leftTop.y, 
+		rightBottom.x, rightBottom.y,
+		uiBack, true);
+	SetDrawBright(255, 255, 255);
 }

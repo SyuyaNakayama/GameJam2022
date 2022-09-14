@@ -16,6 +16,7 @@ private:
 
 	int* pActNum = nullptr;
 	int* pCoinCount = nullptr;
+	int uiBack = 0;
 public:
 	void LoadAndSet(int* actionNum, int* coinCount, int* crystalNum);
 	void Initialize();
@@ -26,5 +27,7 @@ public:
 	void DrawPlay(const Vector2Int& camera, const int bombCount, const int stage);
 	void DrawMenu();
 	void DrawResult(const int offset);
+private:
+	void DrawFrame(const Vector2Int& leftTop, const Vector2Int& rightBottom);
 };
 

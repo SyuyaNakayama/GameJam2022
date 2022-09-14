@@ -285,26 +285,23 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		scene.Update();
 #pragma endregion
 #pragma region ï`âÊèàóù
-		DrawExtendGraph(camera.GetPos().x - 64,
-						camera.GetPos().y - 64,
-						WIN_SIZE.x + camera.GetPos().x + 64, 
-						WIN_SIZE.y + camera.GetPos().y + 64, bgG, true);
+		DrawExtendGraph(0, 0, WIN_SIZE.x, WIN_SIZE.y, bgG, true);
 		switch (scene.GetScene())
 		{
 		case Title:
+			ui.DrawTitle();
 			font->DrawCenterXLine(150, color.White, "îVÇÃêlÅAçÃå@èÍÇ…ÇƒÅB", FontSize::LL);
 			font->DrawCenterXLine(150 + font->GetFontSize(FontSize::LL) + 10, color.White, "Å`ÉAÉåÉbÉqÇÃínâ∫ìzóÍÅ`", FontSize::LL);
-			ui.DrawTitle();
 			break;
 
 		case Prologue:
+			ui.DrawPro(camera.GetPos());
 			for (int i = 0; i < prologueFontColor.size(); i++)
 			{
 				font->DrawCenterXLine(200 + (font->GetFontSize(FontSize::M) + 5) * i,
 					GetColor(prologueFontColor[i], prologueFontColor[i], prologueFontColor[i]),
 					prologueString[i], FontSize::M);
 			}
-			ui.DrawPro(camera.GetPos());
 			break;
 
 		case Tutorial:
