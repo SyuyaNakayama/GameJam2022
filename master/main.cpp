@@ -280,7 +280,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 				resultStringOffset = 0;
 				for (size_t i = 0; i < prologueFontColor.size(); i++)
 				{
-					//prologueFontColor[i] = 0;
+					prologueFontColor[i] = 0;
 				}
 			}
 			break;
