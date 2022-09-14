@@ -22,11 +22,15 @@ private:
 	int next = 0;
 	int stopTimer = 0;
 
+	Map* pMap = nullptr;
 	Input* input = nullptr;
 	SoundManager* sound = nullptr;
 
-	int idleG[4][4]{ {} };
-	int attack[4]{};
+	int idleG[16]{};
+	int attackG[4]{};
+	int animeT = 0;
+	int anime = 0;
+	bool clash = false;
 public:
 	void LoadAndSet(Map* pMap);
 	void Initialize(const Vector2Int& pos, const int direction);

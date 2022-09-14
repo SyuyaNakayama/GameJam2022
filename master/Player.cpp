@@ -11,6 +11,9 @@ void Player::LoadAndSet(Map* pMap)
 	selecter.SetMap(pMap);
 	input = Input::GetInstance();
 	sound = SoundManager::GetInstance();
+
+	LoadDivGraph("Resources/Player/all_idle.png", 16, 4, 4, 64, 64, idleG);
+	LoadDivGraph("Resources/Player/all_attack.png", 4, 4, 1, 64, 64, attackG);
 }
 
 void Player::Initialize(const Vector2Int& pos, const int direction)
@@ -31,6 +34,10 @@ void Player::Reset(const Vector2Int& pos, const int direction)
 	mode = Mode::Select;
 	next = Mode::Select;
 	stopTimer = 0;
+
+	animeT = 0;
+	anime = 0;
+	clash = false;
 }
 
 void Player::ActionReset()
@@ -54,6 +61,11 @@ void Player::Update()
 
 void Player::Action()
 {
+	if (++animeT > 5) 
+	{
+		animeT = 0;
+		if (++anime > 3) anime = 0;
+	}
 	if (pMap->IsFreeze()) return;
 	Stop();
 	Select();
@@ -72,6 +84,16 @@ void Player::Select()
 {
 	if (mode != Mode::Select) return;
 
+	if (selecter.GetRouteSize() > 0)
+	{
+		Vector2Int b = selecter.GetRoutePos(0);
+		Vector2Int a = b - pos;
+		if (a.y < 0) direction = Up;
+		if (a.y > 0) direction = Down;
+		if (a.x < 0) direction = Left;
+		if (a.x > 0) direction = Right;
+	}
+
 	if (selecter.IsDecision())
 	{
 		mode = Mode::Stop;
@@ -81,7 +103,6 @@ void Player::Select()
 
 void Player::Destroy()
 {
-	
 	if (mode != Mode::Destroy) return;
 
 	move = selecter.GetRoutePos(0);
@@ -104,12 +125,20 @@ void Player::Destroy()
 	selecter.EraseRoute(0);
 	mode = Mode::Stop;
 	next = Mode::Move;
+	clash = true;
 }
 
 void Player::Move()
 {
 	if (mode != Mode::Move) return;
 	if (move.x == -1 && move.y == -1) return;
+
+	Vector2Int a = move - pos;
+
+	if (a.y < 0) direction = Up;
+	if (a.y > 0) direction = Down;
+	if (a.x < 0) direction = Left;
+	if (a.x > 0) direction = Right;
 
 	pos = move;
 	Clamp(pos, pMap->GetMapSize() - Vector2Int(1, 1));
@@ -127,12 +156,22 @@ void Player::Move()
 		actionNum--;
 		selecter.Reset(selecter.GetDirection());
 	}
+	clash = false;
 }
 
 void Player::Draw(const Vector2Int& camera)
 {
 	selecter.Draw(camera);
-	Color color;
-	DrawCircle(pMap->GetChipPos(pos).x, pMap->GetChipPos(pos).y, 32, color.Cyan);
-	DrawDebugNumber(damageCount, 96);
+	Vector2Int p = { pMap->GetMapPos().x + (64 * pos.x) - 32, pMap->GetMapPos().y + (64 * pos.y) - 32 };
+
+	if (clash) 
+	{
+		int d = direction;
+		DrawGraph(p.x, p.y, attackG[d], true);
+	}
+	else
+	{
+		int d = direction * 4;
+		DrawGraph(p.x, p.y, idleG[(d + anime)], true);
+	}
 }
